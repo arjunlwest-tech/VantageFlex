@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Flex | AI Workout Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #050505; color: white; }
+        .grid-bg {
+            background-image: linear-gradient(#111 1px, transparent 1px), linear-gradient(90deg, #111 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #f97316, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card { background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 1rem; }
+        .btn-active-red { background: #dc2626; color: white; }
+        .btn-active-orange { background: #f97316; color: white; }
+        .btn-inactive { background: #1a1a1a; color: #666; }
+    </style>
+</head>
+<body class="grid-bg font-sans">
+    <nav class="flex items-center justify-between px-10 py-6 max-w-7xl mx-auto relative z-10">
+        <div class="flex items-center gap-2">
+            <div class="bg-gradient-to-br from-orange-500 to-red-600 p-1 rounded-md">🔥</div>
+            <span class="font-black italic uppercase tracking-tighter text-xl">Vantage<span class="text-orange-500">Flex</span></span>
+        </div>
+        <div class="flex gap-8 text-[10px] font-bold tracking-widest text-gray-400">
+            <a href="index.html" class="text-white">HOME</a>
+            <a href="about.html" class="hover:text-white transition">ABOUT</a>
+            <a href="privacy.html" class="hover:text-white transition">PRIVACY</a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-12 relative z-10">
+        <div class="text-center mb-16">
+            <span class="border border-orange-500/30 bg-orange-500/10 text-orange-400 text-[10px] px-3 py-1 rounded-full uppercase tracking-widest inline-flex items-center gap-2 mb-6">✨ AI-Powered Workout Generator</span>
+            <h1 class="text-6xl md:text-8xl font-black italic tracking-tighter leading-[0.9] mb-6 uppercase">No Excuses.<br><span class="gradient-text">Just Results.</span></h1>
+            <p class="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">Type any equipment. Our AI recognizes it. Get personalized workouts with variable sets optimized for YOUR goals. Every rep counts.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <section class="card p-8">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-gray-300 mb-6 flex items-center gap-2"><span>📈</span> Your Profile</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase mb-3">Fitness Level</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="btn-inactive px-4 py-2 rounded text-[10px] font-bold">BEGINNER</button>
+                                <button class="btn-active-red px-4 py-2 rounded text-[10px] font-bold">INTERMEDIATE</button>
+                                <button class="btn-inactive px-4 py-2 rounded text-[10px] font-bold">ADVANCED</button>
+                                <button class="btn-inactive px-4 py-2 rounded text-[10px] font-bold">ELITE</button>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase mb-3">Goal</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="btn-inactive px-4 py-2 rounded text-[10px] font-bold">STRENGTH</button>
+                                <button class="btn-active-orange px-4 py-2 rounded text-[10px] font-bold">MUSCLE</button>
+                                <button class="btn-inactive px-4 py-2 rounded text-[10px] font-bold">ENDURANCE</button>
+                                <button class="btn-inactive px-4 py-2 rounded text-[10px] font-bold">CUT</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-gray-300 flex items-center gap-2"><span>🕒</span> Duration</h2>
+                        <span class="text-orange-500 bg-orange-500/10 px-2 py-1 rounded text-[10px] font-bold">45 min</span>
+                    </div>
+                    <input type="range" class="w-full accent-orange-500 bg-gray-800 h-1 rounded-lg cursor-pointer">
+                    <div class="flex justify-between mt-3 text-[10px] font-bold text-gray-600"><span>15 MIN</span><span>120 MIN</span></div>
+                </section>
+
+                <button class="w-full bg-gradient-to-r from-orange-500 to-red-600 py-6 rounded-2xl text-xl font-black italic uppercase tracking-tighter hover:scale-[1.01] transition-transform">⚡ Generate Workout</button>
+            </div>
+
+            <div class="card p-8 h-fit">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-gray-300 mb-8 flex items-center gap-2"><span>📊</span> Configuration Summary</h2>
+                <div class="grid grid-cols-4 gap-4 mb-8">
+                    <div class="bg-black/50 p-4 rounded-xl border border-white/5 text-center">
+                        <p class="text-[8px] text-gray-600 font-bold uppercase mb-1">Level</p>
+                        <p class="text-[10px] font-black text-red-500 italic">INTERMEDIATE</p>
+                    </div>
+                    <div class="bg-black/50 p-4 rounded-xl border border-white/5 text-center">
+                        <p class="text-[8px] text-gray-600 font-bold uppercase mb-1">Goal</p>
+                        <p class="text-[10px] font-black text-orange-500 italic">HYPERTROPHY</p>
+                    </div>
+                    <div class="bg-black/50 p-4 rounded-xl border border-white/5 text-center">
+                        <p class="text-[8px] text-gray-600 font-bold uppercase mb-1">Duration</p>
+                        <p class="text-[10px] font-black text-yellow-500 italic">45M</p>
+                    </div>
+                    <div class="bg-black/50 p-4 rounded-xl border border-white/5 text-center">
+                        <p class="text-[8px] text-gray-600 font-bold uppercase mb-1">Equipment</p>
+                        <p class="text-[10px] font-black text-green-500 italic">ALL</p>
+                    </div>
+                </div>
+                <div class="bg-orange-500/5 border border-orange-500/10 p-6 rounded-xl">
+                    <p class="text-[10px] font-bold uppercase mb-2">How Variable Sets Work</p>
+                    <p class="text-[10px] text-gray-500 leading-relaxed">Each exercise gets the perfect number of sets based on your goal and exercise type. Big compound moves get more sets. Everything is optimized for maximum results.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 mt-24 py-16 px-10 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-12">
+            <div>
+                <span class="font-black italic uppercase tracking-tighter text-sm mb-4 block">Vantage<span class="text-orange-500">Flex</span></span>
+                <p class="text-[10px] text-gray-500 leading-relaxed">The ultimate workout grinder. Build personalized routines with AI equipment recognition. Forged with 🔥 by <span class="text-orange-500">Vantage Suites</span></p>
+            </div>
+            <div class="text-[10px] font-bold text-gray-600 uppercase tracking-widest text-right md:col-span-2">
+                Engineered by Vantage Suites<br>
+                <span class="text-gray-800">© 2026 Vantage Flex. All rights reserved.</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7206950229249249"
+     crossorigin="anonymous"></script>
