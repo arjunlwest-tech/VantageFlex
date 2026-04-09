@@ -1,0 +1,8 @@
+# Cloudflare Pages Configuration
+# This is a static site - no Worker needed
+# Build settings are configured in the Cloudflare Dashboard
+# or via wrangler pages deploy
+
+# For Pages Functions (optional edge functions), uncomment:
+# [[pages_build_output_config]]
+# build_output_directory = "dist"

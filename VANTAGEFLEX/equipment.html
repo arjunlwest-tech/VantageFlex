@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Workouts | Vantage Flex</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+    <script src="equipment.js" defer></script>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <nav class="nav-premium">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">Vantage<span>Flex</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Workouts</a>
+                <a href="equipment.html" class="nav-link active">Equipment</a>
+                <a href="meal-plans.html" class="nav-link">Meal Plans</a>
+                <a href="recipes.html" class="nav-link">Recipes</a>
+                <a href="quests.html" class="nav-link">Quests</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+            <a href="subscription.html" class="nav-cta">Go Pro</a>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <section class="section">
+            <div class="container">
+                <div class="text-center mb-12 animate-fade-in">
+                    <span class="badge badge-primary mb-6">
+                        <span>🏋️</span> Smart Equipment Detection
+                    </span>
+                    <h1 class="heading-hero mb-6">
+                        Tell Us Your<br><span class="text-gradient">Equipment</span>
+                    </h1>
+                    <p class="text-body max-w-2xl mx-auto">
+                        Type in what equipment you have available, and our AI will generate a perfect workout 
+                        routine using only what you have. From full gym to bodyweight only—we've got you covered.
+                    </p>
+                </div>
+
+                <div class="grid-2" style="align-items: start;">
+                    <div class="space-y-6">
+                        <div class="card card-glow animate-fade-in stagger-1">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <span>📝</span> Your Equipment
+                                </h2>
+                                <span class="badge badge-info" id="equipment-count">0 items</span>
+                            </div>
+                            
+                            <div class="input-group mb-4">
+                                <input type="text" class="form-input" id="equipment-input" 
+                                    placeholder="Type equipment (e.g., barbell, dumbbells, bench...)">
+                                <button class="btn btn-primary btn-icon" id="add-equipment-btn">
+                                    <span>+</span>
+                                </button>
+                            </div>
+                            
+                            <div class="equipment-list" id="equipment-list">
+                            </div>
+                            
+                            <div class="text-xs mb-3" style="color: var(--text-muted);">
+                                Quick add popular equipment:
+                            </div>
+                            <div class="equipment-grid" id="popular-equipment">
+                                <!-- Equipment chips rendered here -->
+                            </div>
+                        </div>
+
+                        <div class="card animate-fade-in stagger-2">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <span>⚙️</span> Workout Settings
+                                </h2>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Fitness Level</label>
+                                <div class="btn-group" id="level-buttons">
+                                    <button class="btn btn-toggle" data-value="beginner">Beginner</button>
+                                    <button class="btn btn-toggle active" data-value="intermediate">Intermediate</button>
+                                    <button class="btn btn-toggle" data-value="advanced">Advanced</button>
+                                    <button class="btn btn-toggle" data-value="elite">Elite</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Primary Goal</label>
+                                <div class="btn-group" id="goal-buttons">
+                                    <button class="btn btn-toggle" data-value="strength">Strength</button>
+                                    <button class="btn btn-toggle active" data-value="muscle">Muscle</button>
+                                    <button class="btn btn-toggle" data-value="endurance">Endurance</button>
+                                    <button class="btn btn-toggle" data-value="cut">Cut</button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Duration</label>
+                                <div class="range-container">
+                                    <input type="range" class="range-slider" id="duration-slider" min="15" max="90" value="45" step="5">
+                                    <div class="range-value" id="duration-tooltip" style="left: 35%;">45 min</div>
+                                    <div class="range-labels">
+                                        <span>15 min</span>
+                                        <span>90 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg w-full animate-fade-in stagger-3" id="generate-btn">
+                            <span>⚡</span> Generate Equipment Workout
+                        </button>
+                        
+                        <button class="btn btn-secondary w-full" id="clear-equipment-btn">
+                            <span>🗑️</span> Clear All Equipment
+                        </button>
+                    </div>
+
+                    <div class="card animate-fade-in stagger-2">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>💡</span> How It Works
+                            </h2>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex gap-4">
+                                <div style="width: 48px; height: 48px; background: var(--gradient-fire); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 24px; animation: pulse 2s infinite;">1</div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Add Your Equipment</h4>
+                                    <p class="text-small">Type or click to add the equipment you have access to. Our system recognizes 20+ types of equipment.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <div style="width: 48px; height: 48px; background: var(--gradient-fire); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 24px; animation: pulse 2s infinite 0.3s;">2</div>
+                                <div>
+                                    <h4 class="font-bold mb-1">AI Matches Exercises</h4>
+                                    <p class="text-small">Our algorithm filters our database of 100+ exercises to find only those you can perform with your equipment.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <div style="width: 48px; height: 48px; background: var(--gradient-fire); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 24px; animation: pulse 2s infinite 0.6s;">3</div>
+                                <div>
+                                    <h4 class="font-bold mb-1">Balanced Workout</h4>
+                                    <p class="text-small">Get a complete routine targeting all major muscle groups with the perfect exercise selection for your setup.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 rounded-xl" style="background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.2);">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span style="font-size: 24px;">⭐</span>
+                                <span class="font-bold">Pro Tip</span>
+                            </div>
+                            <p class="text-small" style="color: var(--text-muted);">
+                                Even with minimal equipment, you can get a great workout! Bodyweight exercises are always included as a foundation.
+                            </p>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <h4 class="font-bold mb-3">Recognized Equipment:</h4>
+                            <div class="equipment-tags" id="all-equipment-tags">
+                                <!-- All equipment rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="workout-result" class="mt-8 hidden">
+                    <div class="card card-premium animate-fade-in-up">
+                        <div class="card-header" style="border-bottom-color: rgba(255,215,0,0.2);">
+                            <div>
+                                <h2 class="card-title text-gold">
+                                    <span>🔥</span> Your Custom Equipment Workout
+                                </h2>
+                                <div class="text-small mt-1" style="color: var(--text-muted);">
+                                    Based on your <span id="used-equipment"></span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-icon" id="save-workout-btn" title="Save to Dashboard">
+                                <span>💾</span>
+                            </button>
+                        </div>
+                        <div id="workout-exercises" class="space-y-2">
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-white/5 flex justify-between items-center">
+                            <div class="text-small">
+                                <span id="total-exercises">0 exercises</span> • 
+                                <span id="total-sets">0 total sets</span>
+                            </div>
+                            <button class="btn btn-secondary" id="new-workout-btn">
+                                <span>🔄</span> Generate New
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">Vantage<span style="color: var(--primary-orange);">Flex</span></div>
+                    <p class="footer-desc">
+                        Smart workouts based on your available equipment. 
+                        No gym? No problem.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Workouts</a></li>
+                        <li><a href="equipment.html">Equipment</a></li>
+                        <li><a href="meal-plans.html">Meal Plans</a></li>
+                        <li><a href="recipes.html">Recipes</a></li>
+                        <li><a href="quests.html">Quests</a></li>
+                        <li><a href="leaderboard.html">Leaderboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="subscription.html">Pricing</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Vantage Flex. Forged by Vantage Suites.</span>
+                <span>Built for champions.</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

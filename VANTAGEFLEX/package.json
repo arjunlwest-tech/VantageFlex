@@ -1,0 +1,12 @@
+{
+  "name": "vantage-flex",
+  "version": "1.0.0",
+  "description": "Premium AI-Powered Fitness Platform",
+  "scripts": {
+    "build": "node build.js",
+    "deploy": "wrangler pages deploy dist"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
