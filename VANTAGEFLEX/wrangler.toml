@@ -1,0 +1,20 @@
+name = "vantageflex"
+main = "index.js"
+compatibility_date = "2024-04-09"
+
+# Workers Sites - serves static assets
+[site]
+bucket = "."
+
+# Don't upload these files
+[site.exclude]
+exclude = [
+  "node_modules",
+  "package.json",
+  "package-lock.json",
+  "wrangler.toml",
+  "index.js",
+  "build.js",
+  ".git",
+  ".gitignore"
+]

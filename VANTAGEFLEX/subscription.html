@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | Vantage Flex</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+    <script src="animations.js" defer></script>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <nav class="nav-premium">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">Vantage<span>Flex</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Workouts</a>
+                <a href="equipment.html" class="nav-link">Equipment</a>
+                <a href="meal-plans.html" class="nav-link">Meal Plans</a>
+                <a href="recipes.html" class="nav-link">Recipes</a>
+                <a href="quests.html" class="nav-link">Quests</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+            <a href="subscription.html" class="nav-cta">Go Pro</a>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <section class="section">
+            <div class="container">
+                <div class="text-center mb-16 animate-fade-in">
+                    <span class="badge badge-gold mb-6">
+                        <span>👑</span> Premium Access
+                    </span>
+                    <h1 class="heading-hero mb-6">
+                        Unlock Your<br><span class="text-gold">Full Potential</span>
+                    </h1>
+                    <p class="text-body max-w-2xl mx-auto">
+                        Join thousands of athletes who've transformed their fitness journey. 
+                        Premium features, unlimited access, results guaranteed.
+                    </p>
+                </div>
+
+                <div class="beta-notice mb-12 animate-fade-in stagger-1" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                        <div style="font-size: 32px;">🎉</div>
+                        <div>
+                            <div class="beta-notice-text" style="font-size: 16px; margin-bottom: 4px;">
+                                FREE DURING BETA
+                            </div>
+                            <p class="text-small" style="color: #22c55e; margin: 0;">
+                                All premium features are currently free while we perfect the experience. 
+                                Payment system coming soon - lock in your account now!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card animate-fade-in stagger-1">
+                        <div class="pricing-name">Starter</div>
+                        <div class="pricing-price text-gradient">$0</div>
+                        <div class="pricing-period">Free Forever</div>
+                        <ul class="pricing-features">
+                            <li>5 Workouts per month</li>
+                            <li>Basic meal suggestions</li>
+                            <li>3 Recipe searches daily</li>
+                            <li>Community access</li>
+                        </ul>
+                        <button class="btn btn-secondary w-full" onclick="showToast('You are on the free plan!', 'info')">
+                            Current Plan
+                        </button>
+                    </div>
+
+                    <div class="pricing-card featured animate-fade-in stagger-2">
+                        <div class="pricing-badge">Most Popular</div>
+                        <div class="pricing-name" style="color: var(--primary-gold);">Pro Athlete</div>
+                        <div class="pricing-price text-gold">$12</div>
+                        <div class="pricing-period">per month</div>
+                        <ul class="pricing-features">
+                            <li>Unlimited AI Workouts</li>
+                            <li>Full Meal Planning</li>
+                            <li>Unlimited Recipe Generator</li>
+                            <li>Progress Dashboard</li>
+                            <li>Priority Support</li>
+                            <li>Advanced Analytics</li>
+                        </ul>
+                        <button class="btn btn-gold w-full" onclick="upgradePlan('pro')">
+                            <span>⚡</span> Get Pro Free (Beta)
+                        </button>
+                        <div class="beta-notice" style="margin-top: var(--space-md);">
+                            <span class="beta-notice-text">🎉 Currently FREE during beta!</span>
+                        </div>
+                    </div>
+
+                    <div class="pricing-card animate-fade-in stagger-3">
+                        <div class="pricing-name">Elite</div>
+                        <div class="pricing-price text-gradient">$29</div>
+                        <div class="pricing-period">per month</div>
+                        <ul class="pricing-features">
+                            <li>Everything in Pro</li>
+                            <li>1-on-1 Coaching Access</li>
+                            <li>Custom Meal Plans</li>
+                            <li>Video Form Checks</li>
+                            <li>Exclusive Content</li>
+                            <li>Early Feature Access</li>
+                        </ul>
+                        <button class="btn btn-primary w-full" onclick="upgradePlan('elite')">
+                            <span>👑</span> Go Elite Free (Beta)
+                        </button>
+                        <div class="beta-notice" style="margin-top: var(--space-md);">
+                            <span class="beta-notice-text">🎉 Currently FREE during beta!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 text-center">
+                    <h2 class="heading-md mb-8">What's Included</h2>
+                    <div class="grid-4">
+                        <div class="card text-center">
+                            <div style="font-size: 48px; margin-bottom: var(--space-md);">🤖</div>
+                            <h3 class="font-bold mb-2">AI Workouts</h3>
+                            <p class="text-small">Unlimited personalized workout generation based on your goals and equipment</p>
+                        </div>
+                        <div class="card text-center">
+                            <div style="font-size: 48px; margin-bottom: var(--space-md);">🥗</div>
+                            <h3 class="font-bold mb-2">Meal Planning</h3>
+                            <p class="text-small">Complete weekly meal plans with macros calculated for your targets</p>
+                        </div>
+                        <div class="card text-center">
+                            <div style="font-size: 48px; margin-bottom: var(--space-md);">🍳</div>
+                            <h3 class="font-bold mb-2">Recipe Generator</h3>
+                            <p class="text-small">Find recipes using ingredients you have with full nutritional breakdown</p>
+                        </div>
+                        <div class="card text-center">
+                            <div style="font-size: 48px; margin-bottom: var(--space-md);">📊</div>
+                            <h3 class="font-bold mb-2">Progress Tracking</h3>
+                            <p class="text-small">Visualize your gains with detailed workout and nutrition analytics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 card" style="background: linear-gradient(145deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.02) 100%); border-color: rgba(255,215,0,0.2);">
+                    <div class="text-center">
+                        <h2 class="heading-md mb-4">🚀 Beta Access Perks</h2>
+                        <p class="text-body max-w-2xl mx-auto mb-6">
+                            Sign up during our beta period and get lifetime benefits:
+                        </p>
+                        <div class="grid-3" style="max-width: 800px; margin: 0 auto;">
+                            <div class="text-center">
+                                <div style="font-size: 32px; margin-bottom: var(--space-sm);">💎</div>
+                                <h4 class="font-bold mb-1">Beta Badge</h4>
+                                <p class="text-small">Exclusive profile badge forever</p>
+                            </div>
+                            <div class="text-center">
+                                <div style="font-size: 32px; margin-bottom: var(--space-sm);">🔓</div>
+                                <h4 class="font-bold mb-1">Locked Price</h4>
+                                <p class="text-small">Keep beta pricing for life</p>
+                            </div>
+                            <div class="text-center">
+                                <div style="font-size: 32px; margin-bottom: var(--space-sm);">⭐</div>
+                                <h4 class="font-bold mb-1">Early Access</h4>
+                                <p class="text-small">New features before anyone else</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 text-center">
+                    <h3 class="heading-md mb-4">Frequently Asked Questions</h3>
+                    <div class="grid-2" style="max-width: 900px; margin: 0 auto; text-align: left;">
+                        <div class="card">
+                            <h4 class="font-bold mb-2">Is it really free during beta?</h4>
+                            <p class="text-small">Yes! All premium features are completely free while we're in beta. We're focused on building the best product possible.</p>
+                        </div>
+                        <div class="card">
+                            <h4 class="font-bold mb-2">When will pricing start?</h4>
+                            <p class="text-small">We'll announce pricing changes 30 days in advance. Beta users will get special locked-in rates.</p>
+                        </div>
+                        <div class="card">
+                            <h4 class="font-bold mb-2">Can I cancel anytime?</h4>
+                            <p class="text-small">Absolutely. No contracts, no commitments. Cancel with one click from your dashboard.</p>
+                        </div>
+                        <div class="card">
+                            <h4 class="font-bold mb-2">What happens after beta?</h4>
+                            <p class="text-small">Beta users keep their accounts with locked pricing. You'll get first access to new features forever.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">Vantage<span style="color: var(--primary-orange);">Flex</span></div>
+                    <p class="footer-desc">
+                        The ultimate fitness platform for serious athletes. AI-powered workouts, 
+                        smart meal planning, and progress tracking—all in one place.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Workouts</a></li>
+                        <li><a href="meal-plans.html">Meal Plans</a></li>
+                        <li><a href="recipes.html">Recipes</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="subscription.html">Pricing</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Vantage Flex. Forged by Vantage Suites.</span>
+                <span>Built for champions.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function upgradePlan(plan) {
+            VantageFlex.Storage.set('userPlan', { plan, upgradedAt: new Date().toISOString(), isBeta: true });
+            VantageFlex.showToast(`🎉 You're now on ${plan.toUpperCase()} plan! (Free during beta)`, 'success');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7206950229249249" crossorigin="anonymous"></script>
+</body>
+</html>
