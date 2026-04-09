@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Vantage Flex</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+    <script src="dashboard.js" defer></script>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <nav class="nav-premium">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">Vantage<span>Flex</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Workouts</a>
+                <a href="meal-plans.html" class="nav-link">Meal Plans</a>
+                <a href="recipes.html" class="nav-link">Recipes</a>
+                <a href="quests.html" class="nav-link">Quests</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+            <a href="subscription.html" class="nav-cta">Go Pro</a>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <section class="section">
+            <div class="container">
+                <div class="text-center mb-12 animate-fade-in">
+                    <span class="badge badge-primary mb-6">
+                        <span>📊</span> Your Command Center
+                    </span>
+                    <h1 class="heading-xl mb-4">
+                        Welcome Back,<br><span class="text-gradient">Champion</span>
+                    </h1>
+                </div>
+
+                <div class="grid-3 mb-8">
+                    <div class="card card-glow animate-fade-in stagger-1">
+                        <div class="text-center">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Workout Streak</div>
+                            <div class="streak-display" style="margin-bottom: 0;">
+                                <div>
+                                    <div class="streak-number" id="streak-count">0</div>
+                                    <div class="streak-label">Days Strong</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card animate-fade-in stagger-2">
+                        <div class="text-center">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Total Workouts</div>
+                            <div class="stat-value" id="total-workouts">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card animate-fade-in stagger-3">
+                        <div class="text-center">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Training Minutes</div>
+                            <div class="stat-value text-gold" id="total-minutes">0</div>
+                            <div class="stat-label">Logged</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-8 animate-fade-in stagger-1">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span>💪</span> Daily Motivation
+                        </h2>
+                        <span class="badge badge-primary">Daily Quote</span>
+                    </div>
+                    <div class="motivation-card" style="border: none; background: transparent;">
+                        <div class="motivation-quote" id="daily-quote">
+                            "The only bad workout is the one that didn't happen."
+                        </div>
+                        <div class="motivation-author" id="quote-author">— Unknown</div>
+                    </div>
+                    <button class="btn btn-secondary" id="new-quote-btn" style="margin-top: var(--space-md);">
+                        <span>🔄</span> New Quote
+                    </button>
+                </div>
+
+                <div class="grid-2" style="align-items: start;">
+                    <div class="card animate-fade-in stagger-2">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>💾</span> Saved Workouts
+                            </h2>
+                            <span class="badge badge-info" id="saved-count">0 saved</span>
+                        </div>
+                        <div id="saved-workouts-list" class="space-y-3" style="max-height: 400px; overflow-y: auto;">
+                            <div class="text-center py-8 text-small" style="color: var(--text-muted);">
+                                No saved workouts yet. Generate and save workouts from the Workouts page!
+                            </div>
+                        </div>
+                        <a href="index.html" class="btn btn-primary w-full" style="margin-top: var(--space-lg);">
+                            <span>⚡</span> Generate New Workout
+                        </a>
+                    </div>
+
+                    <div class="card animate-fade-in stagger-3">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>🍳</span> Saved Recipes
+                            </h2>
+                            <span class="badge badge-success" id="saved-recipes-count">0 saved</span>
+                        </div>
+                        <div id="saved-recipes-list" class="space-y-3" style="max-height: 400px; overflow-y: auto;">
+                            <div class="text-center py-8 text-small" style="color: var(--text-muted);">
+                                No saved recipes yet. Find and save recipes from the Recipes page!
+                            </div>
+                        </div>
+                        <a href="recipes.html" class="btn btn-primary w-full" style="margin-top: var(--space-lg);">
+                            <span>🔍</span> Find Recipes
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card mt-8 animate-fade-in">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span>📈</span> Weekly Progress
+                        </h2>
+                    </div>
+                    <div class="grid-4">
+                        <div class="text-center p-4">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Mon</div>
+                            <div style="width: 100%; height: 100px; background: rgba(255,255,255,0.05); border-radius: var(--radius-md); position: relative; overflow: hidden;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: var(--gradient-fire); border-radius: 0 0 var(--radius-md) var(--radius-md);"></div>
+                            </div>
+                            <div class="text-xs" style="margin-top: var(--space-sm); color: var(--text-muted);">45 min</div>
+                        </div>
+                        <div class="text-center p-4">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Tue</div>
+                            <div style="width: 100%; height: 100px; background: rgba(255,255,255,0.05); border-radius: var(--radius-md); position: relative; overflow: hidden;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 80%; background: var(--gradient-fire); border-radius: 0 0 var(--radius-md) var(--radius-md);"></div>
+                            </div>
+                            <div class="text-xs" style="margin-top: var(--space-sm); color: var(--text-muted);">60 min</div>
+                        </div>
+                        <div class="text-center p-4">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Wed</div>
+                            <div style="width: 100%; height: 100px; background: rgba(255,255,255,0.05); border-radius: var(--radius-md); position: relative; overflow: hidden;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: var(--gradient-fire); border-radius: 0 0 var(--radius-md) var(--radius-md);"></div>
+                            </div>
+                            <div class="text-xs" style="margin-top: var(--space-sm); color: var(--text-muted);">30 min</div>
+                        </div>
+                        <div class="text-center p-4">
+                            <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Thu</div>
+                            <div style="width: 100%; height: 100px; background: rgba(255,255,255,0.05); border-radius: var(--radius-md); position: relative; overflow: hidden;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 90%; background: var(--gradient-fire); border-radius: 0 0 var(--radius-md) var(--radius-md);"></div>
+                            </div>
+                            <div class="text-xs" style="margin-top: var(--space-sm); color: var(--text-muted);">75 min</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-white/5">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="text-small">This Week</div>
+                                <div class="text-xs" style="color: var(--text-muted);">4 workouts completed</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-small" style="color: var(--primary-orange);">210 minutes</div>
+                                <div class="text-xs" style="color: var(--text-muted);">Total time</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-8 animate-fade-in">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span>🎯</span> Quick Actions
+                        </h2>
+                    </div>
+                    <div class="grid-4" style="gap: var(--space-md);">
+                        <a href="index.html" class="card text-center" style="text-decoration: none; color: inherit;">
+                            <div style="font-size: 32px; margin-bottom: var(--space-sm);">⚡</div>
+                            <div class="font-bold">New Workout</div>
+                            <div class="text-xs" style="color: var(--text-muted);">Generate routine</div>
+                        </a>
+                        <a href="meal-plans.html" class="card text-center" style="text-decoration: none; color: inherit;">
+                            <div style="font-size: 32px; margin-bottom: var(--space-sm);">🥗</div>
+                            <div class="font-bold">Meal Plan</div>
+                            <div class="text-xs" style="color: var(--text-muted);">Weekly nutrition</div>
+                        </a>
+                        <a href="recipes.html" class="card text-center" style="text-decoration: none; color: inherit;">
+                            <div style="font-size: 32px; margin-bottom: var(--space-sm);">🍳</div>
+                            <div class="font-bold">Find Recipe</div>
+                            <div class="text-xs" style="color: var(--text-muted);">By ingredients</div>
+                        </a>
+                        <a href="subscription.html" class="card text-center" style="text-decoration: none; color: inherit;">
+                            <div style="font-size: 32px; margin-bottom: var(--space-sm);">👑</div>
+                            <div class="font-bold">Upgrade</div>
+                            <div class="text-xs" style="color: var(--text-muted);">Go premium</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">Vantage<span style="color: var(--primary-orange);">Flex</span></div>
+                    <p class="footer-desc">
+                        The ultimate fitness platform for serious athletes. AI-powered workouts, 
+                        smart meal planning, and progress tracking—all in one place.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Workouts</a></li>
+                        <li><a href="meal-plans.html">Meal Plans</a></li>
+                        <li><a href="recipes.html">Recipes</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="subscription.html">Pricing</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Vantage Flex. Forged by Vantage Suites.</span>
+                <span>Built for champions.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7206950229249249" crossorigin="anonymous"></script>
+</body>
+</html>

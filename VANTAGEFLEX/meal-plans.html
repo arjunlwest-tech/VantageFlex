@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Plans | Vantage Flex</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+    <script src="meal-plans.js" defer></script>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <nav class="nav-premium">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">Vantage<span>Flex</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Workouts</a>
+                <a href="meal-plans.html" class="nav-link active">Meal Plans</a>
+                <a href="recipes.html" class="nav-link">Recipes</a>
+                <a href="quests.html" class="nav-link">Quests</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="about.html" class="nav-link">About</a>
+            </div>
+            <a href="subscription.html" class="nav-cta">Go Pro</a>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <section class="section">
+            <div class="container">
+                <div class="text-center mb-16 animate-fade-in">
+                    <span class="badge badge-success mb-6">
+                        <span>🥗</span> Smart Nutrition Planning
+                    </span>
+                    <h1 class="heading-hero mb-6">
+                        Fuel Your<br><span class="text-gold">Performance</span>
+                    </h1>
+                    <p class="text-body max-w-2xl mx-auto">
+                        Generate personalized meal plans aligned with your fitness goals. 
+                        From cutting to bulking, every macro calculated for results.
+                    </p>
+                </div>
+
+                <div class="card card-glow mb-8 animate-fade-in stagger-1">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span>🎯</span> Plan Configuration
+                        </h2>
+                    </div>
+                    
+                    <div class="grid-3">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Primary Goal</label>
+                            <select class="form-input form-select" id="plan-goal">
+                                <option value="weight_loss">Weight Loss / Cut</option>
+                                <option value="maintenance" selected>Maintenance</option>
+                                <option value="muscle_gain">Muscle Gain / Bulk</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Diet Type</label>
+                            <select class="form-input form-select" id="plan-diet">
+                                <option value="balanced" selected>Balanced</option>
+                                <option value="high_protein">High Protein</option>
+                                <option value="low_carb">Low Carb</option>
+                                <option value="keto">Keto</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Daily Calories</label>
+                            <input type="number" class="form-input" id="plan-calories" value="2200" placeholder="2200">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex gap-4">
+                        <button class="btn btn-primary" id="generate-plan-btn">
+                            <span>✨</span> Generate Plan
+                        </button>
+                        <button class="btn btn-secondary" id="reset-plan-btn">
+                            <span>🔄</span> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div id="meal-plan-result" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="heading-md">Your Weekly Plan</h2>
+                        <div class="flex gap-4 text-small">
+                            <span class="flex items-center gap-2">
+                                <span style="color: #22c55e;">●</span> Protein
+                            </span>
+                            <span class="flex items-center gap-2">
+                                <span style="color: #3b82f6;">●</span> Carbs
+                            </span>
+                            <span class="flex items-center gap-2">
+                                <span style="color: #f59e0b;">●</span> Fat
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="planner-grid" id="planner-container">
+                    </div>
+                    
+                    <div class="mt-8 grid-3">
+                        <div class="card">
+                            <div class="text-center">
+                                <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Daily Calories</div>
+                                <div class="stat-value" id="plan-total-calories">0</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="text-center">
+                                <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Daily Protein</div>
+                                <div class="stat-value" style="background: linear-gradient(135deg, #22c55e, #16a34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="plan-total-protein">0g</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="text-center">
+                                <div class="text-xs" style="color: var(--text-muted); margin-bottom: var(--space-sm);">Weekly Meals</div>
+                                <div class="stat-value text-gold" id="plan-meal-count">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="empty-plan" class="card text-center py-16">
+                    <div style="font-size: 64px; margin-bottom: var(--space-lg);">🍽️</div>
+                    <h3 class="heading-md mb-4">No Meal Plan Yet</h3>
+                    <p class="text-body max-w-md mx-auto mb-6">
+                        Configure your goals above and generate a personalized meal plan 
+                        tailored to your nutrition targets.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">Vantage<span style="color: var(--primary-orange);">Flex</span></div>
+                    <p class="footer-desc">
+                        The ultimate fitness platform for serious athletes. AI-powered workouts, 
+                        smart meal planning, and progress tracking—all in one place.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Workouts</a></li>
+                        <li><a href="meal-plans.html">Meal Plans</a></li>
+                        <li><a href="recipes.html">Recipes</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="subscription.html">Pricing</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Vantage Flex. Forged by Vantage Suites.</span>
+                <span>Built for champions.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7206950229249249" crossorigin="anonymous"></script>
+</body>
+</html>
