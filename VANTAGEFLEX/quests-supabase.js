@@ -209,61 +209,135 @@ const QuestSystem = {
     },
 
     async initCameraVerification(quest) {
+        // Create modal first
         this.showCameraModal(quest);
         
+        // Wait for DOM to update
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         try {
-            // Initialize TensorFlow.js pose detector
-            const detectorConfig = {
-                modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
-                enableTracking: true,
-                trackerType: poseDetection.TrackerType.BoundingBox
-            };
-            
-            this.detector = await poseDetection.createDetector(
-                poseDetection.SupportedModels.MoveNet,
-                detectorConfig
-            );
-
-            // Setup camera
+            // Get video element
             const video = document.getElementById('quest-camera');
+            if (!video) {
+                throw new Error('Video element not found');
+            }
+
+            // Setup camera stream first
+            console.log('Requesting camera access...');
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'user', width: 640, height: 480 },
+                video: { 
+                    facingMode: 'user',
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
+                },
                 audio: false
             });
             
             video.srcObject = stream;
             this.camera = stream;
-
-            // Setup canvas for overlay
-            this.canvas = document.getElementById('pose-canvas');
-            this.ctx = this.canvas.getContext('2d');
             
-            video.onloadeddata = () => {
-                this.canvas.width = video.videoWidth;
-                this.canvas.height = video.videoHeight;
-                this.isActive = true;
-                this.detectPose();
-            };
+            // Wait for video to be ready
+            await new Promise((resolve, reject) => {
+                video.onloadedmetadata = () => {
+                    console.log('Video metadata loaded');
+                    resolve();
+                };
+                video.onerror = (e) => reject(new Error('Video error: ' + e.message));
+                // Timeout fallback
+                setTimeout(() => resolve(), 2000);
+            });
+
+            await video.play();
+            console.log('Video playing');
+
+            // Setup canvas
+            this.canvas = document.getElementById('pose-canvas');
+            if (this.canvas) {
+                this.canvas.width = video.videoWidth || 640;
+                this.canvas.height = video.videoHeight || 480;
+                this.ctx = this.canvas.getContext('2d');
+            }
+
+            // Now initialize pose detector
+            console.log('Initializing pose detector...');
+            await this.initPoseDetector();
+            
+            this.isActive = true;
+            this.hideCameraLoading();
+            this.detectPose();
 
         } catch (err) {
             console.error('Camera error:', err);
-            this.showToast('Camera access required for this quest', 'error');
+            this.showToast('Camera access required: ' + err.message, 'error');
+            this.stopQuest();
         }
     },
 
-    async detectPose() {
-        if (!this.isActive || !this.detector) return;
-
-        const video = document.getElementById('quest-camera');
-        const poses = await this.detector.estimatePoses(video);
-
-        if (poses.length > 0) {
-            const pose = poses[0];
-            this.analyzePose(pose);
-            this.drawPose(pose);
+    async initPoseDetector() {
+        // Wait for TensorFlow to be ready
+        if (typeof poseDetection === 'undefined') {
+            console.log('Waiting for poseDetection...');
+            await new Promise(resolve => {
+                const check = () => {
+                    if (typeof poseDetection !== 'undefined') {
+                        resolve();
+                    } else {
+                        setTimeout(check, 100);
+                    }
+                };
+                check();
+            });
         }
 
-        requestAnimationFrame(() => this.detectPose());
+        const detectorConfig = {
+            modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING
+        };
+        
+        this.detector = await poseDetection.createDetector(
+            poseDetection.SupportedModels.MoveNet,
+            detectorConfig
+        );
+        
+        console.log('Pose detector ready');
+    },
+
+    async detectPose() {
+        if (!this.isActive || !this.detector) {
+            console.log('Detection stopped: isActive=' + this.isActive + ', detector=' + !!this.detector);
+            return;
+        }
+
+        try {
+            const video = document.getElementById('quest-camera');
+            if (!video || video.paused || video.ended) {
+                requestAnimationFrame(() => this.detectPose());
+                return;
+            }
+
+            const poses = await this.detector.estimatePoses(video);
+
+            if (poses.length > 0) {
+                const pose = poses[0];
+                this.analyzePose(pose);
+                this.drawPose(pose);
+                
+                // Update confidence bar
+                const avgConfidence = pose.keypoints.reduce((sum, kp) => sum + (kp.score || 0), 0) / pose.keypoints.length;
+                const confidenceBar = document.getElementById('confidence-bar');
+                if (confidenceBar) {
+                    confidenceBar.style.width = (avgConfidence * 100) + '%';
+                }
+            }
+        } catch (err) {
+            console.error('Pose detection error:', err);
+        }
+
+        // Use setTimeout to prevent overwhelming the browser
+        setTimeout(() => {
+            if (this.isActive) {
+                requestAnimationFrame(() => this.detectPose());
+            }
+        }, 50);
     },
 
     analyzePose(pose) {
@@ -460,18 +534,27 @@ const QuestSystem = {
     },
 
     showCameraModal(quest) {
+        // Remove any existing modal
+        const existing = document.querySelector('.camera-modal');
+        if (existing) existing.remove();
+
         const modal = document.createElement('div');
-        modal.className = 'camera-modal';
+        modal.className = 'camera-modal active';
+        modal.id = 'quest-camera-modal';
         modal.innerHTML = `
-            <div class="camera-modal-backdrop"></div>
+            <div class="camera-modal-backdrop" onclick="QuestSystem.stopQuest()"></div>
             <div class="camera-modal-content">
                 <div class="camera-header">
                     <h3>${quest.title}</h3>
                     <button class="close-btn" onclick="QuestSystem.stopQuest()">×</button>
                 </div>
                 <div class="camera-viewport">
-                    <video id="quest-camera" autoplay playsinline></video>
+                    <video id="quest-camera" autoplay playsinline muted></video>
                     <canvas id="pose-canvas"></canvas>
+                    <div class="camera-loading" id="camera-loading">
+                        <div class="camera-spinner"></div>
+                        <p>Starting camera...</p>
+                    </div>
                 </div>
                 <div class="quest-stats">
                     <div class="stat">
@@ -491,7 +574,15 @@ const QuestSystem = {
         `;
         
         document.body.appendChild(modal);
-        requestAnimationFrame(() => modal.classList.add('active'));
+        
+        // Show loading state initially
+        const loading = modal.querySelector('#camera-loading');
+        if (loading) loading.style.display = 'flex';
+    },
+
+    hideCameraLoading() {
+        const loading = document.getElementById('camera-loading');
+        if (loading) loading.style.display = 'none';
     },
 
     async completeQuest() {
