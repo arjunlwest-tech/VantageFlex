@@ -2058,32 +2058,35 @@
         
         // Cursor Glow Effect - Follows mouse with copper glow
         const cursorGlow = document.createElement('div');
+        cursorGlow.id = 'cursorGlow';
         cursorGlow.style.cssText = `
             position: fixed;
             width: 40px;
             height: 40px;
-            background: radial-gradient(circle, rgba(200,121,65,0.8) 0%, rgba(200,121,65,0.4) 40%, transparent 70%);
+            background: radial-gradient(circle, rgba(200,121,65,0.9) 0%, rgba(200,121,65,0.5) 40%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9998;
+            z-index: 100000;
             transform: translate(-50%, -50%);
-            mix-blend-mode: screen;
-            filter: blur(8px);
+            filter: blur(6px);
             transition: transform 0.1s ease-out;
+            opacity: 1;
         `;
         document.body.appendChild(cursorGlow);
         
         const cursorRing = document.createElement('div');
+        cursorRing.id = 'cursorRing';
         cursorRing.style.cssText = `
             position: fixed;
             width: 80px;
             height: 80px;
-            border: 2px solid rgba(200,121,65,0.3);
+            border: 2px solid rgba(200,121,65,0.4);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9997;
+            z-index: 99999;
             transform: translate(-50%, -50%);
             transition: all 0.15s ease-out;
+            opacity: 1;
         `;
         document.body.appendChild(cursorRing);
         
@@ -2538,6 +2541,12 @@
         document.addEventListener('click', (e) => {
             if (e.target.closest('button') || e.target.closest('a')) return;
             
+            // Check if GSAP is loaded
+            if (typeof gsap === 'undefined') {
+                console.log('GSAP not loaded yet');
+                return;
+            }
+            
             const colors = ['#c87941', '#d48a52', '#e8a87c', '#f4a261', '#e76f51', '#ffffff'];
             const ballCount = 12;
             
@@ -2571,10 +2580,6 @@
                 // Float WAY off screen (past viewport + extra)
                 const floatUp = window.innerHeight * 1.5 + Math.random() * 500; 
                 const duration = 2.5 + Math.random() * 2;
-                
-                // Create a curved path using bezier with more dramatic arc
-                const controlX = spreadX * 0.7 + (Math.random() - 0.5) * 150;
-                const controlY = -floatUp * 0.4;
                 
                 // Animate with simple x/y (no plugin needed)
                 gsap.to(ball, {
