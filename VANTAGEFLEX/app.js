@@ -867,6 +867,7 @@ function initNavigation() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
+    initCardSpotlight();
     
     // Add animation keyframes
     const style = document.createElement('style');
@@ -877,6 +878,19 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 });
+
+// Card spotlight effect - follows mouse on hover
+function initCardSpotlight() {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+}
 
 // ========================================
 // QUEST SYSTEM
