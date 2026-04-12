@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="supabase-config.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1377,9 +1378,197 @@
                 gap: 1.5rem;
             }
         }
+        
+        /* 3D Effects */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .perspective-container {
+            perspective: 2000px;
+            transform-style: preserve-3d;
+        }
+        
+        .tilt-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tilt-3d:hover {
+            transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(20px);
+        }
+        
+        .float-3d {
+            animation: float3D 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+        
+        @keyframes float3D {
+            0%, 100% { transform: translateZ(0) rotateX(0deg) rotateY(0deg); }
+            25% { transform: translateZ(30px) rotateX(5deg) rotateY(-5deg); }
+            50% { transform: translateZ(60px) rotateX(0deg) rotateY(5deg); }
+            75% { transform: translateZ(30px) rotateX(-5deg) rotateY(0deg); }
+        }
+        
+        .depth-layer-1 { transform: translateZ(50px); }
+        .depth-layer-2 { transform: translateZ(100px); }
+        .depth-layer-3 { transform: translateZ(150px); }
+        
+        .parallax-3d {
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-3d:hover {
+            transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(40px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.5),
+                0 0 60px rgba(200, 121, 65, 0.2);
+        }
+        
+        .card-3d-inner {
+            transform: translateZ(30px);
+        }
+        
+        .glow-3d {
+            position: relative;
+        }
+        
+        .glow-3d::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--copper), var(--copper-light), var(--copper-dark));
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            filter: blur(15px);
+            transform: translateZ(-10px);
+        }
+        
+        .glow-3d:hover::before {
+            opacity: 0.6;
+        }
+        
+        .text-3d {
+            text-shadow: 
+                1px 1px 0 rgba(200, 121, 65, 0.3),
+                2px 2px 0 rgba(200, 121, 65, 0.2),
+                3px 3px 0 rgba(200, 121, 65, 0.1),
+                4px 4px 20px rgba(200, 121, 65, 0.3);
+            transform: translateZ(20px);
+        }
+        
+        .hero-content-3d {
+            transform-style: preserve-3d;
+            perspective: 1500px;
+        }
+        
+        .hero-title-3d {
+            transform: translateZ(100px);
+            text-shadow: 
+                0 0 20px rgba(200, 121, 65, 0.3),
+                0 0 40px rgba(200, 121, 65, 0.2),
+                0 0 60px rgba(200, 121, 65, 0.1);
+        }
+        
+        .floating-3d-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .shape-3d {
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: shapeFloat3D 20s ease-in-out infinite;
+        }
+        
+        .shape-cube {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(200, 121, 65, 0.3), rgba(200, 121, 65, 0.1));
+            border: 1px solid rgba(200, 121, 65, 0.4);
+            top: 20%;
+            right: 15%;
+            animation-delay: 0s;
+        }
+        
+        .shape-pyramid {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 60px solid rgba(200, 121, 65, 0.3);
+            bottom: 30%;
+            left: 10%;
+            animation-delay: -5s;
+        }
+        
+        .shape-ring {
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(200, 121, 65, 0.4);
+            border-radius: 50%;
+            top: 60%;
+            right: 20%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes shapeFloat3D {
+            0%, 100% { 
+                transform: translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
+            }
+            25% { 
+                transform: translateZ(50px) rotateX(90deg) rotateY(45deg) rotateZ(90deg); 
+            }
+            50% { 
+                transform: translateZ(100px) rotateX(180deg) rotateY(90deg) rotateZ(180deg); 
+            }
+            75% { 
+                transform: translateZ(50px) rotateX(270deg) rotateY(135deg) rotateZ(270deg); 
+            }
+        }
+        
+        .showcase-3d-card {
+            transform: perspective(2000px) rotateY(-15deg);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .showcase-3d-card:hover {
+            transform: perspective(2000px) rotateY(0deg) translateZ(50px);
+        }
+        
+        .showcase-3d-content {
+            transform: translateZ(40px);
+        }
+        
+        .perspective-mouse {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
     </style>
 </head>
 <body>
+    <!-- Three.js 3D Canvas -->
+    <canvas id="three-canvas"></canvas>
+    
     <!-- Cosmic Background -->
     <div class="cosmic-bg"></div>
     
@@ -1387,6 +1576,13 @@
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
+    
+    <!-- 3D Floating Shapes -->
+    <div class="floating-3d-shapes">
+        <div class="shape-3d shape-cube"></div>
+        <div class="shape-3d shape-pyramid"></div>
+        <div class="shape-3d shape-ring"></div>
+    </div>
     
     <!-- Particle System -->
     <div class="particles" id="particles"></div>
@@ -1410,11 +1606,11 @@
     
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
+        <div class="hero-content hero-content-3d">
             <div class="hero-eyebrow">Elite Fitness Intelligence</div>
-            <h1 class="hero-title">
-                <span class="hero-title-line1">Forge Your</span>
-                <span class="hero-title-line2">Perfect Body</span>
+            <h1 class="hero-title hero-title-3d text-3d">
+                <span class="hero-title-line1 depth-layer-1">Forge Your</span>
+                <span class="hero-title-line2 depth-layer-2">Perfect Body</span>
             </h1>
             <p class="hero-subtitle">AI-powered workout generation tailored to your goals, equipment, and experience level. Join 50,000+ athletes breaking through plateaus.</p>
             <div class="hero-actions">
@@ -1432,25 +1628,25 @@
                         <span class="showcase-title">AI Generated Workout Preview</span>
                     </div>
                     <div class="workout-preview">
-                        <div class="exercise-card">
-                            <div class="exercise-icon">🏋️</div>
-                            <div class="exercise-name">Barbell Squat</div>
-                            <div class="exercise-stats"><span>4</span> sets × <span>8</span> reps</div>
+                        <div class="exercise-card card-3d glow-3d">
+                            <div class="exercise-icon card-3d-inner">🏋️</div>
+                            <div class="exercise-name card-3d-inner">Barbell Squat</div>
+                            <div class="exercise-stats card-3d-inner"><span>4</span> sets × <span>8</span> reps</div>
                         </div>
-                        <div class="exercise-card">
-                            <div class="exercise-icon">💪</div>
-                            <div class="exercise-name">Romanian Deadlift</div>
-                            <div class="exercise-stats"><span>3</span> sets × <span>10</span> reps</div>
+                        <div class="exercise-card card-3d glow-3d">
+                            <div class="exercise-icon card-3d-inner">💪</div>
+                            <div class="exercise-name card-3d-inner">Romanian Deadlift</div>
+                            <div class="exercise-stats card-3d-inner"><span>3</span> sets × <span>10</span> reps</div>
                         </div>
-                        <div class="exercise-card">
-                            <div class="exercise-icon">🦵</div>
-                            <div class="exercise-name">Leg Press</div>
-                            <div class="exercise-stats"><span>3</span> sets × <span>12</span> reps</div>
+                        <div class="exercise-card card-3d glow-3d">
+                            <div class="exercise-icon card-3d-inner">🦵</div>
+                            <div class="exercise-name card-3d-inner">Leg Press</div>
+                            <div class="exercise-stats card-3d-inner"><span>3</span> sets × <span>12</span> reps</div>
                         </div>
-                        <div class="exercise-card">
-                            <div class="exercise-icon">🏃</div>
-                            <div class="exercise-name">Walking Lunges</div>
-                            <div class="exercise-stats"><span>3</span> sets × <span>16</span> steps</div>
+                        <div class="exercise-card card-3d glow-3d">
+                            <div class="exercise-icon card-3d-inner">🏃</div>
+                            <div class="exercise-name card-3d-inner">Walking Lunges</div>
+                            <div class="exercise-stats card-3d-inner"><span>3</span> sets × <span>16</span> steps</div>
                         </div>
                     </div>
                     <div class="stats-bar">
@@ -1480,36 +1676,36 @@
                 <h2 class="section-title">Everything You Need</h2>
                 <p class="section-subtitle">Professional-grade tools designed for serious athletes who demand results.</p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">AI Workout Generator</h3>
-                    <p class="feature-desc">Intelligent algorithms create personalized routines based on your goals, equipment, and fitness level.</p>
+            <div class="features-grid perspective-container">
+                <div class="feature-card card-3d glow-3d">
+                    <div class="feature-icon card-3d-inner">⚡</div>
+                    <h3 class="feature-title card-3d-inner">AI Workout Generator</h3>
+                    <p class="feature-desc card-3d-inner">Intelligent algorithms create personalized routines based on your goals, equipment, and fitness level.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🍽️</div>
-                    <h3 class="feature-title">Smart Meal Plans</h3>
-                    <p class="feature-desc">Nutrition tailored to your macros with delicious, easy-to-prepare recipes that fuel your gains.</p>
+                <div class="feature-card card-3d glow-3d">
+                    <div class="feature-icon card-3d-inner">🍽️</div>
+                    <h3 class="feature-title card-3d-inner">Smart Meal Plans</h3>
+                    <p class="feature-desc card-3d-inner">Nutrition tailored to your macros with delicious, easy-to-prepare recipes that fuel your gains.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Progress Tracking</h3>
-                    <p class="feature-desc">Visualize your journey with detailed analytics, strength progression, and body composition changes.</p>
+                <div class="feature-card card-3d glow-3d">
+                    <div class="feature-icon card-3d-inner">📊</div>
+                    <h3 class="feature-title card-3d-inner">Progress Tracking</h3>
+                    <p class="feature-desc card-3d-inner">Visualize your journey with detailed analytics, strength progression, and body composition changes.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏆</div>
-                    <h3 class="feature-title">Gamified Quests</h3>
-                    <p class="feature-desc">Stay motivated with challenges, achievements, and rewards that make fitness addictive.</p>
+                <div class="feature-card card-3d glow-3d">
+                    <div class="feature-icon card-3d-inner">🏆</div>
+                    <h3 class="feature-title card-3d-inner">Gamified Quests</h3>
+                    <p class="feature-desc card-3d-inner">Stay motivated with challenges, achievements, and rewards that make fitness addictive.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3 class="feature-title">Community</h3>
-                    <p class="feature-desc">Connect with like-minded athletes, share progress, and compete on global leaderboards.</p>
+                <div class="feature-card card-3d glow-3d">
+                    <div class="feature-icon card-3d-inner">👥</div>
+                    <h3 class="feature-title card-3d-inner">Community</h3>
+                    <p class="feature-desc card-3d-inner">Connect with like-minded athletes, share progress, and compete on global leaderboards.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">Form Analysis</h3>
-                    <p class="feature-desc">AI-powered posture detection helps you perfect your technique and prevent injuries.</p>
+                <div class="feature-card card-3d glow-3d">
+                    <div class="feature-icon card-3d-inner">🎯</div>
+                    <h3 class="feature-title card-3d-inner">Form Analysis</h3>
+                    <p class="feature-desc card-3d-inner">AI-powered posture detection helps you perfect your technique and prevent injuries.</p>
                 </div>
             </div>
         </div>
@@ -1520,7 +1716,7 @@
         <div class="container">
             <div class="showcase-grid">
                 <div class="showcase-visual">
-                    <div class="showcase-image">
+                    <div class="showcase-image showcase-3d-card">
                         <div style="aspect-ratio: 4/3; background: linear-gradient(145deg, rgba(200,121,65,0.1) 0%, rgba(20,20,21,0.5) 100%); display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(200,121,65,0.3);">
                             <div style="text-align: center;">
                                 <div style="font-size: 4rem; margin-bottom: 1rem;">📱</div>
@@ -2846,6 +3042,169 @@
         // Escape key to close modal
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeAuthModal();
+        });
+        
+        // Three.js 3D Background Scene
+        let scene, camera, renderer, particles3D, wireframeObjects = [];
+        
+        function initThreeJS() {
+            const canvas = document.getElementById('three-canvas');
+            if (!canvas || !window.THREE) return;
+            
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+            
+            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Create floating wireframe geometries
+            const geometries = [
+                new THREE.IcosahedronGeometry(4, 0),
+                new THREE.OctahedronGeometry(3, 0),
+                new THREE.TorusGeometry(5, 1.5, 8, 20),
+                new THREE.TetrahedronGeometry(4, 0),
+                new THREE.BoxGeometry(5, 5, 5),
+                new THREE.SphereGeometry(3, 8, 8)
+            ];
+            
+            const copperColor = 0xc87941;
+            const copperLight = 0xd48a52;
+            
+            geometries.forEach((geom, i) => {
+                const wireframe = new THREE.WireframeGeometry(geom);
+                const material = new THREE.LineBasicMaterial({ 
+                    color: i % 2 === 0 ? copperColor : copperLight,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const wireframeMesh = new THREE.LineSegments(wireframe, material);
+                
+                wireframeMesh.position.x = (Math.random() - 0.5) * 100;
+                wireframeMesh.position.y = (Math.random() - 0.5) * 60;
+                wireframeMesh.position.z = (Math.random() - 0.5) * 30 - 20;
+                
+                wireframeMesh.userData = {
+                    rotationSpeed: {
+                        x: (Math.random() - 0.5) * 0.01,
+                        y: (Math.random() - 0.5) * 0.01,
+                        z: (Math.random() - 0.5) * 0.01
+                    },
+                    floatSpeed: Math.random() * 0.5 + 0.2,
+                    floatOffset: Math.random() * Math.PI * 2
+                };
+                
+                scene.add(wireframeMesh);
+                wireframeObjects.push(wireframeMesh);
+            });
+            
+            // Create floating particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 200;
+            const posArray = new Float32Array(particlesCount * 3);
+            
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 120;
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.5,
+                color: copperColor,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+            
+            particles3D = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles3D);
+            
+            animate();
+        }
+        
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            // Animate wireframe objects
+            wireframeObjects.forEach(obj => {
+                obj.rotation.x += obj.userData.rotationSpeed.x;
+                obj.rotation.y += obj.userData.rotationSpeed.y;
+                obj.rotation.z += obj.userData.rotationSpeed.z;
+                
+                obj.position.y += Math.sin(time * obj.userData.floatSpeed + obj.userData.floatOffset) * 0.02;
+            });
+            
+            // Animate particles
+            if (particles3D) {
+                particles3D.rotation.y += 0.0005;
+                particles3D.rotation.x += 0.0002;
+            }
+            
+            // Smooth camera movement based on mouse
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+            
+            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Mouse move handler for 3D effects
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+            
+            // 3D Card tilt effect
+            const cards = document.querySelectorAll('.card-3d');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / centerY * -15;
+                    const rotateY = (x - centerX) / centerX * 15;
+                    
+                    card.style.setProperty('--rotateX', `${rotateX}deg`);
+                    card.style.setProperty('--rotateY', `${rotateY}deg`);
+                }
+            });
+            
+            // Parallax effect for hero content
+            const heroContent = document.querySelector('.hero-content-3d');
+            if (heroContent) {
+                heroContent.style.transform = `
+                    perspective(1500px) 
+                    rotateY(${mouseX * 5}deg) 
+                    rotateX(${-mouseY * 5}deg)
+                    translateZ(0)
+                `;
+            }
+        });
+        
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            if (camera && renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+        
+        // Initialize Three.js on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
         });
     </script>
 </body>
