@@ -1,0 +1,129 @@
+/**
+ * Draftly-inspired Cinematic 3D Effects
+ * Layered on top of existing VantageFlex styles
+ */
+
+/* Float Animation */
+@keyframes draftly-float {
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(10px); }
+}
+
+/* Shimmer Sweep Animation */
+@keyframes draftly-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Pulse Glow Animation */
+@keyframes draftly-pulse-glow {
+  0% {
+    box-shadow: 0 0 20px currentColor,
+                0 0 40px currentColor,
+                0 0 60px currentColor;
+    opacity: 0.3;
+  }
+  100% {
+    box-shadow: 0 0 40px currentColor,
+                0 0 80px currentColor,
+                0 0 120px currentColor;
+    opacity: 0.6;
+  }
+}
+
+/* Entrance Animation Base State */
+.draftly-entrance {
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  transition: none;
+  will-change: opacity, transform;
+}
+
+/* Entrance Animation Visible State */
+.draftly-entrance.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3D Card Base */
+.draftly-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light Streak Effect - uses CSS custom properties --mx and --my */
+.draftly-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(200, 121, 65, 0.12),
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.draftly-card:hover::before {
+  opacity: 1;
+}
+
+/* Image Reveal Base State */
+.draftly-img-reveal {
+  filter: blur(8px);
+  transform: scale(1.04);
+  opacity: 0;
+  transition: none;
+  will-change: filter, transform, opacity;
+}
+
+/* Image Reveal Visible State */
+.draftly-img-reveal.visible {
+  filter: blur(0);
+  transform: scale(1);
+  opacity: 1;
+  transition: filter 0.8s ease,
+              transform 0.8s ease,
+              opacity 0.8s ease;
+}
+
+/* Magnetic Button Base */
+.draftly-magnetic {
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Float Animation Class */
+.draftly-float {
+  animation: draftly-float 4s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Shimmer Animation Class */
+.draftly-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 121, 65, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: draftly-shimmer 6s ease-in-out infinite;
+}
+
+/* Glow Pulse Animation Class */
+.draftly-glow {
+  animation: draftly-pulse-glow 2s ease-in-out infinite alternate;
+}
+
+/* Parallax Element Base */
+.draftly-parallax {
+  will-change: transform;
+}
