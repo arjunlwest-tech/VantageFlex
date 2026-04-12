@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="supabase-config.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,14 +19,14 @@
             --copper: #c87941;
             --copper-light: #d48a52;
             --copper-dark: #a05d2e;
-            --copper-glow: rgba(200, 121, 65, 0.4);
-            --charcoal: #0a0a0b;
-            --charcoal-light: #141415;
-            --charcoal-lighter: #1c1c1e;
-            --text-primary: #fafaf9;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: rgba(255, 255, 255, 0.08);
+            --copper-glow: rgba(200, 121, 65, 0.5);
+            --charcoal: #050505;
+            --charcoal-light: #0a0a0a;
+            --charcoal-lighter: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border: rgba(255, 255, 255, 0.06);
         }
         
         body {
@@ -35,141 +37,44 @@
             overflow-x: hidden;
         }
         
-        /* Ultra Premium Animated Background */
-        .cosmic-bg {
+        /* Three.js Canvas */
+        #webgl-canvas {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
-            overflow: hidden;
+            pointer-events: none;
         }
         
-        .cosmic-bg::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: 
-                radial-gradient(ellipse 100% 50% at 20% 40%, rgba(200, 121, 65, 0.18), transparent 60%),
-                radial-gradient(ellipse 80% 40% at 80% 60%, rgba(166, 124, 82, 0.12), transparent 50%),
-                radial-gradient(ellipse 60% 30% at 50% 100%, rgba(200, 121, 65, 0.1), transparent 40%),
-                radial-gradient(ellipse 40% 20% at 10% 80%, rgba(200, 121, 65, 0.08), transparent 30%);
-            animation: cosmicDrift 25s ease-in-out infinite;
-        }
-        
-        @keyframes cosmicDrift {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(3%, -2%) scale(1.02); }
-            50% { transform: translate(-1%, 3%) scale(0.98); }
-            75% { transform: translate(-2%, -1%) scale(1.01); }
-        }
-        
-        /* Particle System */
-        .particles {
+        /* Aurora Background */
+        .aurora-bg {
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            overflow: hidden;
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(200, 121, 65, 0.15), transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(166, 124, 82, 0.1), transparent 40%),
+                radial-gradient(ellipse 100% 30% at 50% 100%, rgba(200, 121, 65, 0.08), transparent 30%);
+            animation: auroraFlow 20s ease-in-out infinite;
         }
         
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--copper);
-            border-radius: 50%;
-            opacity: 0;
-            animation: particleFloat 15s infinite;
-            filter: blur(1px);
-            box-shadow: 0 0 10px var(--copper), 0 0 20px var(--copper-glow);
-        }
-        
-        @keyframes particleFloat {
-            0% { 
-                transform: translateY(100vh) rotate(0deg); 
-                opacity: 0; 
-            }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { 
-                transform: translateY(-100vh) rotate(720deg); 
-                opacity: 0; 
-            }
-        }
-        
-        /* Floating Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, var(--copper) 0%, transparent 70%);
-            top: 10%;
-            right: 10%;
-            animation: orbFloat1 20s ease-in-out infinite;
-            opacity: 0.3;
-        }
-        
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(225deg, rgba(166, 124, 82, 0.8) 0%, transparent 70%);
-            bottom: 20%;
-            left: 5%;
-            animation: orbFloat2 25s ease-in-out infinite;
-            opacity: 0.25;
-        }
-        
-        .orb-3 {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(45deg, rgba(200, 121, 65, 0.6) 0%, transparent 70%);
-            top: 50%;
-            left: 30%;
-            animation: orbFloat3 18s ease-in-out infinite;
-            opacity: 0.2;
-        }
-        
-        @keyframes orbFloat1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-30px, 30px) scale(1.1); }
-        }
-        
-        @keyframes orbFloat2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, -20px) scale(0.9); }
-        }
-        
-        @keyframes orbFloat3 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-20px, -40px) scale(1.15); }
+        @keyframes auroraFlow {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+            33% { transform: translate(2%, -1%) scale(1.02) rotate(1deg); opacity: 0.9; }
+            66% { transform: translate(-1%, 2%) scale(0.98) rotate(-1deg); opacity: 0.95; }
         }
         
         /* Noise Texture */
-        .noise {
+        .noise-overlay {
             position: fixed;
             inset: 0;
-            opacity: 0.025;
-            pointer-events: none;
             z-index: 2;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-        
-        /* Grid Overlay */
-        .grid-overlay {
-            position: fixed;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: 1;
             pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
         
         /* Navigation */
@@ -178,42 +83,41 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
-            padding: 1.25rem 3rem;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(to bottom, rgba(10,10,11,0.9), transparent);
+            background: linear-gradient(to bottom, rgba(5,5,5,0.9), transparent);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
         }
         
         .nav-logo {
-            font-size: 1.35rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: 800;
             letter-spacing: -0.03em;
             color: var(--text-primary);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            position: relative;
         }
         
         .nav-logo::before {
             content: '◆';
             color: var(--copper);
-            font-size: 1rem;
-            animation: logoPulse 3s ease-in-out infinite;
+            font-size: 1.2rem;
+            animation: logoGlow 3s ease-in-out infinite;
         }
         
-        @keyframes logoPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.1); }
+        @keyframes logoGlow {
+            0%, 100% { text-shadow: 0 0 10px var(--copper); }
+            50% { text-shadow: 0 0 30px var(--copper), 0 0 60px var(--copper-glow); }
         }
         
         .nav-logo span {
-            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-light) 100%);
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-light) 50%, #e8a87c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -221,16 +125,16 @@
         
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 3rem;
             align-items: center;
         }
         
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             position: relative;
         }
         
@@ -242,7 +146,7 @@
             width: 0;
             height: 2px;
             background: linear-gradient(90deg, var(--copper), var(--copper-light));
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s ease;
         }
         
         .nav-links a:hover {
@@ -254,16 +158,16 @@
         }
         
         .nav-cta {
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 2rem;
             background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
             color: var(--charcoal);
             border: none;
-            font-size: 0.8125rem;
-            font-weight: 600;
+            font-size: 0.875rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -275,87 +179,100 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
         }
         
         .nav-cta:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--copper-glow);
+            box-shadow: 0 10px 30px var(--copper-glow);
         }
         
         .nav-cta:hover::before {
             left: 100%;
         }
         
-        /* Hero Section */
+        /* Hero Section - Ultra Premium 3D */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            z-index: 3;
-            padding: 10rem 2rem 6rem;
-            perspective: 1000px;
-        }
-        
-        .hero-content {
-            max-width: 1000px;
-            text-align: center;
+            z-index: 10;
+            padding: 12rem 2rem 8rem;
+            perspective: 2000px;
             transform-style: preserve-3d;
         }
         
-        .hero-eyebrow {
+        .hero-container {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+        
+        .hero-content {
+            transform-style: preserve-3d;
+        }
+        
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.625rem 1.25rem;
-            background: rgba(200, 121, 65, 0.08);
-            border: 1px solid rgba(200, 121, 65, 0.25);
+            padding: 0.75rem 1.5rem;
+            background: rgba(200, 121, 65, 0.1);
+            border: 1px solid rgba(200, 121, 65, 0.3);
             color: var(--copper-light);
-            font-size: 0.6875rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.15em;
-            margin-bottom: 2.5rem;
-            position: relative;
-            overflow: hidden;
+            margin-bottom: 2rem;
+            animation: badgePulse 3s ease-in-out infinite;
         }
         
-        .hero-eyebrow::before {
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(200, 121, 65, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(200, 121, 65, 0); }
+        }
+        
+        .hero-badge::before {
             content: '';
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: var(--copper);
             border-radius: 50%;
-            animation: pulseGlow 2s ease-in-out infinite;
-            box-shadow: 0 0 10px var(--copper);
+            animation: dotPulse 2s ease-in-out infinite;
         }
         
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--copper); }
-            50% { opacity: 0.5; box-shadow: 0 0 20px var(--copper), 0 0 40px var(--copper-glow); }
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
         }
         
         .hero-title {
-            font-size: clamp(3.5rem, 10vw, 7.5rem);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            line-height: 0.95;
-            margin-bottom: 1.75rem;
-            position: relative;
+            font-size: clamp(3.5rem, 6vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            transform-style: preserve-3d;
         }
         
         .hero-title-line1 {
             display: block;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            background: linear-gradient(135deg, #fff 0%, #a0a0a0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: titleReveal 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transform: translateZ(50px);
+            animation: titleReveal1 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(50px) translateZ(50px);
         }
         
         .hero-title-line2 {
@@ -364,45 +281,43 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: titleReveal 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+            transform: translateZ(100px);
+            animation: titleReveal2 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+            opacity: 0;
+            transform: translateY(50px) translateZ(100px);
+        }
+        
+        @keyframes titleReveal1 {
+            to { opacity: 1; transform: translateY(0) translateZ(50px); }
+        }
+        
+        @keyframes titleReveal2 {
+            to { opacity: 1; transform: translateY(0) translateZ(100px); }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 2vw, 1.375rem);
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            line-height: 1.8;
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
             opacity: 0;
             transform: translateY(30px);
         }
         
-        @keyframes titleReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-            color: var(--text-secondary);
-            max-width: 650px;
-            margin: 0 auto 3rem;
-            font-weight: 400;
-            line-height: 1.7;
-            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
         @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .hero-actions {
             display: flex;
-            gap: 1.25rem;
-            justify-content: center;
-            margin-bottom: 5rem;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
             animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
         
         .btn-primary {
@@ -411,14 +326,14 @@
             color: var(--charcoal);
             border: none;
             font-size: 0.9375rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px var(--copper-glow);
+            box-shadow: 0 4px 20px rgba(200, 121, 65, 0.3);
         }
         
         .btn-primary::before {
@@ -434,7 +349,7 @@
         
         .btn-primary:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 40px var(--copper-glow);
+            box-shadow: 0 15px 40px rgba(200, 121, 65, 0.4);
         }
         
         .btn-primary:hover::before {
@@ -447,7 +362,7 @@
             color: var(--text-primary);
             border: 1px solid var(--border);
             font-size: 0.9375rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             cursor: pointer;
@@ -475,187 +390,138 @@
             opacity: 1;
         }
         
-        /* Hero Visual Showcase */
-        .hero-showcase {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
             animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.8s forwards;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
         
-        .showcase-container {
-            position: relative;
-            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid var(--border);
-            padding: 3rem;
-            backdrop-filter: blur(20px);
-            overflow: hidden;
+        .hero-stat {
+            text-align: left;
         }
         
-        .showcase-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(200, 121, 65, 0.1) 0%, transparent 50%);
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        
-        .showcase-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .showcase-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        
-        .showcase-dot:nth-child(1) { background: #ff5f56; }
-        .showcase-dot:nth-child(2) { background: #ffbd2e; }
-        .showcase-dot:nth-child(3) { background: #27c93f; }
-        
-        .showcase-title {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-left: 1rem;
-        }
-        
-        .workout-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .exercise-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            padding: 1.5rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .exercise-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--copper), transparent);
-            transform: scaleX(0);
-            transition: transform 0.4s;
-        }
-        
-        .exercise-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(200, 121, 65, 0.3);
-            background: rgba(255,255,255,0.04);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        
-        .exercise-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .exercise-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .exercise-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .exercise-stats {
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-        }
-        
-        .exercise-stats span {
-            color: var(--copper-light);
-            font-weight: 600;
-        }
-        
-        /* Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            padding: 2rem;
-            background: linear-gradient(145deg, rgba(200, 121, 65, 0.05) 0%, rgba(166, 124, 82, 0.02) 100%);
-            border: 1px solid rgba(200, 121, 65, 0.15);
-            margin-top: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stats-bar::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.1), transparent);
-            animation: statsShimmer 3s ease-in-out infinite;
-        }
-        
-        @keyframes statsShimmer {
-            0%, 100% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-        }
-        
-        .stat-item {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .stat-value {
-            font-size: 2.75rem;
+        .hero-stat-value {
+            font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--copper) 0%, var(--copper-light) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -0.02em;
-            animation: countUp 2s ease-out;
         }
         
-        @keyframes countUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
+        .hero-stat-label {
+            font-size: 0.875rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-top: 0.5rem;
+            letter-spacing: 0.1em;
+            margin-top: 0.25rem;
+        }
+        
+        /* Hero 3D Visual */
+        .hero-visual {
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1500px;
+        }
+        
+        .floating-card {
+            position: relative;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            transform: rotateY(-15deg) rotateX(5deg) translateZ(50px);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: rotateY(-15deg) rotateX(5deg) translateZ(50px) translateY(0); }
+            50% { transform: rotateY(-15deg) rotateX(5deg) translateZ(50px) translateY(-20px); }
+        }
+        
+        .floating-card:hover {
+            transform: rotateY(-5deg) rotateX(2deg) translateZ(80px) scale(1.02);
+        }
+        
+        .floating-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .floating-card-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .floating-card-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .floating-card-info p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .workout-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .workout-item:hover {
+            background: rgba(200, 121, 65, 0.1);
+            transform: translateX(10px);
+        }
+        
+        .workout-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(200, 121, 65, 0.2) 0%, rgba(200, 121, 65, 0.1) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .workout-details h5 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .workout-details p {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
         }
         
         /* Features Section */
         .features {
             padding: 10rem 2rem;
             position: relative;
-            z-index: 3;
+            z-index: 10;
         }
         
         .container {
@@ -670,14 +536,14 @@
         
         .section-eyebrow {
             display: inline-block;
-            font-size: 0.6875rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: var(--copper);
-            margin-bottom: 1.25rem;
-            padding: 0.5rem 1rem;
-            background: rgba(200, 121, 65, 0.08);
+            margin-bottom: 1.5rem;
+            padding: 0.625rem 1.25rem;
+            background: rgba(200, 121, 65, 0.1);
             border: 1px solid rgba(200, 121, 65, 0.2);
         }
         
@@ -691,23 +557,25 @@
         }
         
         .section-subtitle {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto;
         }
         
-        /* Feature Cards Grid */
+        /* Feature Cards - 3D Glassmorphism */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
+            perspective: 2000px;
         }
         
         .feature-card {
-            padding: 3rem;
-            background: linear-gradient(145deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%);
-            border: 1px solid var(--border);
+            padding: 3rem 2.5rem;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -736,11 +604,11 @@
         }
         
         .feature-card:hover {
-            transform: translateY(-12px) rotateX(5deg);
-            border-color: rgba(200, 121, 65, 0.25);
+            transform: translateY(-15px) rotateX(5deg);
+            border-color: rgba(200, 121, 65, 0.3);
             box-shadow: 
-                0 30px 60px rgba(0,0,0,0.4),
-                0 0 40px rgba(200, 121, 65, 0.1);
+                0 40px 80px rgba(0,0,0,0.4),
+                0 0 60px rgba(200, 121, 65, 0.15);
         }
         
         .feature-card:hover::before {
@@ -752,28 +620,29 @@
         }
         
         .feature-icon {
-            width: 64px;
-            height: 64px;
+            width: 72px;
+            height: 72px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(200, 121, 65, 0.15) 0%, rgba(200, 121, 65, 0.05) 100%);
-            border: 1px solid rgba(200, 121, 65, 0.25);
+            background: linear-gradient(135deg, rgba(200, 121, 65, 0.2) 0%, rgba(200, 121, 65, 0.05) 100%);
+            border: 1px solid rgba(200, 121, 65, 0.3);
+            border-radius: 20px;
             margin-bottom: 2rem;
-            font-size: 1.75rem;
+            font-size: 2rem;
             position: relative;
             z-index: 1;
             transition: all 0.4s;
         }
         
         .feature-card:hover .feature-icon {
-            transform: scale(1.1);
+            transform: scale(1.1) rotateY(10deg);
             background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
         }
         
         .feature-title {
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.375rem;
+            font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 1rem;
             letter-spacing: -0.01em;
@@ -782,114 +651,40 @@
         }
         
         .feature-desc {
-            font-size: 0.9375rem;
+            font-size: 1rem;
             color: var(--text-muted);
             line-height: 1.8;
             position: relative;
             z-index: 1;
         }
         
-        /* Interactive Showcase */
-        .showcase {
-            padding: 10rem 2rem;
-            position: relative;
-            z-index: 3;
-        }
-        
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: center;
-        }
-        
-        .showcase-visual {
-            position: relative;
-        }
-        
-        .showcase-image {
-            position: relative;
-            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            transform: perspective(1000px) rotateY(-5deg);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .showcase-image:hover {
-            transform: perspective(1000px) rotateY(0deg) translateZ(20px);
-        }
-        
-        .showcase-content h3 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--copper) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .showcase-content p {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
-            line-height: 1.9;
-            margin-bottom: 2rem;
-        }
-        
-        .feature-list {
-            list-style: none;
-        }
-        
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-        
-        .feature-list li:hover {
-            color: var(--text-primary);
-            padding-left: 1rem;
-        }
-        
-        .feature-list li::before {
-            content: '✓';
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
-            color: var(--charcoal);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.875rem;
-        }
-        
         /* CTA Section */
         .cta {
             padding: 10rem 2rem;
             position: relative;
-            z-index: 3;
+            z-index: 10;
         }
         
         .cta-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             position: relative;
         }
         
         .cta-box {
             padding: 6rem;
-            background: linear-gradient(145deg, rgba(200, 121, 65, 0.08) 0%, rgba(166, 124, 82, 0.03) 100%);
+            background: linear-gradient(145deg, rgba(200, 121, 65, 0.1) 0%, rgba(166, 124, 82, 0.03) 100%);
             border: 1px solid rgba(200, 121, 65, 0.2);
+            border-radius: 32px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .cta-box:hover {
+            transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
         }
         
         .cta-box::before {
@@ -898,55 +693,20 @@
             inset: 0;
             background: 
                 linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.1), transparent);
-            animation: ctaShimmer 4s ease-in-out infinite;
+            animation: shimmer 3s ease-in-out infinite;
         }
         
-        @keyframes ctaShimmer {
+        @keyframes shimmer {
             0%, 100% { transform: translateX(-100%); }
             50% { transform: translateX(100%); }
         }
         
-        .cta-ornament {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border: 1px solid rgba(200, 121, 65, 0.3);
-        }
-        
-        .cta-ornament:nth-child(1) {
-            top: 20px;
-            left: 20px;
-            border-right: none;
-            border-bottom: none;
-        }
-        
-        .cta-ornament:nth-child(2) {
-            top: 20px;
-            right: 20px;
-            border-left: none;
-            border-bottom: none;
-        }
-        
-        .cta-ornament:nth-child(3) {
-            bottom: 20px;
-            left: 20px;
-            border-right: none;
-            border-top: none;
-        }
-        
-        .cta-ornament:nth-child(4) {
-            bottom: 20px;
-            right: 20px;
-            border-left: none;
-            border-top: none;
-        }
-        
         .cta-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 600;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
             position: relative;
             z-index: 1;
         }
@@ -955,72 +715,33 @@
             font-size: 1.25rem;
             color: var(--text-secondary);
             margin-bottom: 3rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
             position: relative;
             z-index: 1;
-        }
-        
-        .cta-btn {
-            padding: 1.5rem 4rem;
-            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
-            color: var(--charcoal);
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-        }
-        
-        .cta-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s;
-        }
-        
-        .cta-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 50px var(--copper-glow);
-        }
-        
-        .cta-btn:hover::before {
-            left: 100%;
         }
         
         /* Footer */
         .footer {
-            padding: 4rem 3rem;
-            text-align: center;
+            padding: 4rem 2rem;
             border-top: 1px solid var(--border);
             position: relative;
-            z-index: 3;
+            z-index: 10;
         }
         
         .footer-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .footer-logo {
             font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .footer-logo::before {
-            content: '◆';
-            color: var(--copper);
+            font-weight: 800;
+            color: var(--text-primary);
         }
         
         .footer-logo span {
@@ -1032,9 +753,7 @@
         
         .footer-links {
             display: flex;
-            justify-content: center;
             gap: 2rem;
-            margin-bottom: 2rem;
         }
         
         .footer-links a {
@@ -1045,148 +764,104 @@
         }
         
         .footer-links a:hover {
-            color: var(--copper-light);
-        }
-        
-        .footer-text {
-            font-size: 0.875rem;
-            color: var(--text-muted);
+            color: var(--copper);
         }
         
         /* Auth Modal */
-        .modal-overlay {
+        .modal {
+            display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            display: none;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
         }
         
-        .modal-overlay.active {
+        .modal.active {
             display: flex;
-            opacity: 1;
         }
         
-        .modal {
-            background: linear-gradient(145deg, rgba(20,20,21,0.98) 0%, rgba(10,10,11,0.98) 100%);
-            border: 1px solid var(--border);
-            width: 100%;
+        .modal-content {
+            background: linear-gradient(145deg, #111 0%, #0a0a0a 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 3rem;
             max-width: 480px;
+            width: 90%;
             position: relative;
-            transform: scale(0.95) translateY(20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            transform-style: preserve-3d;
+            animation: modalIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .modal-overlay.active .modal {
-            transform: scale(1) translateY(0);
-        }
-        
-        .modal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--copper), var(--copper-light), var(--copper));
-            background-size: 200% 100%;
-            animation: modalGlow 3s linear infinite;
-        }
-        
-        @keyframes modalGlow {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-        
-        .modal-header {
-            padding: 2rem 2rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(50px) rotateX(-10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0); }
         }
         
         .modal-close {
-            width: 36px;
-            height: 36px;
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1.25rem;
         }
         
         .modal-close:hover {
-            border-color: var(--copper);
+            background: rgba(200, 121, 65, 0.2);
             color: var(--copper);
             transform: rotate(90deg);
         }
         
-        .modal-tabs {
-            display: flex;
-            padding: 0 2rem;
-            border-bottom: 1px solid var(--border);
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
         }
         
-        .modal-tab {
+        .modal-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 0.5rem;
+        }
+        
+        .auth-tab {
             flex: 1;
-            padding: 1rem;
+            padding: 0.875rem;
             background: transparent;
             border: none;
             color: var(--text-muted);
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
+            border-radius: 8px;
             transition: all 0.3s;
-            position: relative;
         }
         
-        .modal-tab.active {
+        .auth-tab.active {
+            background: rgba(200, 121, 65, 0.2);
             color: var(--copper);
-        }
-        
-        .modal-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--copper), transparent);
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         .form-group {
@@ -1195,19 +870,18 @@
         
         .form-label {
             display: block;
-            font-size: 0.8125rem;
-            font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 600;
             color: var(--text-secondary);
             margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
         
         .form-input {
             width: 100%;
             padding: 1rem 1.25rem;
             background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
             color: var(--text-primary);
             font-size: 1rem;
             transition: all 0.3s;
@@ -1216,51 +890,36 @@
         .form-input:focus {
             outline: none;
             border-color: var(--copper);
-            background: rgba(200, 121, 65, 0.03);
-            box-shadow: 0 0 0 3px rgba(200, 121, 65, 0.1);
-        }
-        
-        .form-input::placeholder {
-            color: var(--text-muted);
+            background: rgba(200, 121, 65, 0.05);
         }
         
         .form-error {
             color: #ef4444;
-            font-size: 0.8125rem;
+            font-size: 0.875rem;
             margin-top: 0.5rem;
             display: none;
         }
         
-        .form-error.show {
+        .form-error.visible {
             display: block;
-            animation: shake 0.5s ease;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
         }
         
         .btn-submit {
             width: 100%;
-            padding: 1rem;
+            padding: 1.125rem;
             background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
             color: var(--charcoal);
             border: none;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s;
         }
         
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--copper-glow);
+            box-shadow: 0 10px 30px rgba(200, 121, 65, 0.3);
         }
         
         .btn-submit:disabled {
@@ -1269,36 +928,21 @@
             transform: none;
         }
         
-        .oauth-divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.8125rem;
-        }
-        
-        .oauth-divider::before,
-        .oauth-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        
         .oauth-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
         
         .btn-oauth {
             padding: 0.875rem;
             background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
             color: var(--text-primary);
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -1308,42 +952,33 @@
         }
         
         .btn-oauth:hover {
-            border-color: var(--copper);
-            background: rgba(200, 121, 65, 0.05);
-            transform: translateY(-2px);
-        }
-        
-        .modal-footer {
-            padding: 1.5rem 2rem;
-            text-align: center;
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
-        }
-        
-        .modal-footer a {
-            color: var(--copper-light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .modal-footer a:hover {
-            color: var(--copper);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
         }
         
         /* Responsive */
         @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-content {
+                order: 1;
+            }
+            
+            .hero-visual {
+                order: 2;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            .hero-stats {
+                justify-content: center;
+            }
+            
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .showcase-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-            
-            .showcase-image {
-                transform: none;
             }
         }
         
@@ -1362,7 +997,6 @@
             
             .hero-actions {
                 flex-direction: column;
-                align-items: stretch;
             }
             
             .features-grid {
@@ -1373,225 +1007,23 @@
                 padding: 3rem 2rem;
             }
             
-            .stats-bar {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
             }
-        }
-        
-        /* 3D Effects */
-        #three-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .perspective-container {
-            perspective: 2000px;
-            transform-style: preserve-3d;
-        }
-        
-        .tilt-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .tilt-3d:hover {
-            transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(20px);
-        }
-        
-        .float-3d {
-            animation: float3D 6s ease-in-out infinite;
-            transform-style: preserve-3d;
-        }
-        
-        @keyframes float3D {
-            0%, 100% { transform: translateZ(0) rotateX(0deg) rotateY(0deg); }
-            25% { transform: translateZ(30px) rotateX(5deg) rotateY(-5deg); }
-            50% { transform: translateZ(60px) rotateX(0deg) rotateY(5deg); }
-            75% { transform: translateZ(30px) rotateX(-5deg) rotateY(0deg); }
-        }
-        
-        .depth-layer-1 { transform: translateZ(50px); }
-        .depth-layer-2 { transform: translateZ(100px); }
-        .depth-layer-3 { transform: translateZ(150px); }
-        
-        .parallax-3d {
-            transform-style: preserve-3d;
-            will-change: transform;
-        }
-        
-        .card-3d {
-            transform-style: preserve-3d;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .card-3d:hover {
-            transform: perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg)) translateZ(40px) scale(1.02);
-            box-shadow: 
-                0 25px 50px rgba(0,0,0,0.5),
-                0 0 60px rgba(200, 121, 65, 0.2);
-        }
-        
-        .card-3d-inner {
-            transform: translateZ(30px);
-        }
-        
-        .glow-3d {
-            position: relative;
-        }
-        
-        .glow-3d::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--copper), var(--copper-light), var(--copper-dark));
-            border-radius: inherit;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-            filter: blur(15px);
-            transform: translateZ(-10px);
-        }
-        
-        .glow-3d:hover::before {
-            opacity: 0.6;
-        }
-        
-        .text-3d {
-            text-shadow: 
-                1px 1px 0 rgba(200, 121, 65, 0.3),
-                2px 2px 0 rgba(200, 121, 65, 0.2),
-                3px 3px 0 rgba(200, 121, 65, 0.1),
-                4px 4px 20px rgba(200, 121, 65, 0.3);
-            transform: translateZ(20px);
-        }
-        
-        .hero-content-3d {
-            transform-style: preserve-3d;
-            perspective: 1500px;
-        }
-        
-        .hero-title-3d {
-            transform: translateZ(100px);
-            text-shadow: 
-                0 0 20px rgba(200, 121, 65, 0.3),
-                0 0 40px rgba(200, 121, 65, 0.2),
-                0 0 60px rgba(200, 121, 65, 0.1);
-        }
-        
-        .floating-3d-shapes {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-        }
-        
-        .shape-3d {
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: shapeFloat3D 20s ease-in-out infinite;
-        }
-        
-        .shape-cube {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, rgba(200, 121, 65, 0.3), rgba(200, 121, 65, 0.1));
-            border: 1px solid rgba(200, 121, 65, 0.4);
-            top: 20%;
-            right: 15%;
-            animation-delay: 0s;
-        }
-        
-        .shape-pyramid {
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 60px solid rgba(200, 121, 65, 0.3);
-            bottom: 30%;
-            left: 10%;
-            animation-delay: -5s;
-        }
-        
-        .shape-ring {
-            width: 100px;
-            height: 100px;
-            border: 3px solid rgba(200, 121, 65, 0.4);
-            border-radius: 50%;
-            top: 60%;
-            right: 20%;
-            animation-delay: -10s;
-        }
-        
-        @keyframes shapeFloat3D {
-            0%, 100% { 
-                transform: translateZ(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
-            }
-            25% { 
-                transform: translateZ(50px) rotateX(90deg) rotateY(45deg) rotateZ(90deg); 
-            }
-            50% { 
-                transform: translateZ(100px) rotateX(180deg) rotateY(90deg) rotateZ(180deg); 
-            }
-            75% { 
-                transform: translateZ(50px) rotateX(270deg) rotateY(135deg) rotateZ(270deg); 
-            }
-        }
-        
-        .showcase-3d-card {
-            transform: perspective(2000px) rotateY(-15deg);
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-        
-        .showcase-3d-card:hover {
-            transform: perspective(2000px) rotateY(0deg) translateZ(50px);
-        }
-        
-        .showcase-3d-content {
-            transform: translateZ(40px);
-        }
-        
-        .perspective-mouse {
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
         }
     </style>
 </head>
 <body>
-    <!-- Three.js 3D Canvas -->
-    <canvas id="three-canvas"></canvas>
+    <!-- Three.js Canvas -->
+    <canvas id="webgl-canvas"></canvas>
     
-    <!-- Cosmic Background -->
-    <div class="cosmic-bg"></div>
+    <!-- Aurora Background -->
+    <div class="aurora-bg"></div>
     
-    <!-- Floating Orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    
-    <!-- 3D Floating Shapes -->
-    <div class="floating-3d-shapes">
-        <div class="shape-3d shape-cube"></div>
-        <div class="shape-3d shape-pyramid"></div>
-        <div class="shape-3d shape-ring"></div>
-    </div>
-    
-    <!-- Particle System -->
-    <div class="particles" id="particles"></div>
-    
-    <!-- Noise Texture -->
-    <div class="noise"></div>
-    
-    <!-- Grid Overlay -->
-    <div class="grid-overlay"></div>
+    <!-- Noise Overlay -->
+    <div class="noise-overlay"></div>
     
     <!-- Navigation -->
     <nav class="nav">
@@ -1606,61 +1038,61 @@
     
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content hero-content-3d">
-            <div class="hero-eyebrow">Elite Fitness Intelligence</div>
-            <h1 class="hero-title hero-title-3d text-3d">
-                <span class="hero-title-line1 depth-layer-1">Forge Your</span>
-                <span class="hero-title-line2 depth-layer-2">Perfect Body</span>
-            </h1>
-            <p class="hero-subtitle">AI-powered workout generation tailored to your goals, equipment, and experience level. Join 50,000+ athletes breaking through plateaus.</p>
-            <div class="hero-actions">
-                <button class="btn-primary" onclick="showAuthModal()">Start Free Trial</button>
-                <button class="btn-secondary" onclick="document.getElementById('showcase').scrollIntoView({behavior: 'smooth'})">See How It Works</button>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Now in Open Beta</div>
+                <h1 class="hero-title">
+                    <span class="hero-title-line1">Train With</span>
+                    <span class="hero-title-line2">Precision</span>
+                </h1>
+                <p class="hero-subtitle">AI-powered workout generation tailored to your goals, equipment, and experience level. Join the fitness revolution.</p>
+                <div class="hero-actions">
+                    <button class="btn-primary" onclick="showAuthModal('signup')">Start Free Trial</button>
+                    <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">50K+</div>
+                        <div class="hero-stat-label">Active Users</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">4.9★</div>
+                        <div class="hero-stat-label">App Rating</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">100%</div>
+                        <div class="hero-stat-label">Free Forever</div>
+                    </div>
+                </div>
             </div>
-            
-            <!-- Hero Showcase -->
-            <div class="hero-showcase">
-                <div class="showcase-container">
-                    <div class="showcase-header">
-                        <div class="showcase-dot"></div>
-                        <div class="showcase-dot"></div>
-                        <div class="showcase-dot"></div>
-                        <span class="showcase-title">AI Generated Workout Preview</span>
-                    </div>
-                    <div class="workout-preview">
-                        <div class="exercise-card card-3d glow-3d">
-                            <div class="exercise-icon card-3d-inner">🏋️</div>
-                            <div class="exercise-name card-3d-inner">Barbell Squat</div>
-                            <div class="exercise-stats card-3d-inner"><span>4</span> sets × <span>8</span> reps</div>
-                        </div>
-                        <div class="exercise-card card-3d glow-3d">
-                            <div class="exercise-icon card-3d-inner">💪</div>
-                            <div class="exercise-name card-3d-inner">Romanian Deadlift</div>
-                            <div class="exercise-stats card-3d-inner"><span>3</span> sets × <span>10</span> reps</div>
-                        </div>
-                        <div class="exercise-card card-3d glow-3d">
-                            <div class="exercise-icon card-3d-inner">🦵</div>
-                            <div class="exercise-name card-3d-inner">Leg Press</div>
-                            <div class="exercise-stats card-3d-inner"><span>3</span> sets × <span>12</span> reps</div>
-                        </div>
-                        <div class="exercise-card card-3d glow-3d">
-                            <div class="exercise-icon card-3d-inner">🏃</div>
-                            <div class="exercise-name card-3d-inner">Walking Lunges</div>
-                            <div class="exercise-stats card-3d-inner"><span>3</span> sets × <span>16</span> steps</div>
+            <div class="hero-visual">
+                <div class="floating-card">
+                    <div class="floating-card-header">
+                        <div class="floating-card-avatar">💪</div>
+                        <div class="floating-card-info">
+                            <h4>Today's Workout</h4>
+                            <p>AI Generated • 45 min</p>
                         </div>
                     </div>
-                    <div class="stats-bar">
-                        <div class="stat-item">
-                            <div class="stat-value">50K+</div>
-                            <div class="stat-label">Workouts Generated</div>
+                    <div class="workout-item">
+                        <div class="workout-icon">🏋️</div>
+                        <div class="workout-details">
+                            <h5>Barbell Squat</h5>
+                            <p>4 sets × 8 reps • 185 lbs</p>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value">4.9★</div>
-                            <div class="stat-label">User Rating</div>
+                    </div>
+                    <div class="workout-item">
+                        <div class="workout-icon">💪</div>
+                        <div class="workout-details">
+                            <h5>Romanian Deadlift</h5>
+                            <p>3 sets × 10 reps • 135 lbs</p>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-value">100%</div>
-                            <div class="stat-label">Free Forever</div>
+                    </div>
+                    <div class="workout-item">
+                        <div class="workout-icon">🦵</div>
+                        <div class="workout-details">
+                            <h5>Walking Lunges</h5>
+                            <p>3 sets × 16 steps • 40 lbs</p>
                         </div>
                     </div>
                 </div>
@@ -1676,81 +1108,50 @@
                 <h2 class="section-title">Everything You Need</h2>
                 <p class="section-subtitle">Professional-grade tools designed for serious athletes who demand results.</p>
             </div>
-            <div class="features-grid perspective-container">
-                <div class="feature-card card-3d glow-3d">
-                    <div class="feature-icon card-3d-inner">⚡</div>
-                    <h3 class="feature-title card-3d-inner">AI Workout Generator</h3>
-                    <p class="feature-desc card-3d-inner">Intelligent algorithms create personalized routines based on your goals, equipment, and fitness level.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">AI Workout Generator</h3>
+                    <p class="feature-desc">Intelligent algorithms create personalized routines based on your goals, equipment, and fitness level.</p>
                 </div>
-                <div class="feature-card card-3d glow-3d">
-                    <div class="feature-icon card-3d-inner">🍽️</div>
-                    <h3 class="feature-title card-3d-inner">Smart Meal Plans</h3>
-                    <p class="feature-desc card-3d-inner">Nutrition tailored to your macros with delicious, easy-to-prepare recipes that fuel your gains.</p>
+                <div class="feature-card">
+                    <div class="feature-icon">🍽️</div>
+                    <h3 class="feature-title">Smart Meal Plans</h3>
+                    <p class="feature-desc">Nutrition tailored to your macros with delicious, easy-to-prepare recipes that fuel your gains.</p>
                 </div>
-                <div class="feature-card card-3d glow-3d">
-                    <div class="feature-icon card-3d-inner">📊</div>
-                    <h3 class="feature-title card-3d-inner">Progress Tracking</h3>
-                    <p class="feature-desc card-3d-inner">Visualize your journey with detailed analytics, strength progression, and body composition changes.</p>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Progress Tracking</h3>
+                    <p class="feature-desc">Visualize your journey with detailed analytics, strength progression, and body composition changes.</p>
                 </div>
-                <div class="feature-card card-3d glow-3d">
-                    <div class="feature-icon card-3d-inner">🏆</div>
-                    <h3 class="feature-title card-3d-inner">Gamified Quests</h3>
-                    <p class="feature-desc card-3d-inner">Stay motivated with challenges, achievements, and rewards that make fitness addictive.</p>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Gamified Quests</h3>
+                    <p class="feature-desc">Stay motivated with challenges, achievements, and rewards that make fitness addictive.</p>
                 </div>
-                <div class="feature-card card-3d glow-3d">
-                    <div class="feature-icon card-3d-inner">👥</div>
-                    <h3 class="feature-title card-3d-inner">Community</h3>
-                    <p class="feature-desc card-3d-inner">Connect with like-minded athletes, share progress, and compete on global leaderboards.</p>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3 class="feature-title">Community</h3>
+                    <p class="feature-desc">Connect with like-minded athletes, share progress, and compete on global leaderboards.</p>
                 </div>
-                <div class="feature-card card-3d glow-3d">
-                    <div class="feature-icon card-3d-inner">🎯</div>
-                    <h3 class="feature-title card-3d-inner">Form Analysis</h3>
-                    <p class="feature-desc card-3d-inner">AI-powered posture detection helps you perfect your technique and prevent injuries.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Showcase Section -->
-    <section class="showcase" id="showcase">
-        <div class="container">
-            <div class="showcase-grid">
-                <div class="showcase-visual">
-                    <div class="showcase-image showcase-3d-card">
-                        <div style="aspect-ratio: 4/3; background: linear-gradient(145deg, rgba(200,121,65,0.1) 0%, rgba(20,20,21,0.5) 100%); display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(200,121,65,0.3);">
-                            <div style="text-align: center;">
-                                <div style="font-size: 4rem; margin-bottom: 1rem;">📱</div>
-                                <div style="color: var(--text-muted);">Dashboard Preview</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="showcase-content">
-                    <h3>Your Fitness Command Center</h3>
-                    <p>Everything you need to dominate your fitness journey in one powerful dashboard. Track workouts, monitor nutrition, and visualize your transformation.</p>
-                    <ul class="feature-list">
-                        <li>Real-time workout tracking</li>
-                        <li>Macro & calorie monitoring</li>
-                        <li>Progress photos & measurements</li>
-                        <li>Personal record tracking</li>
-                        <li>AI-powered recommendations</li>
-                    </ul>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Form Analysis</h3>
+                    <p class="feature-desc">AI-powered posture detection helps you perfect your technique and prevent injuries.</p>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- CTA Section -->
-    <section class="cta" id="pricing">
-        <div class="cta-container">
-            <div class="cta-box">
-                <div class="cta-ornament"></div>
-                <div class="cta-ornament"></div>
-                <div class="cta-ornament"></div>
-                <div class="cta-ornament"></div>
-                <h2 class="cta-title">Ready to Transform?</h2>
-                <p class="cta-subtitle">Join thousands of athletes who've already revolutionized their fitness journey with Vantage Flex.</p>
-                <button class="cta-btn" onclick="showAuthModal()">Get Started Free</button>
+    <section class="cta">
+        <div class="container">
+            <div class="cta-container">
+                <div class="cta-box">
+                    <h2 class="cta-title">Ready to Transform?</h2>
+                    <p class="cta-subtitle">Join 50,000+ athletes who have already revolutionized their training with AI-powered workouts.</p>
+                    <button class="btn-primary" onclick="showAuthModal('signup')" style="padding: 1.5rem 4rem; font-size: 1.125rem;">Get Started Free</button>
+                </div>
             </div>
         </div>
     </section>
@@ -1763,115 +1164,84 @@
                 <a href="#">Privacy</a>
                 <a href="#">Terms</a>
                 <a href="#">Contact</a>
-                <a href="#">Twitter</a>
             </div>
-            <p class="footer-text">© 2026 Vantage Flex. Forged by Vantage Suites.</p>
         </div>
     </footer>
     
     <!-- Auth Modal -->
-    <div class="modal-overlay" id="authModal" onclick="closeAuthModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Welcome Back</h2>
-                <button class="modal-close" onclick="closeAuthModal()">×</button>
+    <div class="modal" id="authModal" onclick="closeAuthModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            <h2 class="modal-title" id="modalTitle">Welcome Back</h2>
+            <p class="modal-subtitle" id="modalSubtitle">Sign in to continue your training</p>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="signinTab" onclick="switchAuthTab('signin')">Sign In</button>
+                <button class="auth-tab" id="signupTab" onclick="switchAuthTab('signup')">Sign Up</button>
             </div>
-            <div class="modal-tabs">
-                <button class="modal-tab active" data-tab="signin" onclick="switchTab('signin')">Sign In</button>
-                <button class="modal-tab" data-tab="signup" onclick="switchTab('signup')">Create Account</button>
-            </div>
-            <div class="modal-body">
-                <div class="tab-content active" id="signin-tab">
-                    <form onsubmit="handleSignIn(event)">
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" id="signinEmail" placeholder="you@example.com" required>
-                            <div class="form-error" id="signinEmailError"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-input" id="signinPassword" placeholder="••••••••" required>
-                            <div class="form-error" id="signinPasswordError"></div>
-                        </div>
-                        <button type="submit" class="btn-submit" id="signinSubmit">Sign In</button>
-                    </form>
+            
+            <form id="signinForm" onsubmit="handleSignIn(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="signinEmail" placeholder="you@example.com" required>
                 </div>
-                <div class="tab-content" id="signup-tab">
-                    <form onsubmit="handleSignUp(event)">
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-input" id="signupEmail" placeholder="you@example.com" required>
-                            <div class="form-error" id="signupEmailError"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-input" id="signupPassword" placeholder="Min 6 characters" minlength="6" required>
-                            <div class="form-error" id="signupPasswordError"></div>
-                        </div>
-                        <button type="submit" class="btn-submit" id="signupSubmit">Create Account</button>
-                    </form>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signinPassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
+                    <div class="form-error" id="signinPasswordError">Invalid credentials</div>
                 </div>
-                <div class="oauth-divider">or continue with</div>
-                <div class="oauth-buttons">
-                    <button class="btn-oauth" onclick="signInWithOAuth('google')">
-                        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="currentColor" d="M9 3.48c1.69 0 2.83.73 3.48 1.34l2.54-2.48C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l2.91 2.26C4.6 5.05 6.62 3.48 9 3.48z"/></svg>
-                        Google
-                    </button>
-                    <button class="btn-oauth" onclick="signInWithOAuth('github')">
-                        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="currentColor" d="M9 0C4.03 0 0 4.03 0 9c0 3.98 2.58 7.37 6.16 8.57.45.08.62-.2.62-.43 0-.21-.01-.77-.01-1.51-2.5.54-3.03-1.21-3.03-1.21-.41-1.04-1-1.32-1-1.32-.82-.56.06-.55.06-.55.9.06 1.38.93 1.38.93.8 1.38 2.1.98 2.62.75.08-.58.31-.98.57-1.21-2-.23-4.1-1-4.1-4.44 0-.98.35-1.78.93-2.41-.09-.23-.4-1.15.09-2.4 0 0 .76-.24 2.5.93.72-.2 1.5-.3 2.27-.3.77 0 1.55.1 2.27.3 1.73-1.17 2.5-.93 2.5-.93.49 1.25.18 2.17.09 2.4.58.63.93 1.43.93 2.41 0 3.45-2.1 4.2-4.1 4.44.32.28.61.83.61 1.68 0 1.21-.01 2.19-.01 2.49 0 .23.17.52.62.43C15.42 16.37 18 12.98 18 9c0-4.97-4.03-9-9-9z"/></svg>
-                        GitHub
-                    </button>
+                <button type="submit" class="btn-submit" id="signinSubmit">Sign In</button>
+            </form>
+            
+            <form id="signupForm" class="hidden" onsubmit="handleSignUp(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="you@example.com" required>
+                    <div class="form-error" id="signupEmailError">Failed to create account</div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                By continuing, you agree to our <a href="#">Privacy Policy</a>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
+                    <div class="form-error" id="signupPasswordError">Password must be at least 6 characters</div>
+                </div>
+                <button type="submit" class="btn-submit" id="signupSubmit">Create Account</button>
+            </form>
+            
+            <div class="oauth-buttons">
+                <button class="btn-oauth" onclick="signInWithOAuth('google')">
+                    <span>🔍</span> Google
+                </button>
+                <button class="btn-oauth" onclick="signInWithOAuth('github')">
+                    <span>🐙</span> GitHub
+                </button>
             </div>
         </div>
     </div>
-
+    
     <script>
-        // Particle System
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                container.appendChild(particle);
-            }
+        // Wait for AuthManager
+        function waitForAuth(maxAttempts = 50) {
+            return new Promise((resolve, reject) => {
+                let attempts = 0;
+                const check = setInterval(() => {
+                    attempts++;
+                    if (window.AuthManager?.signInWithEmail && window.AuthManager?.signUpWithEmail) {
+                        clearInterval(check);
+                        resolve();
+                    } else if (attempts >= maxAttempts) {
+                        clearInterval(check);
+                        reject(new Error('Authentication system failed to load'));
+                    }
+                }, 100);
+            });
         }
         
-        createParticles();
-        
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        // Observe elements
-        document.querySelectorAll('.feature-card, .showcase-grid, .cta-box').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-            observer.observe(el);
-        });
-        
         // Modal Functions
-        function showAuthModal() {
+        let currentTab = 'signin';
+        
+        function showAuthModal(tab = 'signin') {
+            currentTab = tab;
+            updateAuthUI();
             document.getElementById('authModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -1883,34 +1253,42 @@
             }
         }
         
-        function switchTab(tab) {
-            document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.modal-tab[data-tab="${tab}"]`).classList.add('active');
-            document.getElementById(`${tab}-tab`).classList.add('active');
-            document.getElementById('modalTitle').textContent = tab === 'signin' ? 'Welcome Back' : 'Create Account';
+        function switchAuthTab(tab) {
+            currentTab = tab;
+            updateAuthUI();
         }
         
-        function showError(fieldId, message) {
-            const errorEl = document.getElementById(`${fieldId}Error`);
-            errorEl.textContent = message;
-            errorEl.classList.add('show');
-            document.getElementById(fieldId).style.borderColor = '#ef4444';
+        function updateAuthUI() {
+            const signinTab = document.getElementById('signinTab');
+            const signupTab = document.getElementById('signupTab');
+            const signinForm = document.getElementById('signinForm');
+            const signupForm = document.getElementById('signupForm');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            
+            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
+            
+            if (currentTab === 'signin') {
+                signinTab.classList.add('active');
+                signupTab.classList.remove('active');
+                signinForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                modalTitle.textContent = 'Welcome Back';
+                modalSubtitle.textContent = 'Sign in to continue your training';
+            } else {
+                signinTab.classList.remove('active');
+                signupTab.classList.add('active');
+                signinForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                modalTitle.textContent = 'Create Account';
+                modalSubtitle.textContent = 'Start your transformation today';
+            }
         }
         
-        function clearErrors() {
-            document.querySelectorAll('.form-error').forEach(el => {
-                el.textContent = '';
-                el.classList.remove('show');
-            });
-            document.querySelectorAll('.form-input').forEach(el => {
-                el.style.borderColor = '';
-            });
-        }
-        
+        // Form Handlers
         async function handleSignIn(event) {
             event.preventDefault();
-            clearErrors();
+            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
             
             const email = document.getElementById('signinEmail').value;
             const password = document.getElementById('signinPassword').value;
@@ -1924,7 +1302,8 @@
                 await window.AuthManager.signInWithEmail(email, password);
                 window.location.href = 'workouts.html';
             } catch (error) {
-                showError('signinPassword', error.message || 'Invalid credentials');
+                document.getElementById('signinPasswordError').textContent = error.message || 'Invalid credentials';
+                document.getElementById('signinPasswordError').classList.add('visible');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Sign In';
             }
@@ -1932,14 +1311,14 @@
         
         async function handleSignUp(event) {
             event.preventDefault();
-            clearErrors();
+            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
             
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             const submitBtn = document.getElementById('signupSubmit');
             
             if (password.length < 6) {
-                showError('signupPassword', 'Password must be at least 6 characters');
+                document.getElementById('signupPasswordError').classList.add('visible');
                 return;
             }
             
@@ -1952,1070 +1331,8 @@
                 await window.AuthManager.signInWithEmail(email, password);
                 window.location.href = 'workouts.html';
             } catch (error) {
-                showError('signupEmail', error.message || 'Failed to create account');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Create Account';
-            }
-        }
-        
-        async function signInWithOAuth(provider) {
-            try {
-                await waitForAuth();
-                window.AuthManager.signIn(provider);
-            } catch (error) {
-                alert('Authentication system is loading. Please try again.');
-            }
-        }
-        
-        // Close modal on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAuthModal();
-        });
-        
-        // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-        
-        // Auto-redirect if logged in
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.AuthManager?.getCurrentUser()) {
-                    window.location.href = 'workouts.html';
-                    clearInterval(checkAuth);
-                }
-            }, 500);
-        });
-    </script>
-</body>
-</html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vantage Flex — Elite Fitness Intelligence</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="supabase-config.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0a0a0b;
-            color: #fafaf9;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        /* Ambient Background */
-        .ambient-bg {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .ambient-bg::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(200, 121, 65, 0.15), transparent),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(166, 124, 82, 0.1), transparent),
-                radial-gradient(ellipse 50% 30% at 50% 100%, rgba(200, 121, 65, 0.08), transparent);
-            animation: ambientShift 20s ease-in-out infinite;
-        }
-        
-        @keyframes ambientShift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, 2%) rotate(1deg); }
-            66% { transform: translate(-1%, 1%) rotate(-1deg); }
-        }
-        
-        /* Noise Texture */
-        .noise {
-            position: fixed;
-            inset: 0;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 1;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-        
-        /* Navigation */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 1.5rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(10,10,11,0.8), transparent);
-            backdrop-filter: blur(10px);
-        }
-        
-        .nav-logo {
-            font-size: 1.25rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #fafaf9;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .nav-logo span {
-            color: #c87941;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: #a1a1aa;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        
-        .nav-links a:hover {
-            color: #fafaf9;
-        }
-        
-        .nav-cta {
-            padding: 0.625rem 1.25rem;
-            background: #c87941;
-            color: #0a0a0b;
-            border: none;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .nav-cta:hover {
-            background: #d48a52;
-            transform: translateY(-1px);
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-            padding: 8rem 2rem 4rem;
-        }
-        
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-        }
-        
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(200, 121, 65, 0.1);
-            border: 1px solid rgba(200, 121, 65, 0.2);
-            color: #c87941;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 2rem;
-        }
-        
-        .hero-eyebrow::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #c87941;
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            letter-spacing: -0.04em;
-            line-height: 1;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fafaf9 0%, #a1a1aa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero-title span {
-            background: linear-gradient(135deg, #c87941 0%, #d48a52 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero-subtitle {
-            font-size: clamp(1.125rem, 2vw, 1.5rem);
-            color: #71717a;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-            font-weight: 400;
-            line-height: 1.7;
-        }
-        
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 4rem;
-        }
-        
-        .btn-primary {
-            padding: 1rem 2.5rem;
-            background: #c87941;
-            color: #0a0a0b;
-            border: none;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(200, 121, 65, 0.3);
-        }
-        
-        .btn-primary:hover {
-            background: #d48a52;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(200, 121, 65, 0.4);
-        }
-        
-        .btn-secondary {
-            padding: 1rem 2.5rem;
-            background: transparent;
-            color: #fafaf9;
-            border: 1px solid #3f3f46;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-secondary:hover {
-            border-color: #c87941;
-            color: #c87941;
-        }
-        
-        /* Hero Visual */
-        .hero-visual {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #c87941;
-            letter-spacing: -0.02em;
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
-            color: #71717a;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-        }
-        
-        /* Features Section */
-        .features {
-            padding: 8rem 2rem;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 5rem;
-        }
-        
-        .section-eyebrow {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: #c87941;
-            margin-bottom: 1rem;
-        }
-        
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: #fafaf9;
-            margin-bottom: 1rem;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .feature-card {
-            padding: 2.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(200, 121, 65, 0.5), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .feature-card:hover {
-            border-color: rgba(200, 121, 65, 0.2);
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.03);
-        }
-        
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-        
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(200, 121, 65, 0.1);
-            border: 1px solid rgba(200, 121, 65, 0.2);
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem;
-        }
-        
-        .feature-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #fafaf9;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.01em;
-        }
-        
-        .feature-desc {
-            font-size: 0.9375rem;
-            color: #71717a;
-            line-height: 1.7;
-        }
-        
-        /* CTA Section */
-        .cta {
-            padding: 8rem 2rem;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .cta-box {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 5rem;
-            background: linear-gradient(135deg, rgba(200, 121, 65, 0.1) 0%, rgba(166, 124, 82, 0.05) 100%);
-            border: 1px solid rgba(200, 121, 65, 0.2);
-            position: relative;
-        }
-        
-        .cta-box::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border: 1px solid transparent;
-            background: linear-gradient(135deg, rgba(200, 121, 65, 0.3), transparent 50%) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-        
-        .cta-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-        }
-        
-        .cta-subtitle {
-            font-size: 1.125rem;
-            color: #a1a1aa;
-            margin-bottom: 2.5rem;
-        }
-        
-        /* Footer */
-        .footer {
-            padding: 3rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            z-index: 2;
-        }
-        
-        .footer-text {
-            font-size: 0.875rem;
-            color: #52525b;
-        }
-        
-        /* Auth Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-        
-        .modal {
-            width: 100%;
-            max-width: 440px;
-            background: #141416;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 2.5rem;
-            position: relative;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        
-        .modal-overlay.active .modal {
-            transform: scale(1);
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            color: #71717a;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.2s;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-close:hover {
-            color: #fafaf9;
-        }
-        
-        .modal-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .modal-logo {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #fafaf9;
-            margin-bottom: 0.5rem;
-        }
-        
-        .modal-subtitle {
-            font-size: 0.9375rem;
-            color: #71717a;
-        }
-        
-        /* Auth Tabs */
-        .auth-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            padding: 4px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        
-        .auth-tab {
-            flex: 1;
-            padding: 0.75rem;
-            background: transparent;
-            border: none;
-            color: #71717a;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .auth-tab.active {
-            background: rgba(200, 121, 65, 0.15);
-            color: #c87941;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #a1a1aa;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #fafaf9;
-            font-size: 0.9375rem;
-            transition: all 0.2s;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: rgba(200, 121, 65, 0.5);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .form-input::placeholder {
-            color: #52525b;
-        }
-        
-        .form-error {
-            color: #ef4444;
-            font-size: 0.8125rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-        
-        .form-error.visible {
-            display: block;
-        }
-        
-        .btn-submit {
-            width: 100%;
-            padding: 1rem;
-            background: #c87941;
-            color: #0a0a0b;
-            border: none;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 0.5rem;
-        }
-        
-        .btn-submit:hover {
-            background: #d48a52;
-        }
-        
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            color: #52525b;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-        
-        /* OAuth Buttons */
-        .oauth-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .btn-oauth {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            padding: 0.875rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #fafaf9;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-oauth:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-        
-        .btn-oauth svg {
-            width: 20px;
-            height: 20px;
-        }
-        
-        .modal-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.8125rem;
-            color: #52525b;
-        }
-        
-        .modal-footer a {
-            color: #c87941;
-            text-decoration: none;
-        }
-        
-        .modal-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav { padding: 1rem 1.5rem; }
-            .nav-links { display: none; }
-            .hero { padding: 6rem 1.5rem 3rem; }
-            .hero-actions { flex-direction: column; }
-            .hero-actions button { width: 100%; }
-            .hero-stats { grid-template-columns: 1fr; gap: 1.5rem; }
-            .features { padding: 4rem 1.5rem; }
-            .features-grid { grid-template-columns: 1fr; }
-            .cta { padding: 4rem 1.5rem; }
-            .cta-box { padding: 3rem 2rem; }
-            .modal { padding: 2rem 1.5rem; }
-        }
-        
-        /* Utility */
-        .hidden { display: none !important; }
-    </style>
-</head>
-<body>
-    <div class="ambient-bg"></div>
-    <div class="noise"></div>
-    
-    <!-- Navigation -->
-    <nav class="nav">
-        <a href="#" class="nav-logo">
-            <span>◆</span> Vantage
-        </a>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#about">About</a>
-            <button class="nav-cta" onclick="showAuthModal()">Sign In</button>
-        </div>
-    </nav>
-    
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-eyebrow">Now in Open Beta</div>
-            <h1 class="hero-title">Train With <span>Precision</span></h1>
-            <p class="hero-subtitle">
-                Elite fitness intelligence for serious athletes. AI-powered workouts, 
-                nutrition planning, and progress tracking—engineered for results.
-            </p>
-            <div class="hero-actions">
-                <button class="btn-primary" onclick="showAuthModal('signup')">Start Free Trial</button>
-                <button class="btn-secondary" onclick="showAuthModal()">Sign In</button>
-            </div>
-            
-            <div class="hero-visual">
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-value">500+</div>
-                        <div class="stat-label">Exercises</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">10K+</div>
-                        <div class="stat-label">Recipes</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">50+</div>
-                        <div class="stat-label">Quests</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Features -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-eyebrow">Capabilities</div>
-                <h2 class="section-title">Everything You Need</h2>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Smart Workouts</h3>
-                    <p class="feature-desc">AI-generated training programs that adapt to your equipment, experience, and goals.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🍳</div>
-                    <h3 class="feature-title">Nutrition Engine</h3>
-                    <p class="feature-desc">High-protein recipes from ingredients you have. Complete macros, zero waste.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">Verified Quests</h3>
-                    <p class="feature-desc">Camera-powered challenges that prove your progress. Earn rank, gain status.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Analytics</h3>
-                    <p class="feature-desc">Every metric that matters. Visualize strength, track consistency, optimize recovery.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🥗</div>
-                    <h3 class="feature-title">Meal Planning</h3>
-                    <p class="feature-desc">Weekly plans built around your targets. Auto-generated shopping lists included.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏆</div>
-                    <h3 class="feature-title">Leaderboard</h3>
-                    <p class="feature-desc">Compete at your level. Rise through ranks. Prove your dedication.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- CTA -->
-    <section class="cta">
-        <div class="cta-box">
-            <h2 class="cta-title">Start Your Transformation</h2>
-            <p class="cta-subtitle">Join thousands of athletes training smarter.</p>
-            <button class="btn-primary" onclick="showAuthModal('signup')" style="padding: 1.25rem 3rem; font-size: 1rem;">
-                Create Free Account
-            </button>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="footer">
-        <p class="footer-text">© 2026 Vantage Flex. Engineered for performance.</p>
-    </footer>
-    
-    <!-- Auth Modal -->
-    <div class="modal-overlay" id="authModal" onclick="closeAuthModalOnBackdrop(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeAuthModal()">×</button>
-            
-            <div class="modal-header">
-                <div class="modal-logo">◆</div>
-                <h2 class="modal-title" id="modalTitle">Welcome Back</h2>
-                <p class="modal-subtitle" id="modalSubtitle">Sign in to continue your training</p>
-            </div>
-            
-            <!-- Auth Tabs -->
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="signinTab" onclick="switchAuthTab('signin')">Sign In</button>
-                <button class="auth-tab" id="signupTab" onclick="switchAuthTab('signup')">Create Account</button>
-            </div>
-            
-            <!-- Sign In Form -->
-            <form id="signinForm" onsubmit="handleSignIn(event)">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="signinEmail" placeholder="you@example.com" required>
-                    <div class="form-error" id="signinEmailError">Invalid email address</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signinPassword" placeholder="••••••••" required>
-                    <div class="form-error" id="signinPasswordError">Password required</div>
-                </div>
-                <button type="submit" class="btn-submit" id="signinSubmit">Sign In</button>
-            </form>
-            
-            <!-- Sign Up Form -->
-            <form id="signupForm" class="hidden" onsubmit="handleSignUp(event)">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="signupEmail" placeholder="you@example.com" required>
-                    <div class="form-error" id="signupEmailError">Invalid email address</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" placeholder="Min 6 characters" minlength="6" required>
-                    <div class="form-error" id="signupPasswordError">Password must be at least 6 characters</div>
-                </div>
-                <button type="submit" class="btn-submit" id="signupSubmit">Create Account</button>
-            </form>
-            
-            <div class="divider">or continue with</div>
-            
-            <div class="oauth-buttons">
-                <button class="btn-oauth" onclick="signInWithOAuth('google')">
-                    <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                    Continue with Google
-                </button>
-                <button class="btn-oauth" onclick="signInWithOAuth('github')">
-                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.981.429.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    Continue with GitHub
-                </button>
-            </div>
-            
-            <div class="modal-footer">
-                By continuing, you agree to our <a href="privacy.html">Privacy Policy</a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Wait for AuthManager to be ready
-        function waitForAuth(maxAttempts = 50) {
-            return new Promise((resolve, reject) => {
-                let attempts = 0;
-                const check = setInterval(() => {
-                    attempts++;
-                    if (window.AuthManager?.signInWithEmail && window.AuthManager?.signUpWithEmail) {
-                        clearInterval(check);
-                        resolve();
-                    } else if (attempts >= maxAttempts) {
-                        clearInterval(check);
-                        reject(new Error('Authentication system failed to load. Please refresh the page.'));
-                    }
-                }, 100);
-            });
-        }
-        
-        // Auto-redirect if logged in
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkAuth = setInterval(() => {
-                if (window.AuthManager?.getCurrentUser()) {
-                    const redirect = sessionStorage.getItem('redirectAfterLogin') || 'workouts.html';
-                    sessionStorage.removeItem('redirectAfterLogin');
-                    window.location.href = redirect;
-                    clearInterval(checkAuth);
-                }
-            }, 500);
-        });
-        
-        // Modal Functions
-        let currentTab = 'signin';
-        
-        function showAuthModal(tab = 'signin') {
-            currentTab = tab;
-            updateAuthUI();
-            document.getElementById('authModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.remove('active');
-            document.body.style.overflow = '';
-            clearErrors();
-        }
-        
-        function closeAuthModalOnBackdrop(event) {
-            if (event.target === event.currentTarget) {
-                closeAuthModal();
-            }
-        }
-        
-        function switchAuthTab(tab) {
-            currentTab = tab;
-            updateAuthUI();
-            clearErrors();
-        }
-        
-        function updateAuthUI() {
-            const signinTab = document.getElementById('signinTab');
-            const signupTab = document.getElementById('signupTab');
-            const signinForm = document.getElementById('signinForm');
-            const signupForm = document.getElementById('signupForm');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalSubtitle = document.getElementById('modalSubtitle');
-            
-            if (currentTab === 'signin') {
-                signinTab.classList.add('active');
-                signupTab.classList.remove('active');
-                signinForm.classList.remove('hidden');
-                signupForm.classList.add('hidden');
-                modalTitle.textContent = 'Welcome Back';
-                modalSubtitle.textContent = 'Sign in to continue your training';
-            } else {
-                signinTab.classList.remove('active');
-                signupTab.classList.add('active');
-                signinForm.classList.add('hidden');
-                signupForm.classList.remove('hidden');
-                modalTitle.textContent = 'Create Account';
-                modalSubtitle.textContent = 'Start your transformation today';
-            }
-        }
-        
-        function clearErrors() {
-            document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
-        }
-        
-        function showError(fieldId, show = true) {
-            const errorEl = document.getElementById(fieldId + 'Error');
-            if (errorEl) {
-                errorEl.classList.toggle('visible', show);
-            }
-        }
-        
-        // Form Handlers
-        async function handleSignIn(event) {
-            event.preventDefault();
-            clearErrors();
-            
-            const email = document.getElementById('signinEmail').value;
-            const password = document.getElementById('signinPassword').value;
-            const submitBtn = document.getElementById('signinSubmit');
-            
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Signing in...';
-            
-            try {
-                await waitForAuth();
-                await window.AuthManager.signInWithEmail(email, password);
-                window.location.href = 'workouts.html';
-            } catch (error) {
-                showError('signinPassword');
-                document.getElementById('signinPasswordError').textContent = error.message || 'Invalid credentials';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Sign In';
-            }
-        }
-        
-        async function handleSignUp(event) {
-            event.preventDefault();
-            clearErrors();
-            
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const submitBtn = document.getElementById('signupSubmit');
-            
-            console.log('Sign up attempt for:', email);
-            
-            if (password.length < 6) {
-                showError('signupPassword');
-                document.getElementById('signupPasswordError').textContent = 'Password must be at least 6 characters';
-                return;
-            }
-            
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Creating account...';
-            
-            try {
-                console.log('Waiting for AuthManager...');
-                await waitForAuth();
-                console.log('AuthManager ready, signing up...');
-                
-                const signUpResult = await window.AuthManager.signUpWithEmail(email, password);
-                console.log('Sign up successful:', signUpResult);
-                
-                // Auto sign in after signup
-                console.log('Auto signing in...');
-                await window.AuthManager.signInWithEmail(email, password);
-                window.location.href = 'workouts.html';
-            } catch (error) {
-                console.error('Sign up error:', error);
-                showError('signupEmail');
-                document.getElementById('signupEmailError').textContent = error.message || 'Failed to create account. Check console for details.';
+                document.getElementById('signupEmailError').textContent = error.message || 'Failed to create account';
+                document.getElementById('signupEmailError').classList.add('visible');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Create Account';
             }
@@ -3027,136 +1344,129 @@
                 await waitForAuth();
                 window.AuthManager.signIn(provider);
             } catch (error) {
-                alert('Authentication system is loading. Please try again in a moment.');
+                alert('Authentication system is loading. Please try again.');
             }
         }
         
-        // Escape key to close modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAuthModal();
-        });
-        
-        // Three.js 3D Background Scene
-        let scene, camera, renderer, particles3D, wireframeObjects = [];
+        // Three.js Scene
+        let scene, camera, renderer, particles, shapes = [];
+        let mouseX = 0, mouseY = 0;
         
         function initThreeJS() {
-            const canvas = document.getElementById('three-canvas');
+            const canvas = document.getElementById('webgl-canvas');
             if (!canvas || !window.THREE) return;
             
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 50;
+            camera.position.z = 30;
             
             renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             
-            // Create floating wireframe geometries
+            // Create geometric shapes
             const geometries = [
-                new THREE.IcosahedronGeometry(4, 0),
-                new THREE.OctahedronGeometry(3, 0),
-                new THREE.TorusGeometry(5, 1.5, 8, 20),
-                new THREE.TetrahedronGeometry(4, 0),
-                new THREE.BoxGeometry(5, 5, 5),
-                new THREE.SphereGeometry(3, 8, 8)
+                new THREE.IcosahedronGeometry(2, 0),
+                new THREE.OctahedronGeometry(1.5, 0),
+                new THREE.TorusGeometry(3, 0.8, 8, 20),
+                new THREE.TetrahedronGeometry(2, 0),
+                new THREE.BoxGeometry(2.5, 2.5, 2.5),
+                new THREE.SphereGeometry(1.8, 8, 8),
+                new THREE.ConeGeometry(2, 4, 8)
             ];
             
-            const copperColor = 0xc87941;
-            const copperLight = 0xd48a52;
+            const copperMaterial = new THREE.MeshBasicMaterial({
+                color: 0xc87941,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.4
+            });
+            
+            const copperLightMaterial = new THREE.MeshBasicMaterial({
+                color: 0xd48a52,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
+            });
             
             geometries.forEach((geom, i) => {
-                const wireframe = new THREE.WireframeGeometry(geom);
-                const material = new THREE.LineBasicMaterial({ 
-                    color: i % 2 === 0 ? copperColor : copperLight,
-                    transparent: true,
-                    opacity: 0.3
-                });
-                const wireframeMesh = new THREE.LineSegments(wireframe, material);
+                const mesh = new THREE.Mesh(geom, i % 2 === 0 ? copperMaterial : copperLightMaterial);
+                mesh.position.x = (Math.random() - 0.5) * 60;
+                mesh.position.y = (Math.random() - 0.5) * 40;
+                mesh.position.z = (Math.random() - 0.5) * 20 - 10;
                 
-                wireframeMesh.position.x = (Math.random() - 0.5) * 100;
-                wireframeMesh.position.y = (Math.random() - 0.5) * 60;
-                wireframeMesh.position.z = (Math.random() - 0.5) * 30 - 20;
-                
-                wireframeMesh.userData = {
+                mesh.userData = {
                     rotationSpeed: {
                         x: (Math.random() - 0.5) * 0.01,
                         y: (Math.random() - 0.5) * 0.01,
-                        z: (Math.random() - 0.5) * 0.01
+                        z: (Math.random() - 0.5) * 0.005
                     },
-                    floatSpeed: Math.random() * 0.5 + 0.2,
-                    floatOffset: Math.random() * Math.PI * 2
+                    floatSpeed: Math.random() * 0.5 + 0.3,
+                    floatOffset: Math.random() * Math.PI * 2,
+                    originalY: mesh.position.y
                 };
                 
-                scene.add(wireframeMesh);
-                wireframeObjects.push(wireframeMesh);
+                scene.add(mesh);
+                shapes.push(mesh);
             });
             
-            // Create floating particles
+            // Particles
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 200;
+            const particlesCount = 300;
             const posArray = new Float32Array(particlesCount * 3);
             
             for (let i = 0; i < particlesCount * 3; i++) {
-                posArray[i] = (Math.random() - 0.5) * 120;
+                posArray[i] = (Math.random() - 0.5) * 100;
             }
             
             particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
             
             const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.5,
-                color: copperColor,
+                size: 0.3,
+                color: 0xc87941,
                 transparent: true,
                 opacity: 0.6,
                 blending: THREE.AdditiveBlending
             });
             
-            particles3D = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particles3D);
+            particles = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particles);
             
             animate();
         }
-        
-        let mouseX = 0, mouseY = 0;
-        let targetX = 0, targetY = 0;
         
         function animate() {
             requestAnimationFrame(animate);
             
             const time = Date.now() * 0.001;
             
-            // Animate wireframe objects
-            wireframeObjects.forEach(obj => {
-                obj.rotation.x += obj.userData.rotationSpeed.x;
-                obj.rotation.y += obj.userData.rotationSpeed.y;
-                obj.rotation.z += obj.userData.rotationSpeed.z;
+            shapes.forEach(shape => {
+                shape.rotation.x += shape.userData.rotationSpeed.x;
+                shape.rotation.y += shape.userData.rotationSpeed.y;
+                shape.rotation.z += shape.userData.rotationSpeed.z;
                 
-                obj.position.y += Math.sin(time * obj.userData.floatSpeed + obj.userData.floatOffset) * 0.02;
+                shape.position.y = shape.userData.originalY + Math.sin(time * shape.userData.floatSpeed + shape.userData.floatOffset) * 2;
             });
             
-            // Animate particles
-            if (particles3D) {
-                particles3D.rotation.y += 0.0005;
-                particles3D.rotation.x += 0.0002;
+            if (particles) {
+                particles.rotation.y += 0.0003;
+                particles.rotation.x += 0.0001;
             }
             
-            // Smooth camera movement based on mouse
-            targetX += (mouseX - targetX) * 0.05;
-            targetY += (mouseY - targetY) * 0.05;
-            
-            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
+            camera.position.x += (mouseX * 3 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 3 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
             
             renderer.render(scene, camera);
         }
         
-        // Mouse move handler for 3D effects
+        // Mouse tracking
         document.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth) * 2 - 1;
             mouseY = (e.clientY / window.innerHeight) * 2 - 1;
             
-            // 3D Card tilt effect
-            const cards = document.querySelectorAll('.card-3d');
+            // Card tilt effect
+            const cards = document.querySelectorAll('.feature-card, .floating-card');
             cards.forEach(card => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -3165,27 +1475,17 @@
                 if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / centerY * -15;
-                    const rotateY = (x - centerX) / centerX * 15;
+                    const rotateX = (y - centerY) / centerY * -10;
+                    const rotateY = (x - centerX) / centerX * 10;
                     
-                    card.style.setProperty('--rotateX', `${rotateX}deg`);
-                    card.style.setProperty('--rotateY', `${rotateY}deg`);
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+                } else {
+                    card.style.transform = '';
                 }
             });
-            
-            // Parallax effect for hero content
-            const heroContent = document.querySelector('.hero-content-3d');
-            if (heroContent) {
-                heroContent.style.transform = `
-                    perspective(1500px) 
-                    rotateY(${mouseX * 5}deg) 
-                    rotateX(${-mouseY * 5}deg)
-                    translateZ(0)
-                `;
-            }
         });
         
-        // Window resize handler
+        // Resize handler
         window.addEventListener('resize', () => {
             if (camera && renderer) {
                 camera.aspect = window.innerWidth / window.innerHeight;
@@ -3194,10 +1494,41 @@
             }
         });
         
-        // Initialize Three.js on load
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
+            
+            // Check auth state
+            const checkAuth = setInterval(() => {
+                if (window.AuthManager?.getCurrentUser?.()) {
+                    window.location.href = 'workouts.html';
+                    clearInterval(checkAuth);
+                }
+            }, 500);
         });
+        
+        // Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAuthModal();
+        });
+        
+        // Scroll animations
+        if (window.gsap && window.ScrollTrigger) {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            gsap.from('.feature-card', {
+                scrollTrigger: {
+                    trigger: '.features-grid',
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
+        }
     </script>
 </body>
 </html>
