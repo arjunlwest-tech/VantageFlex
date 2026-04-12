@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vantageflex",
+  "compatibility_date": "2026-04-12",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "VANTAGEFLEX"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
