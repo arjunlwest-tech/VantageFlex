@@ -543,17 +543,57 @@ const AuthGate = {
     }
 };
 
+// Robust initialization with retry
+async function initializeAuth() {
+    let retries = 0;
+    const maxRetries = 50;
+    
+    while (retries < maxRetries) {
+        try {
+            // Check if Supabase library is loaded
+            if (!window.supabase) {
+                console.log('Waiting for Supabase library... attempt', retries + 1);
+                await new Promise(resolve => setTimeout(resolve, 100));
+                retries++;
+                continue;
+            }
+            
+            // Initialize Supabase client
+            await initSupabase();
+            
+            // Initialize AuthManager
+            await AuthManager.init();
+            
+            console.log('✅ Auth system fully initialized');
+            return true;
+        } catch (err) {
+            console.error('Auth init error:', err);
+            retries++;
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+    }
+    
+    console.error('❌ Failed to initialize auth after', maxRetries, 'attempts');
+    return false;
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize auth gate immediately
+    // Initialize auth gate immediately (this just sets up UI)
     AuthGate.init();
     
-    // Then initialize auth manager
-    AuthManager.init().catch(console.error);
+    // Initialize auth with retry
+    initializeAuth().then(success => {
+        if (!success) {
+            console.error('Auth system failed to load. Check Supabase configuration.');
+        }
+    });
 });
 
-// Export for global access
+// Export for global access - these will be populated after init
 window.AuthManager = AuthManager;
 window.SubscriptionManager = SubscriptionManager;
 window.AuthGate = AuthGate;
-window.supabaseClient = supabaseClient;
+Object.defineProperty(window, 'supabaseClient', {
+    get: () => supabaseClient
+});
