@@ -48,6 +48,68 @@
             transform-style: preserve-3d;
         }
         
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            background: var(--charcoal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .loading-content {
+            text-align: center;
+        }
+        
+        .loading-logo {
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: logoPulse 2s ease-in-out infinite;
+            margin-bottom: 2rem;
+        }
+        
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .loading-bar-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+        }
+        
+        .loading-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--copper), var(--copper-light));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
         /* Scrollytelling Container */
         .scrolly-container {
             scroll-snap-type: y mandatory;
@@ -1221,9 +1283,9 @@
         /* Feature Cards - 3D Glassmorphism */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            perspective: 2000px;
+            margin-top: 4rem;
         }
         
         .feature-card {
@@ -1272,6 +1334,61 @@
         
         .feature-card:hover::after {
             transform: scaleX(1);
+        }
+        
+        /* Card Shine Effect */
+        .feature-card .card-shine {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                105deg,
+                transparent 40%,
+                rgba(255, 255, 255, 0.1) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.1) 55%,
+                transparent 60%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .feature-card:hover .card-shine {
+            transform: translateX(100%);
+        }
+        
+        /* Card Glow Effect */
+        .feature-card .card-glow {
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, var(--copper), var(--copper-light), var(--copper));
+            border-radius: inherit;
+            opacity: 0;
+            filter: blur(15px);
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .feature-card:hover .card-glow {
+            opacity: 0.4;
+        }
+        
+        /* Card Number Badge */
+        .feature-card .card-number {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--copper);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .card-number {
+            opacity: 1;
+            transform: scale(1.1);
         }
         
         .feature-icon {
@@ -2035,6 +2152,17 @@
     <!-- Noise Overlay -->
     <div class="noise-overlay"></div>
     
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">VF</div>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            <div class="loading-text">Loading Experience...</div>
+        </div>
+    </div>
+    
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
     
@@ -2126,31 +2254,49 @@
             </div>
             <div class="features-grid">
                 <div class="feature-card">
+                    <div class="card-shine"></div>
+                    <div class="card-glow"></div>
+                    <span class="card-number">01</span>
                     <div class="feature-icon">⚡</div>
                     <h3 class="feature-title">AI Workout Generator</h3>
                     <p class="feature-desc">Intelligent algorithms create personalized routines based on your goals, equipment, and fitness level.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="card-shine"></div>
+                    <div class="card-glow"></div>
+                    <span class="card-number">02</span>
                     <div class="feature-icon">🍽️</div>
                     <h3 class="feature-title">Smart Meal Plans</h3>
                     <p class="feature-desc">Nutrition tailored to your macros with delicious, easy-to-prepare recipes that fuel your gains.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="card-shine"></div>
+                    <div class="card-glow"></div>
+                    <span class="card-number">03</span>
                     <div class="feature-icon">📊</div>
                     <h3 class="feature-title">Progress Tracking</h3>
                     <p class="feature-desc">Visualize your journey with detailed analytics, strength progression, and body composition changes.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="card-shine"></div>
+                    <div class="card-glow"></div>
+                    <span class="card-number">04</span>
                     <div class="feature-icon">🏆</div>
                     <h3 class="feature-title">Gamified Quests</h3>
                     <p class="feature-desc">Stay motivated with challenges, achievements, and rewards that make fitness addictive.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="card-shine"></div>
+                    <div class="card-glow"></div>
+                    <span class="card-number">05</span>
                     <div class="feature-icon">👥</div>
                     <h3 class="feature-title">Community</h3>
                     <p class="feature-desc">Connect with like-minded athletes, share progress, and compete on global leaderboards.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="card-shine"></div>
+                    <div class="card-glow"></div>
+                    <span class="card-number">06</span>
                     <div class="feature-icon">🎯</div>
                     <h3 class="feature-title">Form Analysis</h3>
                     <p class="feature-desc">AI-powered posture detection helps you perfect your technique and prevent injuries.</p>
@@ -2215,12 +2361,26 @@
     
     
     <!-- CTA Section -->
-    <section class="cta">
+    <section class="cta" id="cta">
         <div class="container">
             <div class="cta-container">
                 <div class="cta-box">
                     <h2 class="cta-title">Ready to Transform?</h2>
                     <p class="cta-subtitle">Experience the future of fitness with AI-powered workouts designed for you.</p>
+                    <div class="cta-benefits">
+                        <div class="cta-benefit">
+                            <span class="cta-benefit-icon">✓</span>
+                            <span>100% Free Forever</span>
+                        </div>
+                        <div class="cta-benefit">
+                            <span class="cta-benefit-icon">✓</span>
+                            <span>No Credit Card Required</span>
+                        </div>
+                        <div class="cta-benefit">
+                            <span class="cta-benefit-icon">✓</span>
+                            <span>Cancel Anytime</span>
+                        </div>
+                    </div>
                     <button class="btn-primary" onclick="window.location.href='workouts.html'" style="padding: 1.5rem 4rem; font-size: 1.125rem;">Get Started Free</button>
                 </div>
             </div>
@@ -2871,8 +3031,35 @@
             });
         }
         
+        // Loading Screen Handler
+        function initLoadingScreen() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingBar = document.getElementById('loadingBar');
+            
+            if (!loadingScreen) return;
+            
+            // Simulate loading progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Hide loading screen
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                        // Trigger entrance animations
+                        document.body.classList.add('loaded');
+                    }, 500);
+                }
+                loadingBar.style.width = progress + '%';
+            }, 150);
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            initLoadingScreen();
             initThreeJS();
             setupFeatureCards();
             generateParticles();
