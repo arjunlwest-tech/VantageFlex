@@ -3,6 +3,7 @@
  */
 
 let currentWorkout = null;
+let selectedEquipment = [];
 
 const state = {
     split: 'push',
@@ -14,10 +15,12 @@ const state = {
 function initWorkoutPage() {
     initToggleButtons();
     initDurationSlider();
+    initEquipmentSystem();
     initGenerateButton();
     initSaveButton();
     initNewWorkoutButton();
     updateSummary();
+    loadSavedEquipment();
 }
 
 function initToggleButtons() {
@@ -76,6 +79,102 @@ function updateSummary() {
     if (durationEl) durationEl.textContent = `${state.duration}M`;
 }
 
+function initEquipmentSystem() {
+    const input = document.getElementById('equipment-input');
+    const addBtn = document.getElementById('add-equipment-btn');
+    const chips = document.querySelectorAll('.equipment-chip');
+    
+    if (addBtn) {
+        addBtn.addEventListener('click', () => addEquipment(input.value));
+    }
+    
+    if (input) {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addEquipment(input.value);
+            }
+        });
+    }
+    
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const equipment = chip.dataset.equipment;
+            if (selectedEquipment.includes(equipment)) {
+                removeEquipment(equipment);
+            } else {
+                addEquipment(equipment);
+            }
+        });
+    });
+}
+
+function addEquipment(equipment) {
+    if (!equipment || typeof equipment !== 'string') return;
+    
+    equipment = equipment.toLowerCase().trim();
+    if (!equipment) return;
+    
+    if (!selectedEquipment.includes(equipment)) {
+        selectedEquipment.push(equipment);
+        updateEquipmentDisplay();
+        saveEquipment();
+        
+        // Update chip state if it exists
+        const chip = document.querySelector(`.equipment-chip[data-equipment="${equipment}"]`);
+        if (chip) chip.classList.add('active');
+    }
+    
+    const input = document.getElementById('equipment-input');
+    if (input) input.value = '';
+}
+
+function removeEquipment(equipment) {
+    selectedEquipment = selectedEquipment.filter(e => e !== equipment);
+    updateEquipmentDisplay();
+    saveEquipment();
+    
+    const chip = document.querySelector(`.equipment-chip[data-equipment="${equipment}"]`);
+    if (chip) chip.classList.remove('active');
+}
+
+function updateEquipmentDisplay() {
+    const container = document.getElementById('selected-equipment');
+    const countBadge = document.getElementById('equipment-count');
+    
+    if (container) {
+        container.innerHTML = selectedEquipment.map(item => `
+            <span class="selected-item">
+                ${item}
+                <button class="remove-btn" onclick="removeEquipment('${item}')">×</button>
+            </span>
+        `).join('');
+    }
+    
+    if (countBadge) {
+        countBadge.textContent = selectedEquipment.length > 0 
+            ? `${selectedEquipment.length} item${selectedEquipment.length > 1 ? 's' : ''}`
+            : 'Bodyweight';
+    }
+}
+
+function saveEquipment() {
+    localStorage.setItem('selectedEquipment', JSON.stringify(selectedEquipment));
+}
+
+function loadSavedEquipment() {
+    const saved = localStorage.getItem('selectedEquipment');
+    if (saved) {
+        selectedEquipment = JSON.parse(saved);
+        updateEquipmentDisplay();
+        
+        // Restore chip states
+        selectedEquipment.forEach(item => {
+            const chip = document.querySelector(`.equipment-chip[data-equipment="${item}"]`);
+            if (chip) chip.classList.add('active');
+        });
+    }
+}
+
 function initGenerateButton() {
     const btn = document.getElementById('generate-btn');
     if (!btn) return;
@@ -92,12 +191,22 @@ function generateAndDisplayWorkout() {
     btnLoading(document.getElementById('generate-btn'), true);
     
     setTimeout(() => {
-        currentWorkout = VantageFlex.generateWorkout(
-            state.split,
-            state.level,
-            state.goal,
-            state.duration
-        );
+        // Use equipment-based generation if equipment selected
+        if (selectedEquipment.length > 0 && window.VantageFlex?.generateEquipmentWorkout) {
+            currentWorkout = VantageFlex.generateEquipmentWorkout(
+                selectedEquipment,
+                state.level,
+                state.goal,
+                state.duration
+            );
+        } else {
+            currentWorkout = VantageFlex.generateWorkout(
+                state.split,
+                state.level,
+                state.goal,
+                state.duration
+            );
+        }
         
         renderWorkout(currentWorkout, exercisesContainer);
         

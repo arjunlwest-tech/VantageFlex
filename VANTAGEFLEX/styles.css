@@ -3491,4 +3491,104 @@ body {
     justify-content: center;
 }
 
+/* ========================================
+   EQUIPMENT SECTION STYLES
+   ======================================== */
+
+.equipment-section {
+    padding: var(--space-md) 0;
+}
+
+.equipment-input-group {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.equipment-input-group .form-input {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.equipment-input-group .form-input:focus {
+    outline: none;
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.popular-equipment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.equipment-chip {
+    padding: var(--space-xs) var(--space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.equipment-chip:hover {
+    background: rgba(255, 107, 53, 0.1);
+    border-color: rgba(255, 107, 53, 0.3);
+    color: var(--primary-orange);
+}
+
+.equipment-chip.active {
+    background: var(--gradient-fire);
+    border-color: transparent;
+    color: white;
+}
+
+.selected-equipment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    min-height: 32px;
+}
+
+.selected-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm);
+    background: linear-gradient(135deg, rgba(255,107,53,0.2) 0%, rgba(255,215,0,0.2) 100%);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-primary);
+    animation: bounceIn 0.3s ease;
+}
+
+.selected-item .remove-btn {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.selected-item .remove-btn:hover {
+    background: rgba(239, 68, 68, 0.8);
+    color: white;
+}
+
 

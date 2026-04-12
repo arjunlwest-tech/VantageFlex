@@ -23,7 +23,6 @@
             </a>
             <div class="nav-links">
                 <a href="index.html" class="nav-link active">Workouts</a>
-                <a href="equipment.html" class="nav-link">Equipment</a>
                 <a href="meal-plans.html" class="nav-link">Meal Plans</a>
                 <a href="recipes.html" class="nav-link">Recipes</a>
                 <a href="quests.html" class="nav-link">Quests</a>
@@ -87,6 +86,32 @@
                                     <button class="btn btn-toggle active" data-value="muscle">Muscle</button>
                                     <button class="btn btn-toggle" data-value="endurance">Endurance</button>
                                     <button class="btn btn-toggle" data-value="cut">Cut</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card animate-fade-in stagger-2">
+                            <div class="card-header">
+                                <h2 class="card-title">
+                                    <span>🏋️</span> Your Equipment
+                                </h2>
+                                <span class="badge badge-secondary" id="equipment-count">Bodyweight</span>
+                            </div>
+                            <div class="equipment-section">
+                                <div class="equipment-input-group">
+                                    <input type="text" id="equipment-input" class="form-input" placeholder="Type equipment (e.g., dumbbells, barbell)...">
+                                    <button class="btn btn-secondary" id="add-equipment-btn">Add</button>
+                                </div>
+                                <div class="popular-equipment" id="popular-equipment">
+                                    <button class="equipment-chip" data-equipment="dumbbells">Dumbbells</button>
+                                    <button class="equipment-chip" data-equipment="barbell">Barbell</button>
+                                    <button class="equipment-chip" data-equipment="bench">Bench</button>
+                                    <button class="equipment-chip" data-equipment="pull-up bar">Pull-up Bar</button>
+                                    <button class="equipment-chip" data-equipment="kettlebell">Kettlebell</button>
+                                    <button class="equipment-chip" data-equipment="resistance bands">Bands</button>
+                                </div>
+                                <div class="selected-equipment" id="selected-equipment">
+                                    <!-- Selected items appear here -->
                                 </div>
                             </div>
                         </div>
