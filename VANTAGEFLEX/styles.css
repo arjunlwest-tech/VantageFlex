@@ -1484,8 +1484,154 @@ body {
     .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; }
     .planner-grid { grid-template-columns: 1fr; }
-    .heading-hero { font-size: 40px; }
+    .heading-hero { font-size: 36px; }
+    .heading-xl { font-size: 32px; }
+    .heading-lg { font-size: 28px; }
+    .heading-md { font-size: 22px; }
     .pricing-grid { grid-template-columns: 1fr; }
+    
+    .nav-container {
+        padding: 0 var(--space-md);
+    }
+    
+    .nav-cta {
+        display: none;
+    }
+    
+    .section {
+        padding: var(--space-2xl) 0;
+    }
+    
+    .page-content {
+        padding-top: 80px;
+    }
+    
+    .card {
+        padding: var(--space-lg);
+    }
+    
+    .btn-group {
+        flex-wrap: wrap;
+    }
+    
+    .btn-toggle {
+        flex: 1 1 calc(50% - var(--space-xs));
+        min-width: 80px;
+    }
+    
+    .stat-card-premium {
+        padding: var(--space-lg);
+    }
+    
+    .stat-card-icon {
+        font-size: 32px;
+    }
+    
+    .timer-display {
+        font-size: 42px;
+    }
+    
+    .timer-btn {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .weekly-progress {
+        height: 60px;
+    }
+    
+    .progress-ring svg {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .progress-ring-value {
+        font-size: 24px;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .stat-divider {
+        display: none;
+    }
+    
+    .btn-lg {
+        padding: var(--space-md) var(--space-lg);
+        font-size: 14px;
+    }
+    
+    .range-slider {
+        height: 36px;
+    }
+    
+    .equipment-input-group {
+        flex-direction: column;
+    }
+    
+    .popular-equipment {
+        justify-content: center;
+    }
+    
+    .equipment-chip {
+        font-size: 12px;
+        padding: var(--space-xs) var(--space-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .heading-hero {
+        font-size: 28px;
+    }
+    
+    .hero-description {
+        font-size: 15px;
+    }
+    
+    .container {
+        padding: 0 var(--space-md);
+    }
+    
+    .btn-toggle {
+        font-size: 12px;
+        padding: var(--space-xs) var(--space-sm);
+    }
+    
+    .streak-number {
+        font-size: 48px;
+    }
+    
+    .stat-value {
+        font-size: 28px;
+    }
+    
+    .timer-display {
+        font-size: 36px;
+    }
+    
+    .workout-exercise {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    .exercise-controls {
+        width: 100%;
+    }
+    
+    .badge {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .card-title {
+        font-size: 16px;
+    }
+    
+    .text-body {
+        font-size: 14px;
+    }
 }
 
 /* ========================================
