@@ -1523,47 +1523,47 @@
     <div class="noise-overlay"></div>
     
     <!-- Navigation -->
-    <nav class="nav">
-        <a href="#" class="nav-logo">Vantage<span>Flex</span></a>
+    <nav class="nav nav-3d">
+        <a href="#" class="nav-logo text-3d">Vantage<span>Flex</span></a>
         <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#showcase">Showcase</a>
-            <a href="#pricing">Pricing</a>
-            <button class="nav-cta" onclick="window.location.href='workouts.html'">Get Started</button>
+            <a href="#features" class="nav-link-3d">Features</a>
+            <a href="#showcase" class="nav-link-3d">Showcase</a>
+            <a href="#pricing" class="nav-link-3d">Pricing</a>
+            <button class="nav-cta btn-3d" onclick="window.location.href='workouts.html'">Get Started</button>
         </div>
     </nav>
     
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-badge">Now in Open Beta</div>
-                <h1 class="hero-title">
+    <section class="hero hero-3d">
+        <div class="hero-container scene-3d">
+            <div class="hero-content hero-content-3d">
+                <div class="hero-badge float-3d">Now in Open Beta</div>
+                <h1 class="hero-title text-3d">
                     <span class="hero-title-line1">Train With</span>
                     <span class="hero-title-line2">Precision</span>
                 </h1>
                 <p class="hero-subtitle">AI-powered workout generation tailored to your goals, equipment, and experience level. Join the fitness revolution.</p>
                 <div class="hero-actions">
-                    <button class="btn-primary" onclick="window.location.href='workouts.html'">Start Free Trial</button>
-                    <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
+                    <button class="btn-primary btn-3d" onclick="window.location.href='workouts.html'">Start Free Trial</button>
+                    <button class="btn-secondary btn-3d" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
                 </div>
                 <div class="hero-stats">
-                    <div class="hero-stat">
+                    <div class="hero-stat stat-3d">
                         <div class="hero-stat-value">50K+</div>
                         <div class="hero-stat-label">Active Users</div>
                     </div>
-                    <div class="hero-stat">
+                    <div class="hero-stat stat-3d">
                         <div class="hero-stat-value">4.9★</div>
                         <div class="hero-stat-label">App Rating</div>
                     </div>
-                    <div class="hero-stat">
+                    <div class="hero-stat stat-3d">
                         <div class="hero-stat-value">100%</div>
                         <div class="hero-stat-label">Free Forever</div>
                     </div>
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="floating-card">
+                <div class="floating-card card-3d">
                     <div class="floating-card-header">
                         <div class="floating-card-avatar">💪</div>
                         <div class="floating-card-info">
@@ -2198,16 +2198,15 @@
         });
         
         // 3D Mouse Tracking
-        let mouseX = 0, mouseY = 0;
         let targetRotateX = 0, targetRotateY = 0;
         let currentRotateX = 0, currentRotateY = 0;
         
         document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            const mx = (e.clientX / window.innerWidth - 0.5) * 2;
+            const my = (e.clientY / window.innerHeight - 0.5) * 2;
             
-            targetRotateY = mouseX * 5; // -5 to 5 degrees
-            targetRotateX = -mouseY * 5; // -5 to 5 degrees
+            targetRotateY = mx * 5; // -5 to 5 degrees
+            targetRotateX = -my * 5; // -5 to 5 degrees
         });
         
         // Smooth 3D rotation animation
