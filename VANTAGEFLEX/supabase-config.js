@@ -4,9 +4,8 @@
  */
 
 // Supabase credentials
-// NOTE: Project changed to bwbjbevqqeqeqilhgatw - needs new anon key from dashboard
 const SUPABASE_URL = 'https://bwbjbevqqeqeqilhgatw.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4ZWFtc3Jmcm9ndHpxdW1jdndjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NTU0NjIsImV4cCI6MjA5MTUzMTQ2Mn0.bRvren2lNEXMeUxLle3ys_vSPfqMUwYZuR_fUfe-dcg'; // OLD KEY - NEEDS UPDATE
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3YmpiZXZxcWVxZXFpbGhnYXR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTg1OTYsImV4cCI6MjA5MTQzNDU5Nn0.LWoiv3P_u7TXReDH21cyuIpMxoRZW8-8aq7pezhlhVc';
 
 // Initialize Supabase client
 let supabaseClient = null;
