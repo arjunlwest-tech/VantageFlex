@@ -3836,157 +3836,191 @@ body.authenticated .footer {
 }
 
 /* ========================================
-   AUTH GATE - LOGIN REQUIRED OVERLAY
+   SOUND TOGGLE BUTTON
    ======================================== */
 
-.auth-gate {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    background: var(--bg-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.auth-gate::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(255,107,53,0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255,215,0,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(255,0,110,0.05) 0%, transparent 50%);
-    animation: aurora-rotate 20s linear infinite;
-}
-
-.auth-gate-content {
+.sound-toggle-btn {
     position: relative;
-    z-index: 2;
-    text-align: center;
-    max-width: 480px;
-    padding: var(--space-2xl);
-}
-
-.auth-gate-logo {
-    width: 100px;
-    height: 100px;
-    background: var(--gradient-fire);
-    border-radius: var(--radius-xl);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 56px;
-    margin: 0 auto var(--space-xl);
-    box-shadow: 0 20px 60px rgba(255, 107, 53, 0.4);
-    animation: logoPulse 2s ease-in-out infinite;
-}
-
-@keyframes logoPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 20px 60px rgba(255, 107, 53, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 30px 80px rgba(255, 107, 53, 0.6); }
-}
-
-.auth-gate-title {
-    font-size: 42px;
-    font-weight: 800;
-    margin-bottom: var(--space-md);
-    background: linear-gradient(135deg, #fff 0%, #a0a0b0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2;
-}
-
-.auth-gate-subtitle {
-    font-size: 18px;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-2xl);
-    line-height: 1.6;
-}
-
-.auth-gate-benefits {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-    margin-bottom: var(--space-2xl);
-}
-
-.auth-gate-benefit {
-    text-align: center;
-    padding: var(--space-md);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-md);
-}
-
-.auth-gate-benefit-icon {
-    font-size: 28px;
-    margin-bottom: var(--space-sm);
-    display: block;
-}
-
-.auth-gate-benefit-text {
-    font-size: 13px;
-    color: var(--text-muted);
-}
-
-.auth-gate-providers {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
-}
-
-.auth-gate-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-md);
-    padding: var(--space-md) var(--space-xl);
+    width: 40px;
+    height: 40px;
     border-radius: var(--radius-md);
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-left: var(--space-sm);
+}
+
+.sound-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.sound-toggle-btn.muted {
+    opacity: 0.5;
+}
+
+.sound-toggle-btn.muted:hover {
+    opacity: 0.8;
+}
+
+/* ========================================
+   WORKOUT TIMER
+   ======================================== */
+
+.workout-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+}
+
+.timer-display {
+    font-size: 56px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    background: var(--gradient-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+.timer-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.timer-controls {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.timer-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
 }
 
-.auth-gate-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+.timer-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
 }
 
-.auth-gate-btn svg {
-    width: 22px;
-    height: 22px;
+.timer-btn.active {
+    background: var(--gradient-fire);
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
 }
 
-.auth-gate-terms {
-    font-size: 13px;
+/* ========================================
+   PROGRESS RING / CHART
+   ======================================== */
+
+.progress-ring-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: var(--primary-orange);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.progress-ring-text {
+    position: absolute;
+    text-align: center;
+}
+
+.progress-ring-value {
+    font-size: 28px;
+    font-weight: 800;
+    background: var(--gradient-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.progress-ring-label {
+    font-size: 11px;
     color: var(--text-muted);
-    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.auth-gate-terms a {
-    color: var(--primary-orange);
-    text-decoration: none;
+/* Weekly progress bars */
+.weekly-progress {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-xs);
+    height: 80px;
+    padding: var(--space-sm) 0;
 }
 
-/* Hide content when auth gate is active */
-body.auth-required .page-content,
-body.auth-required .nav-premium,
-body.auth-required .footer {
-    display: none !important;
+.weekly-bar {
+    flex: 1;
+    background: var(--gradient-fire);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    min-height: 4px;
+    transition: height 0.5s ease;
+    opacity: 0.7;
 }
 
-/* Show content when authenticated */
-body.authenticated .auth-gate {
-    display: none !important;
+.weekly-bar.today {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.4);
+}
+
+.weekly-bar:hover {
+    opacity: 1;
+}
+
+.weekly-labels {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.weekly-label {
+    flex: 1;
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
 }
 
 /* ========================================

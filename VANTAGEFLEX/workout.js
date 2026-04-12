@@ -30,6 +30,8 @@ function initToggleButtons() {
             group.querySelectorAll('.btn-toggle').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
+            if (window.SoundSystem) SoundSystem.playClick();
+            
             const value = btn.dataset.value;
             const groupId = group.id;
             
@@ -119,6 +121,8 @@ function addEquipment(equipment) {
         updateEquipmentDisplay();
         saveEquipment();
         
+        if (window.SoundSystem) SoundSystem.playClick();
+        
         // Update chip state if it exists
         const chip = document.querySelector(`.equipment-chip[data-equipment="${equipment}"]`);
         if (chip) chip.classList.add('active');
@@ -132,6 +136,8 @@ function removeEquipment(equipment) {
     selectedEquipment = selectedEquipment.filter(e => e !== equipment);
     updateEquipmentDisplay();
     saveEquipment();
+    
+    if (window.SoundSystem) SoundSystem.playClick();
     
     const chip = document.querySelector(`.equipment-chip[data-equipment="${equipment}"]`);
     if (chip) chip.classList.remove('active');
@@ -215,6 +221,8 @@ function generateAndDisplayWorkout() {
         
         btnLoading(document.getElementById('generate-btn'), false);
         
+        if (window.SoundSystem) SoundSystem.playSuccess();
+        
         VantageFlex.showToast('Workout generated successfully!', 'success');
     }, 800);
 }
@@ -264,6 +272,8 @@ function initSaveButton() {
         VantageFlex.Storage.set('savedWorkouts', saved);
         
         VantageFlex.UserState.recordWorkout();
+        
+        if (window.SoundSystem) SoundSystem.playSuccess();
         
         VantageFlex.showToast('Workout saved to dashboard!', 'success');
     });
