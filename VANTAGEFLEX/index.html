@@ -36,6 +36,22 @@
         
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 0;
+        }
+        
+        /* Ensure page starts at top */
+        body {
+            scroll-snap-type: none;
+        }
+        
+        /* Lock first section to viewport top */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         body {
@@ -2299,6 +2315,9 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            // Force scroll to top
+            window.scrollTo(0, 0);
+            
             initThreeJS();
             setupFeatureCards();
             generateParticles();
