@@ -241,7 +241,7 @@ function renderWorkout(workout, container) {
         item.innerHTML = `
             <div class="exercise-number">${index + 1}</div>
             <div class="exercise-info">
-                <div class="exercise-name">${exercise.name}</div>
+                <div class="exercise-name workout-exercise-name" style="cursor: pointer;" title="Click for exercise details">${exercise.name}</div>
                 <div class="exercise-details">${exercise.reps} reps • ${exercise.type === 'compound' ? 'Compound' : 'Isolation'}</div>
             </div>
             <div class="exercise-sets">${sets} sets</div>
