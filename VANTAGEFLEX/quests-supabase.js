@@ -226,50 +226,84 @@ const QuestSystem = {
         // Create modal first
         this.showCameraModal(quest);
         
-        // Wait for DOM to update
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Wait longer for DOM to update
+        await new Promise(resolve => setTimeout(resolve, 300));
         
         try {
             // Get video element
             const video = document.getElementById('quest-camera');
             if (!video) {
-                throw new Error('Video element not found');
+                throw new Error('Video element not found in DOM');
             }
 
-            // Setup camera stream first
+            console.log('Video element found:', video);
+
+            // Setup camera stream with more lenient constraints
             console.log('Requesting camera access...');
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: { 
-                    facingMode: 'user',
-                    width: { ideal: 640 },
-                    height: { ideal: 480 }
-                },
-                audio: false
-            });
+            let stream;
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    },
+                    audio: false
+                });
+            } catch (err) {
+                // Fallback to simpler constraints
+                console.log('Trying fallback camera constraints...');
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                });
+            }
             
+            console.log('Camera stream obtained:', stream);
             video.srcObject = stream;
             this.camera = stream;
             
-            // Wait for video to be ready
+            // Wait for video to be ready with better error handling
             await new Promise((resolve, reject) => {
+                const timeout = setTimeout(() => {
+                    console.log('Video load timeout - proceeding anyway');
+                    resolve();
+                }, 3000);
+                
                 video.onloadedmetadata = () => {
-                    console.log('Video metadata loaded');
+                    console.log('Video metadata loaded, dimensions:', video.videoWidth, 'x', video.videoHeight);
+                    clearTimeout(timeout);
                     resolve();
                 };
-                video.onerror = (e) => reject(new Error('Video error: ' + e.message));
-                // Timeout fallback
-                setTimeout(() => resolve(), 2000);
+                
+                video.onerror = (e) => {
+                    console.error('Video error:', e);
+                    clearTimeout(timeout);
+                    reject(new Error('Video error'));
+                };
             });
 
-            await video.play();
-            console.log('Video playing');
+            // Try to play video
+            try {
+                await video.play();
+                console.log('Video playing successfully');
+            } catch (playErr) {
+                console.log('Auto-play prevented, trying muted play...');
+                video.muted = true;
+                await video.play();
+            }
 
-            // Setup canvas
+            // Setup canvas with video dimensions
             this.canvas = document.getElementById('pose-canvas');
             if (this.canvas) {
-                this.canvas.width = video.videoWidth || 640;
-                this.canvas.height = video.videoHeight || 480;
+                const width = video.videoWidth || 640;
+                const height = video.videoHeight || 480;
+                this.canvas.width = width;
+                this.canvas.height = height;
                 this.ctx = this.canvas.getContext('2d');
+                console.log('Canvas setup:', width, 'x', height);
+            } else {
+                console.warn('Canvas element not found');
             }
 
             // Now initialize pose detector
@@ -278,12 +312,14 @@ const QuestSystem = {
             
             this.isActive = true;
             this.hideCameraLoading();
+            console.log('Starting pose detection loop');
             this.detectPose();
 
         } catch (err) {
-            console.error('Camera error:', err);
-            this.showToast('Camera access required: ' + err.message, 'error');
-            this.stopQuest();
+            console.error('Camera initialization error:', err);
+            this.showToast('Camera error: ' + err.message, 'error');
+            // Don't stop quest immediately - let user see the error
+            setTimeout(() => this.stopQuest(), 3000);
         }
     },
 
@@ -596,7 +632,18 @@ const QuestSystem = {
 
     hideCameraLoading() {
         const loading = document.getElementById('camera-loading');
-        if (loading) loading.style.display = 'none';
+        if (loading) {
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 300);
+        }
+        
+        // Ensure video is visible with active class
+        const video = document.getElementById('quest-camera');
+        if (video) {
+            video.classList.add('active');
+        }
     },
 
     async completeQuest() {

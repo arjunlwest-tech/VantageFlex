@@ -171,20 +171,27 @@ const CameraPermission = {
     
     // Verify permission before starting quest
     async verifyBeforeQuest() {
-        // Check current status
-        const status = await this.checkPermission();
-        
-        if (status === 'granted') {
-            return true;
+        try {
+            // Check current status
+            const status = await this.checkPermission();
+            console.log('Camera permission status:', status);
+            
+            if (status === 'granted') {
+                return true;
+            }
+            
+            if (status === 'denied') {
+                this.showPermissionDeniedModal();
+                return false;
+            }
+            
+            // Status is 'prompt' or 'unknown' - request permission
+            return await this.requestPermission();
+        } catch (err) {
+            console.error('Error in verifyBeforeQuest:', err);
+            // If there's an error checking permissions, try requesting anyway
+            return await this.requestPermission();
         }
-        
-        if (status === 'denied') {
-            this.showPermissionDeniedModal();
-            return false;
-        }
-        
-        // Status is 'prompt' or 'unknown' - request permission
-        return await this.requestPermission();
     }
 };
 
