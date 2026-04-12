@@ -2461,19 +2461,19 @@
             targetRotateX = -my * 5; // -5 to 5 degrees
         });
         
-        // Smooth 3D rotation animation
-        function update3DRotation() {
-            currentRotateX += (targetRotateX - currentRotateX) * 0.1;
-            currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+        // Feature card hover effects only - no global background rotation
+        function setupFeatureCards() {
+            const cards = document.querySelectorAll('.feature-card');
             
-            // Apply subtle rotation to 3D elements
-            document.querySelectorAll('.card-3d, .hero-content-3d').forEach(el => {
-                if (!el.matches(':hover')) {
-                    el.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
-                }
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(-8deg) rotateY(8deg) translateZ(30px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
+                });
             });
-            
-            requestAnimationFrame(update3DRotation);
         }
         
         // Generate floating particles
@@ -2536,7 +2536,7 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
-            update3DRotation();
+            setupFeatureCards();
             generateParticles();
             generateConnectionLines();
             
