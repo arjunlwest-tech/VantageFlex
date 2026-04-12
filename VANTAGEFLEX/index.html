@@ -2325,6 +2325,7 @@
             setupFeatureCards();
             generateParticles();
             generateConnectionLines();
+            initFloatingBalls();
             initScrollytelling();
             initTextScramble();
             initVisibilityObserver();
@@ -2538,69 +2539,70 @@
         });
         
         // Click Floating Balls Effect - Float up and off screen
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('button') || e.target.closest('a')) return;
-            
-            // Check if GSAP is loaded
-            if (typeof gsap === 'undefined') {
-                console.log('GSAP not loaded yet');
-                return;
-            }
-            
-            const colors = ['#c87941', '#d48a52', '#e8a87c', '#f4a261', '#e76f51', '#ffffff'];
-            const ballCount = 12;
-            
-            for (let i = 0; i < ballCount; i++) {
-                const ball = document.createElement('div');
-                const size = 10 + Math.random() * 20;
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                const delay = i * 0.05;
+        function initFloatingBalls() {
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('button') || e.target.closest('a')) return;
                 
-                ball.style.cssText = `
-                    position: fixed;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: radial-gradient(circle at 30% 30%, ${color}, ${color}dd);
-                    border-radius: 50%;
-                    pointer-events: none;
-                    z-index: 9999;
-                    left: ${e.clientX - size/2}px;
-                    top: ${e.clientY - size/2}px;
-                    box-shadow: 
-                        0 0 20px ${color},
-                        0 0 40px ${color}80,
-                        0 0 60px ${color}40;
-                `;
-                document.body.appendChild(ball);
+                // Check if GSAP is loaded
+                if (typeof gsap === 'undefined') {
+                    return;
+                }
                 
-                // Calculate trajectory - spread out and float way up off screen
-                const angle = (i / ballCount) * Math.PI * 2 + Math.random() * 0.8;
-                const distance = 150 + Math.random() * 200;
-                const spreadX = Math.cos(angle) * distance;
-                // Float WAY off screen (past viewport + extra)
-                const floatUp = window.innerHeight * 1.5 + Math.random() * 500; 
-                const duration = 2.5 + Math.random() * 2;
+                const colors = ['#c87941', '#d48a52', '#e8a87c', '#f4a261', '#e76f51', '#ffffff'];
+                const ballCount = 12;
                 
-                // Animate with simple x/y (no plugin needed)
-                gsap.to(ball, {
-                    x: spreadX,
-                    y: -floatUp,
-                    opacity: 0,
-                    scale: 0.3,
-                    rotation: Math.random() * 720 - 360,
-                    duration: duration,
-                    delay: delay,
-                    ease: 'power2.out',
-                    onComplete: () => ball.remove()
-                });
-                
-                // Add size pulse at start
-                gsap.fromTo(ball, 
-                    { scale: 0.5 },
-                    { scale: 1.2, duration: 0.2, ease: 'power2.out' }
-                );
-            }
-        });
+                for (let i = 0; i < ballCount; i++) {
+                    const ball = document.createElement('div');
+                    const size = 10 + Math.random() * 20;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const delay = i * 0.05;
+                    
+                    ball.style.cssText = `
+                        position: fixed;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: radial-gradient(circle at 30% 30%, ${color}, ${color}dd);
+                        border-radius: 50%;
+                        pointer-events: none;
+                        z-index: 9999;
+                        left: ${e.clientX - size/2}px;
+                        top: ${e.clientY - size/2}px;
+                        box-shadow: 
+                            0 0 20px ${color},
+                            0 0 40px ${color}80,
+                            0 0 60px ${color}40;
+                    `;
+                    document.body.appendChild(ball);
+                    
+                    // Calculate trajectory - spread out and float way up off screen
+                    const angle = (i / ballCount) * Math.PI * 2 + Math.random() * 0.8;
+                    const distance = 150 + Math.random() * 200;
+                    const spreadX = Math.cos(angle) * distance;
+                    // Float WAY off screen (past viewport + extra)
+                    const floatUp = window.innerHeight * 1.5 + Math.random() * 500; 
+                    const duration = 2.5 + Math.random() * 2;
+                    
+                    // Animate with simple x/y (no plugin needed)
+                    gsap.to(ball, {
+                        x: spreadX,
+                        y: -floatUp,
+                        opacity: 0,
+                        scale: 0.3,
+                        rotation: Math.random() * 720 - 360,
+                        duration: duration,
+                        delay: delay,
+                        ease: 'power2.out',
+                        onComplete: () => ball.remove()
+                    });
+                    
+                    // Add size pulse at start
+                    gsap.fromTo(ball, 
+                        { scale: 0.5 },
+                        { scale: 1.2, duration: 0.2, ease: 'power2.out' }
+                    );
+                }
+            });
+        }
         
         
         // Typewriter Effect for Hero Badge
