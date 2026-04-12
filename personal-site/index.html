@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Chen - codes stuff sometimes</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <h1 class="logo">alex.dev</h1>
+            <nav class="main-nav">
+                <a href="#about">about</a>
+                <a href="#projects">projects</a>
+                <a href="#gaming">gaming</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="content">
+        <section class="intro">
+            <p class="intro-text">
+                hey, i'm alex. i make websites and stuff. 
+                currently trying to survive junior year while 
+                learning javascript at 2am. it goes okay-ish.
+            </p>
+            <div class="status">
+                <span class="status-dot"></span>
+                probably debugging something rn
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>the basics</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        17 years old. high school junior in seattle. 
+                        started coding because i wanted to make a 
+                        minecraft mod (still working on that lol).
+                    </p>
+                    <p>
+                        these days i'm mostly doing web stuff. 
+                        react, vanilla js, occasionally crying over css. 
+                        my github is mostly half-finished projects 
+                        but i'm getting better at actually completing things.
+                    </p>
+                    <p class="fun-fact">
+                        fun fact: i once spent 4 hours fixing a bug 
+                        that was just a missing semicolon. 
+                        <span class="side-note">(not my proudest moment)</span>
+                    </p>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat">
+                        <span class="stat-num">47</span>
+                        <span class="stat-label">cups of coffee this week</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">12</span>
+                        <span class="stat-label">unfinished side projects</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">3</span>
+                        <span class="stat-label">hours of sleep (avg)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <h2>current things</h2>
+            <div class="project-list">
+                <article class="project-card featured">
+                    <div class="project-header">
+                        <h3>weather dashboard</h3>
+                        <span class="project-tag">in progress</span>
+                    </div>
+                    <p>
+                        trying to build a decent-looking weather app 
+                        using the openweather api. currently fighting 
+                        with chart.js to make the graphs not look terrible.
+                    </p>
+                    <div class="project-meta">
+                        <span class="tech">react</span>
+                        <span class="tech">api stuff</span>
+                    </div>
+                    <a href="#" class="project-link">github (it's messy) →</a>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-header">
+                        <h3>study timer</h3>
+                        <span class="project-tag done">mostly done</span>
+                    </div>
+                    <p>
+                        simple pomodoro timer with lo-fi music integration. 
+                        actually use this one sometimes which is rare for 
+                        my projects.
+                    </p>
+                    <div class="project-meta">
+                        <span class="tech">vanilla js</span>
+                    </div>
+                </article>
+
+                <article class="project-card wide">
+                    <div class="project-header">
+                        <h3>this website</h3>
+                        <span class="project-tag">always updating</span>
+                    </div>
+                    <p>
+                        hand-coded because i got tired of templates. 
+                        kept it simple. might add a blog section later 
+                        if i actually have things to say.
+                    </p>
+                    <div class="project-meta">
+                        <span class="tech">html/css</span>
+                        <span class="tech">minimal js</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="gaming" class="gaming">
+            <h2>what i'm playing</h2>
+            <div class="games-list">
+                <div class="game-item">
+                    <span class="game-icon">🎯</span>
+                    <div class="game-info">
+                        <h4>valorant</h4>
+                        <p>silver 2, aiming for gold but my reflexes are mid</p>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <span class="game-icon">🌙</span>
+                    <div class="game-info">
+                        <h4>hollow knight</h4>
+                        <p>finally beat the radiance after 40+ hours</p>
+                    </div>
+                </div>
+                <div class="game-item">
+                    <span class="game-icon">🏗️</span>
+                    <div class="game-info">
+                        <h4>minecraft</h4>
+                        <p>modded server with friends, currently building a terrible castle</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gaming-note">
+                <p>
+                    usually play late at night when i should be sleeping. 
+                    if you see me online at 3am, no you didn't.
+                </p>
+            </div>
+        </section>
+
+        <section class="now">
+            <h2>now</h2>
+            <ul class="now-list">
+                <li>learning typescript (slowly)</li>
+                <li>trying to get better at ui design</li>
+                <li>studying for sats :/</li>
+                <li>attempting to fix my sleep schedule (failing)</li>
+            </ul>
+            <p class="now-date">last updated: november 2024</p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>made with questionable amounts of caffeine</p>
+            <div class="footer-links">
+                <a href="mailto:alex@example.com">email</a>
+                <a href="https://github.com">github</a>
+                <a href="https://twitter.com">twitter (i barely use it)</a>
+            </div>
+            <p class="copyright">© 2024 alex. don't steal my stuff please</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
