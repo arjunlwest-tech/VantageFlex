@@ -210,11 +210,7 @@ const QuestSystem = {
         this.questInProgress = quest;
 
         if (quest.verificationType === 'camera') {
-            // Check camera permission first
-            const hasPermission = await window.CameraPermission?.verifyBeforeQuest();
-            if (!hasPermission) {
-                return; // Permission denied or cancelled
-            }
+            // Direct camera initialization - browser will handle permission prompt
             await this.initCameraVerification(quest);
         } else {
             // Manual verification
@@ -223,23 +219,31 @@ const QuestSystem = {
     },
 
     async initCameraVerification(quest) {
+        console.log('=== Starting Camera Verification ===');
+        
         // Create modal first
         this.showCameraModal(quest);
         
-        // Wait longer for DOM to update
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Wait for DOM to update
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         try {
             // Get video element
             const video = document.getElementById('quest-camera');
+            console.log('Video element:', video);
+            
             if (!video) {
-                throw new Error('Video element not found in DOM');
+                throw new Error('Video element not found - modal may not have rendered');
             }
 
-            console.log('Video element found:', video);
+            // Check if browser supports getUserMedia
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error('Your browser does not support camera access. Please use Chrome, Firefox, or Safari.');
+            }
 
-            // Setup camera stream with more lenient constraints
-            console.log('Requesting camera access...');
+            console.log('Requesting camera access from browser...');
+            
+            // Request camera - browser will show native permission prompt
             let stream;
             try {
                 stream = await navigator.mediaDevices.getUserMedia({
@@ -250,76 +254,94 @@ const QuestSystem = {
                     },
                     audio: false
                 });
-            } catch (err) {
-                // Fallback to simpler constraints
-                console.log('Trying fallback camera constraints...');
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: false
-                });
+                console.log('Camera stream obtained successfully');
+            } catch (permErr) {
+                console.error('Camera permission error:', permErr);
+                if (permErr.name === 'NotAllowedError') {
+                    throw new Error('Camera permission denied. Please allow camera access in your browser settings and refresh.');
+                } else if (permErr.name === 'NotFoundError') {
+                    throw new Error('No camera found. Please connect a camera and try again.');
+                } else {
+                    // Try fallback
+                    console.log('Trying simple camera constraints...');
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: false
+                    });
+                }
             }
             
-            console.log('Camera stream obtained:', stream);
+            // Attach stream to video
             video.srcObject = stream;
             this.camera = stream;
+            console.log('Stream attached to video element');
             
-            // Wait for video to be ready with better error handling
+            // Wait for video to be ready
+            console.log('Waiting for video to be ready...');
             await new Promise((resolve, reject) => {
+                let resolved = false;
+                
                 const timeout = setTimeout(() => {
-                    console.log('Video load timeout - proceeding anyway');
-                    resolve();
-                }, 3000);
+                    if (!resolved) {
+                        resolved = true;
+                        console.log('Video load timeout - but stream is active, proceeding');
+                        resolve();
+                    }
+                }, 5000);
                 
                 video.onloadedmetadata = () => {
-                    console.log('Video metadata loaded, dimensions:', video.videoWidth, 'x', video.videoHeight);
-                    clearTimeout(timeout);
-                    resolve();
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        console.log('Video ready! Dimensions:', video.videoWidth, 'x', video.videoHeight);
+                        resolve();
+                    }
                 };
                 
                 video.onerror = (e) => {
-                    console.error('Video error:', e);
-                    clearTimeout(timeout);
-                    reject(new Error('Video error'));
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeout);
+                        console.error('Video element error:', e);
+                        reject(new Error('Video playback error'));
+                    }
                 };
             });
 
-            // Try to play video
+            // Play the video
+            console.log('Attempting to play video...');
             try {
                 await video.play();
-                console.log('Video playing successfully');
+                console.log('Video playing!');
             } catch (playErr) {
-                console.log('Auto-play prevented, trying muted play...');
+                console.warn('Auto-play failed, trying muted:', playErr);
                 video.muted = true;
                 await video.play();
+                console.log('Video playing (muted)');
             }
 
-            // Setup canvas with video dimensions
+            // Setup canvas
             this.canvas = document.getElementById('pose-canvas');
-            if (this.canvas) {
-                const width = video.videoWidth || 640;
-                const height = video.videoHeight || 480;
-                this.canvas.width = width;
-                this.canvas.height = height;
+            if (this.canvas && video.videoWidth) {
+                this.canvas.width = video.videoWidth;
+                this.canvas.height = video.videoHeight;
                 this.ctx = this.canvas.getContext('2d');
-                console.log('Canvas setup:', width, 'x', height);
-            } else {
-                console.warn('Canvas element not found');
+                console.log('Canvas ready:', this.canvas.width, 'x', this.canvas.height);
             }
 
-            // Now initialize pose detector
-            console.log('Initializing pose detector...');
+            // Initialize pose detector
+            console.log('Loading AI pose detector...');
             await this.initPoseDetector();
             
             this.isActive = true;
             this.hideCameraLoading();
-            console.log('Starting pose detection loop');
+            console.log('=== Camera ready, starting detection ===');
             this.detectPose();
 
         } catch (err) {
-            console.error('Camera initialization error:', err);
-            this.showToast('Camera error: ' + err.message, 'error');
-            // Don't stop quest immediately - let user see the error
-            setTimeout(() => this.stopQuest(), 3000);
+            console.error('=== Camera Error ===', err);
+            this.showToast(err.message, 'error');
+            setTimeout(() => this.stopQuest(), 4000);
         }
     },
 
@@ -599,11 +621,18 @@ const QuestSystem = {
                     <button class="close-btn" onclick="QuestSystem.stopQuest()">×</button>
                 </div>
                 <div class="camera-viewport">
-                    <video id="quest-camera" autoplay playsinline muted></video>
+                    <video 
+                        id="quest-camera" 
+                        autoplay 
+                        playsinline 
+                        muted
+                        style="width: 100%; height: 100%; object-fit: cover;"
+                    ></video>
                     <canvas id="pose-canvas"></canvas>
                     <div class="camera-loading" id="camera-loading">
                         <div class="camera-spinner"></div>
                         <p>Starting camera...</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 8px;">Click "Allow" when browser asks for camera permission</p>
                     </div>
                 </div>
                 <div class="quest-stats">
@@ -624,6 +653,7 @@ const QuestSystem = {
         `;
         
         document.body.appendChild(modal);
+        console.log('Camera modal created and appended to body');
         
         // Show loading state initially
         const loading = modal.querySelector('#camera-loading');
