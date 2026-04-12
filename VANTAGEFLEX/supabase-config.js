@@ -144,6 +144,63 @@ const AuthManager = {
         window.location.href = 'index.html'; // Landing page
     },
     
+    async signUpWithEmail(email, password) {
+        const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                emailRedirectTo: window.location.origin + basePath + '/workouts.html'
+            }
+        });
+        
+        if (error) {
+            console.error('Sign up error:', error);
+            throw error;
+        }
+        
+        return data;
+    },
+    
+    async signInWithEmail(email, password) {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+        
+        if (error) {
+            console.error('Sign in error:', error);
+            throw error;
+        }
+        
+        // Create profile if doesn't exist
+        if (data.user) {
+            const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('*')
+                .eq('id', data.user.id)
+                .single();
+            
+            if (!profile) {
+                await this.createUserProfile(data.user);
+            }
+        }
+        
+        return data;
+    },
+    
+    async resetPassword(email) {
+        const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + basePath + '/reset-password.html'
+        });
+        
+        if (error) {
+            console.error('Reset password error:', error);
+            throw error;
+        }
+    },
+    
     setupAuthButtons() {
         // Setup login buttons
         document.querySelectorAll('[data-auth="google"]').forEach(btn => {
