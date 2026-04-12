@@ -959,6 +959,336 @@
             border-color: rgba(255,255,255,0.2);
         }
         
+        /* Animated Squat Character */
+        .squat-character {
+            position: fixed;
+            right: 5%;
+            bottom: 10%;
+            width: 200px;
+            height: 300px;
+            z-index: 5;
+            pointer-events: none;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease-out;
+        }
+        
+        .squat-silhouette {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(200, 121, 65, 0.8) 0%, 
+                rgba(160, 93, 46, 0.6) 50%,
+                rgba(200, 121, 65, 0.4) 100%);
+            clip-path: polygon(
+                50% 0%, 60% 15%, 75% 20%, 80% 35%, 
+                75% 50%, 70% 65%, 65% 80%, 50% 100%, 
+                35% 80%, 30% 65%, 25% 50%, 20% 35%,
+                25% 20%, 40% 15%
+            );
+            animation: squatMotion 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(200, 121, 65, 0.5));
+        }
+        
+        @keyframes squatMotion {
+            0%, 100% { 
+                clip-path: polygon(
+                    50% 0%, 60% 15%, 75% 20%, 80% 35%, 
+                    75% 50%, 70% 65%, 65% 80%, 50% 100%, 
+                    35% 80%, 30% 65%, 25% 50%, 20% 35%,
+                    25% 20%, 40% 15%
+                );
+                transform: translateY(0);
+            }
+            50% { 
+                clip-path: polygon(
+                    50% 10%, 65% 25%, 80% 30%, 85% 50%, 
+                    80% 65%, 75% 75%, 70% 85%, 50% 95%, 
+                    30% 85%, 25% 75%, 20% 65%, 15% 50%,
+                    20% 30%, 35% 25%
+                );
+                transform: translateY(20px);
+            }
+        }
+        
+        /* Live Activity Feed */
+        .live-feed {
+            position: fixed;
+            left: 2rem;
+            bottom: 2rem;
+            z-index: 100;
+            background: rgba(5, 5, 5, 0.9);
+            border: 1px solid rgba(200, 121, 65, 0.3);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            backdrop-filter: blur(10px);
+            max-width: 280px;
+        }
+        
+        .live-feed-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--copper);
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        .live-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.875rem;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .live-item:last-child {
+            border-bottom: none;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .live-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+        
+        .live-text {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+        
+        .live-text strong {
+            color: var(--text-primary);
+        }
+        
+        .live-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 4rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .trust-badge:hover {
+            background: rgba(200, 121, 65, 0.1);
+            border-color: rgba(200, 121, 65, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .trust-icon {
+            font-size: 1.5rem;
+        }
+        
+        .trust-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .trust-text strong {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        
+        /* Before/After Section */
+        .transformation-section {
+            padding: 6rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .transformation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .transformation-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        
+        .transformation-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(200, 121, 65, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .transformation-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .transformation-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        
+        .transformation-stat {
+            text-align: center;
+        }
+        
+        .transformation-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--copper);
+        }
+        
+        .transformation-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .transformation-quote {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        /* Floating Equipment Icons */
+        .floating-equipment {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .equipment-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.15;
+            animation: floatEquipment 15s ease-in-out infinite;
+        }
+        
+        @keyframes floatEquipment {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 0.15;
+            }
+            50% { 
+                transform: translateY(-30px) rotate(10deg); 
+                opacity: 0.25;
+            }
+        }
+        
+        /* Social Proof Bar */
+        .social-proof {
+            background: linear-gradient(90deg, 
+                rgba(200, 121, 65, 0.1) 0%, 
+                rgba(200, 121, 65, 0.05) 50%,
+                rgba(200, 121, 65, 0.1) 100%);
+            border-top: 1px solid rgba(200, 121, 65, 0.2);
+            border-bottom: 1px solid rgba(200, 121, 65, 0.2);
+            padding: 1.5rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .social-proof-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .social-proof-text strong {
+            color: var(--copper);
+            font-weight: 700;
+        }
+        
+        /* Progress Bars Animation */
+        .progress-section {
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .progress-item {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--copper) 0%, var(--copper-light) 100%);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
         /* Responsive */
         @media (max-width: 1024px) {
             .hero-container {
@@ -1145,6 +1475,167 @@
             </div>
         </div>
     </section>
+    
+    <!-- Trust Badges -->
+    <div class="trust-badges">
+        <div class="trust-badge">
+            <span class="trust-icon">🔒</span>
+            <span class="trust-text"><strong>Bank-Level Security</strong>Your data is encrypted</span>
+        </div>
+        <div class="trust-badge">
+            <span class="trust-icon">⚡</span>
+            <span class="trust-text"><strong>Instant Results</strong>AI generates in seconds</span>
+        </div>
+        <div class="trust-badge">
+            <span class="trust-icon">🏆</span>
+            <span class="trust-text"><strong>#1 Rated</strong>Top fitness app 2024</span>
+        </div>
+        <div class="trust-badge">
+            <span class="trust-icon">💪</span>
+            <span class="trust-text"><strong>Proven Results</strong>94% reach goals</span>
+        </div>
+    </div>
+    
+    <!-- Social Proof -->
+    <div class="social-proof">
+        <p class="social-proof-text">
+            <strong>2,847 people</strong> started their workout with VantageFlex in the last 24 hours
+        </p>
+    </div>
+    
+    <!-- Transformation Section -->
+    <section class="transformation-section">
+        <div class="section-header">
+            <span class="section-eyebrow">Success Stories</span>
+            <h2 class="section-title">Real People, Real Results</h2>
+            <p class="section-subtitle">Join thousands who have transformed their bodies and lives with AI-powered training.</p>
+        </div>
+        <div class="transformation-grid">
+            <div class="transformation-card">
+                <div class="transformation-avatar">👨</div>
+                <h3>Mike R.</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Lost 45 lbs in 4 months</p>
+                <div class="transformation-stats">
+                    <div class="transformation-stat">
+                        <div class="transformation-stat-value">-45</div>
+                        <div class="transformation-stat-label">Lbs</div>
+                    </div>
+                    <div class="transformation-stat">
+                        <div class="transformation-stat-value">+12</div>
+                        <div class="transformation-stat-label">Muscle</div>
+                    </div>
+                </div>
+                <p class="transformation-quote">"The AI knew exactly what I needed. Best shape of my life at 42."</p>
+            </div>
+            <div class="transformation-card">
+                <div class="transformation-avatar">👩</div>
+                <h3>Sarah K.</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Gained strength, lost fat</p>
+                <div class="transformation-stats">
+                    <div class="transformation-stat">
+                        <div class="transformation-stat-value">+85%</div>
+                        <div class="transformation-stat-label">Strength</div>
+                    </div>
+                    <div class="transformation-stat">
+                        <div class="transformation-stat-value">-28</div>
+                        <div class="transformation-stat-label">Lbs</div>
+                    </div>
+                </div>
+                <p class="transformation-quote">"Finally broke through my plateau. The gamification keeps me hooked!"</p>
+            </div>
+            <div class="transformation-card">
+                <div class="transformation-avatar">👨‍💼</div>
+                <h3>David L.</h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Busy exec, still fit</p>
+                <div class="transformation-stats">
+                    <div class="transformation-stat">
+                        <div class="transformation-stat-value">20min</div>
+                        <div class="transformation-stat-label">Workouts</div>
+                    </div>
+                    <div class="transformation-stat">
+                        <div class="transformation-stat-value">-15%</div>
+                        <div class="transformation-stat-label">Body Fat</div>
+                    </div>
+                </div>
+                <p class="transformation-quote">"Works around my crazy schedule. Never thought I could stay consistent."</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Progress Section -->
+    <section class="progress-section">
+        <div class="section-header" style="margin-bottom: 3rem;">
+            <span class="section-eyebrow">Community Stats</span>
+            <h2 class="section-title" style="font-size: 2rem;">You're Not Alone</h2>
+        </div>
+        <div class="progress-item">
+            <div class="progress-header">
+                <span>Users Hitting Their Goals</span>
+                <span style="color: var(--copper); font-weight: 700;">94%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" data-width="94"></div>
+            </div>
+        </div>
+        <div class="progress-item">
+            <div class="progress-header">
+                <span>Workouts Completed Today</span>
+                <span style="color: var(--copper); font-weight: 700;">12,847</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" data-width="78"></div>
+            </div>
+        </div>
+        <div class="progress-item">
+            <div class="progress-header">
+                <span>Average User Consistency</span>
+                <span style="color: var(--copper); font-weight: 700;">87%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" data-width="87"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Floating Equipment -->
+    <div class="floating-equipment">
+        <div class="equipment-icon" style="top: 20%; left: 10%;">🏋️</div>
+        <div class="equipment-icon" style="top: 60%; left: 5%; animation-delay: -5s;">💪</div>
+        <div class="equipment-icon" style="top: 40%; right: 8%; animation-delay: -10s;">🦵</div>
+        <div class="equipment-icon" style="top: 80%; right: 15%; animation-delay: -3s;">🏃</div>
+        <div class="equipment-icon" style="top: 30%; left: 85%; animation-delay: -8s;">🎯</div>
+        <div class="equipment-icon" style="top: 70%; left: 20%; animation-delay: -12s;">⚡</div>
+    </div>
+    
+    <!-- Squat Character (Animated on Scroll) -->
+    <div class="squat-character" id="squatCharacter">
+        <div class="squat-silhouette"></div>
+    </div>
+    
+    <!-- Live Activity Feed -->
+    <div class="live-feed" id="liveFeed">
+        <div class="live-feed-header">
+            <div class="live-dot"></div>
+            <span>Live Activity</span>
+        </div>
+        <div class="live-items" id="liveItems">
+            <div class="live-item">
+                <div class="live-avatar">👤</div>
+                <div class="live-text"><strong>Alex</strong> just completed Leg Day</div>
+                <div class="live-time">now</div>
+            </div>
+            <div class="live-item">
+                <div class="live-avatar">👤</div>
+                <div class="live-text"><strong>Jordan</strong> hit a new PR: 225lbs</div>
+                <div class="live-time">2m</div>
+            </div>
+            <div class="live-item">
+                <div class="live-avatar">👤</div>
+                <div class="live-text"><strong>Taylor</strong> started a workout</div>
+                <div class="live-time">5m</div>
+            </div>
+        </div>
+    </div>
     
     <!-- CTA Section -->
     <section class="cta">
@@ -1515,6 +2006,94 @@
                     clearInterval(checkAuth);
                 }
             }, 500);
+            
+            // Scroll-responsive Squat Character
+            const squatCharacter = document.getElementById('squatCharacter');
+            if (squatCharacter) {
+                window.addEventListener('scroll', () => {
+                    const scrollY = window.scrollY;
+                    const windowHeight = window.innerHeight;
+                    const docHeight = document.documentElement.scrollHeight;
+                    const scrollPercent = scrollY / (docHeight - windowHeight);
+                    
+                    // Move character up as user scrolls down
+                    const moveY = scrollY * 0.3;
+                    const rotate = scrollPercent * 360;
+                    const scale = 1 - (scrollPercent * 0.3);
+                    
+                    squatCharacter.style.transform = `
+                        translateY(-${moveY}px) 
+                        rotateY(${rotate}deg) 
+                        scale(${Math.max(scale, 0.5)})
+                    `;
+                    
+                    // Fade out as user scrolls past half page
+                    if (scrollPercent > 0.5) {
+                        squatCharacter.style.opacity = 1 - ((scrollPercent - 0.5) * 2);
+                    } else {
+                        squatCharacter.style.opacity = 1;
+                    }
+                }, { passive: true });
+            }
+            
+            // Progress Bars Animation
+            const progressBars = document.querySelectorAll('.progress-fill');
+            const progressObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const width = entry.target.dataset.width;
+                        setTimeout(() => {
+                            entry.target.style.width = width + '%';
+                        }, 200);
+                        progressObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            progressBars.forEach(bar => progressObserver.observe(bar));
+            
+            // Live Activity Feed - Auto update
+            const liveItems = document.getElementById('liveItems');
+            if (liveItems) {
+                const activities = [
+                    { name: 'Alex', action: 'just completed Leg Day', time: 'now' },
+                    { name: 'Jordan', action: 'hit a new PR: 225lbs', time: '1m' },
+                    { name: 'Taylor', action: 'started a workout', time: '3m' },
+                    { name: 'Morgan', action: 'completed Chest Day', time: '5m' },
+                    { name: 'Casey', action: 'hit 30 day streak!', time: '8m' },
+                    { name: 'Riley', action: 'started Cardio', time: '12m' },
+                    { name: 'Quinn', action: 'burned 500 calories', time: '15m' }
+                ];
+                
+                let activityIndex = 3;
+                
+                setInterval(() => {
+                    const item = document.createElement('div');
+                    item.className = 'live-item';
+                    const activity = activities[activityIndex % activities.length];
+                    item.innerHTML = `
+                        <div class="live-avatar">👤</div>
+                        <div class="live-text"><strong>${activity.name}</strong> ${activity.action}</div>
+                        <div class="live-time">${activity.time}</div>
+                    `;
+                    
+                    liveItems.insertBefore(item, liveItems.firstChild);
+                    
+                    if (liveItems.children.length > 3) {
+                        liveItems.lastChild.remove();
+                    }
+                    
+                    activityIndex++;
+                }, 5000);
+            }
+            
+            // Update live times
+            setInterval(() => {
+                document.querySelectorAll('.live-time').forEach((el, i) => {
+                    const times = ['now', '1m', '2m', '5m', '8m'];
+                    el.textContent = times[i] || times[times.length - 1];
+                });
+            }, 60000);
         });
         
         // Escape key
