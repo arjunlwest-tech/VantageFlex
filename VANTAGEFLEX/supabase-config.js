@@ -18,17 +18,41 @@ let userSubscription = null;
 function initSupabase() {
     // Load Supabase library dynamically
     return new Promise((resolve, reject) => {
+        console.log('Initializing Supabase with URL:', SUPABASE_URL);
+        console.log('Supabase key present:', SUPABASE_KEY ? 'Yes (length: ' + SUPABASE_KEY.length + ')' : 'No');
+        
+        if (!SUPABASE_KEY || SUPABASE_KEY.length < 20) {
+            reject(new Error('Invalid Supabase key. Please check your configuration.'));
+            return;
+        }
+        
         if (window.supabase) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            resolve(supabaseClient);
+            try {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase client created successfully');
+                resolve(supabaseClient);
+            } catch (err) {
+                console.error('Failed to create Supabase client:', err);
+                reject(err);
+            }
         } else {
+            console.log('Loading Supabase library dynamically...');
             const script = document.createElement('script');
             script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
             script.onload = () => {
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                resolve(supabaseClient);
+                try {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    console.log('Supabase client created successfully after loading library');
+                    resolve(supabaseClient);
+                } catch (err) {
+                    console.error('Failed to create Supabase client after loading:', err);
+                    reject(err);
+                }
             };
-            script.onerror = reject;
+            script.onerror = (e) => {
+                console.error('Failed to load Supabase library:', e);
+                reject(new Error('Failed to load Supabase library'));
+            };
             document.head.appendChild(script);
         }
     });
@@ -145,7 +169,16 @@ const AuthManager = {
     },
     
     async signUpWithEmail(email, password) {
+        console.log('AuthManager.signUpWithEmail called');
+        
+        if (!supabaseClient) {
+            console.error('Supabase client not initialized');
+            throw new Error('Authentication system not ready. Please refresh the page.');
+        }
+        
         const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
+        console.log('Calling supabase.auth.signUp...');
+        
         const { data, error } = await supabaseClient.auth.signUp({
             email: email,
             password: password,
@@ -155,10 +188,11 @@ const AuthManager = {
         });
         
         if (error) {
-            console.error('Sign up error:', error);
+            console.error('Sign up error from Supabase:', error);
             throw error;
         }
         
+        console.log('Sign up successful, data:', data);
         return data;
     },
     

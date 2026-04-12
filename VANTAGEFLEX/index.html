@@ -1870,23 +1870,6 @@
             observer.observe(el);
         });
         
-        // Wait for AuthManager
-        function waitForAuth(maxAttempts = 50) {
-            return new Promise((resolve, reject) => {
-                let attempts = 0;
-                const check = setInterval(() => {
-                    attempts++;
-                    if (window.AuthManager?.signInWithEmail && window.AuthManager?.signUpWithEmail) {
-                        clearInterval(check);
-                        resolve();
-                    } else if (attempts >= maxAttempts) {
-                        clearInterval(check);
-                        reject(new Error('Auth system failed to load'));
-                    }
-                }, 100);
-            });
-        }
-        
         // Modal Functions
         function showAuthModal() {
             document.getElementById('authModal').classList.add('active');
@@ -3006,8 +2989,11 @@
             const password = document.getElementById('signupPassword').value;
             const submitBtn = document.getElementById('signupSubmit');
             
+            console.log('Sign up attempt for:', email);
+            
             if (password.length < 6) {
                 showError('signupPassword');
+                document.getElementById('signupPasswordError').textContent = 'Password must be at least 6 characters';
                 return;
             }
             
@@ -3015,15 +3001,21 @@
             submitBtn.textContent = 'Creating account...';
             
             try {
+                console.log('Waiting for AuthManager...');
                 await waitForAuth();
-                await window.AuthManager.signUpWithEmail(email, password);
+                console.log('AuthManager ready, signing up...');
+                
+                const signUpResult = await window.AuthManager.signUpWithEmail(email, password);
+                console.log('Sign up successful:', signUpResult);
                 
                 // Auto sign in after signup
+                console.log('Auto signing in...');
                 await window.AuthManager.signInWithEmail(email, password);
                 window.location.href = 'workouts.html';
             } catch (error) {
+                console.error('Sign up error:', error);
                 showError('signupEmail');
-                document.getElementById('signupEmailError').textContent = error.message || 'Failed to create account';
+                document.getElementById('signupEmailError').textContent = error.message || 'Failed to create account. Check console for details.';
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Create Account';
             }
