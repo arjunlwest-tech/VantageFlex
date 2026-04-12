@@ -103,31 +103,34 @@ const AuthManager = {
     },
     
     async signInWithGoogle() {
+        const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
         const { error } = await supabaseClient.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin + '/dashboard.html'
+                redirectTo: window.location.origin + basePath + '/dashboard.html'
             }
         });
         if (error) this.showAuthError(error.message);
     },
     
     async signInWithGitHub() {
+        const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
         const { error } = await supabaseClient.auth.signInWithOAuth({
             provider: 'github',
             options: {
-                redirectTo: window.location.origin + '/dashboard.html'
+                redirectTo: window.location.origin + basePath + '/dashboard.html'
             }
         });
         if (error) this.showAuthError(error.message);
     },
     
     async signIn(provider) {
-        const redirectPage = sessionStorage.getItem('redirectAfterLogin') || 'index.html';
+        const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
+        const redirectPage = sessionStorage.getItem('redirectAfterLogin') || 'workouts.html';
         const { error } = await supabaseClient.auth.signInWithOAuth({
             provider: provider,
             options: {
-                redirectTo: window.location.origin + '/' + redirectPage
+                redirectTo: window.location.origin + basePath + '/' + redirectPage
             }
         });
         if (error) {
@@ -138,7 +141,7 @@ const AuthManager = {
     
     async signOut() {
         await supabaseClient.auth.signOut();
-        window.location.href = 'index.html';
+        window.location.href = 'index.html'; // Landing page
     },
     
     setupAuthButtons() {
@@ -357,8 +360,8 @@ const AuthGate = {
         if (currentPage && currentPage !== 'index.html') {
             sessionStorage.setItem('redirectAfterLogin', currentPage);
         }
-        // Redirect to landing page
-        window.location.href = 'landing.html';
+        // Redirect to landing page (index.html)
+        window.location.href = 'index.html';
     },
     
     createAuthGate() {
@@ -418,10 +421,13 @@ const AuthGate = {
             return;
         }
         
+        const basePath = window.location.pathname.includes('/VantageFlex') ? '/VantageFlex' : '';
+        const currentPage = window.location.pathname.split('/').pop() || 'workouts.html';
+        
         const { error } = await supabaseClient.auth.signInWithOAuth({
             provider: provider,
             options: {
-                redirectTo: window.location.origin + window.location.pathname
+                redirectTo: window.location.origin + basePath + '/' + currentPage
             }
         });
         

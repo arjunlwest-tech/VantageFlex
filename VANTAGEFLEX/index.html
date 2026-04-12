@@ -22,7 +22,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at center, rgba(255,107,53,0.15) 0%, transparent 50%);
+            background: radial-gradient(ellipse at center, rgba(200, 121, 65, 0.08) 0%, transparent 50%);
             pointer-events: none;
         }
         .landing-content { position: relative; z-index: 1; max-width: 800px; }
@@ -32,12 +32,14 @@
         }
         .landing-title {
             font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 900;
+            font-weight: 700;
+            letter-spacing: -0.02em;
             margin-bottom: 1.5rem;
-            background: var(--gradient-fire);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text-primary);
+            font-family: 'Playfair Display', serif;
+        }
+        .landing-title span {
+            color: var(--accent-copper);
         }
         .landing-subtitle {
             font-size: 1.25rem;
@@ -74,14 +76,16 @@
             gap: 2rem;
         }
         .feature-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-tertiary);
+            border: 1px solid rgba(255,253,248,0.06);
+            border-radius: var(--radius-md);
             padding: 2rem;
-            transition: transform 0.3s, border-color 0.3s;
+            transition: all 0.25s ease;
         }
         .feature-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255,107,53,0.3);
+            transform: translateY(-2px);
+            border-color: rgba(200, 121, 65, 0.2);
+            box-shadow: var(--shadow-md);
         }
         .feature-icon {
             font-size: 2.5rem;
@@ -149,10 +153,10 @@
     <section class="landing-hero">
         <div class="landing-content">
             <div class="landing-logo">🔥</div>
-            <h1 class="landing-title">Vantage Flex</h1>
+            <h1 class="landing-title">Train <span>Smarter</span></h1>
             <p class="landing-subtitle">
-                AI-powered workouts, smart nutrition planning, and gamified fitness tracking. 
-                Everything you need to level up your fitness game.
+                Workouts that adapt to you. Nutrition that fits your life. 
+                No gimmicks, just results.
             </p>
             <div class="landing-cta">
                 <button class="btn btn-primary btn-lg" onclick="showLoginModal()">
@@ -166,37 +170,37 @@
     </section>
 
     <section id="features" class="features-section">
-        <h2 class="features-title">What You Get</h2>
+        <h2 class="features-title">Built Different</h2>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">⚡</div>
-                <h3>AI Workout Generator</h3>
-                <p>Get personalized workouts based on your goals, equipment, and experience level. No more guessing what to do at the gym.</p>
+                <h3>Workouts That Fit</h3>
+                <p>Tell us what you have and what you want. We build the rest. No gym membership required.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🍳</div>
-                <h3>Smart Recipe Finder</h3>
-                <p>Enter ingredients you have and get protein-packed recipes with complete macros. No waste, maximum gains.</p>
+                <h3>Cook With What You Got</h3>
+                <p>Enter your ingredients. Get high-protein recipes. Stop wasting food, start making gains.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🎯</div>
-                <h3>Quests & Challenges</h3>
-                <p>Complete AI-verified fitness quests using your camera. Earn XP, climb the leaderboard, stay motivated.</p>
+                <h3>Quests That Matter</h3>
+                <p>Camera-guided challenges that actually test your progress. Earn your place on the board.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3>Progress Dashboard</h3>
-                <p>Track your workouts, nutrition, and achievements all in one place. Visualize your gains over time.</p>
+                <h3>See Your Growth</h3>
+                <p>Every rep, every meal, every win. One dashboard. No fluff.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🥗</div>
-                <h3>Meal Planning</h3>
-                <p>Generate complete weekly meal plans tailored to your calorie and macro targets. Shopping lists included.</p>
+                <h3>Eat With Purpose</h3>
+                <p>Weekly plans built around your goals. Macros calculated. Shopping list ready.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🏆</div>
-                <h3>Leaderboard</h3>
-                <p>Compete with friends and the community. See how you stack up on workouts completed and quests finished.</p>
+                <h3>Prove Yourself</h3>
+                <p>Climb the ranks. Beat your friends. Or just beat yesterday.</p>
             </div>
         </div>
     </section>
