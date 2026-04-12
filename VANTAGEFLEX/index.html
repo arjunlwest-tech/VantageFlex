@@ -53,11 +53,11 @@
             position: fixed;
             inset: 0;
             z-index: 100000;
-            background: var(--charcoal);
+            background: linear-gradient(135deg, var(--charcoal) 0%, #1a1a1f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s ease;
         }
         
         .loading-screen.hidden {
@@ -1038,19 +1038,21 @@
         }
         
         .btn-primary {
-            padding: 1.25rem 3rem;
             background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
-            color: var(--charcoal);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
             border: none;
-            font-size: 0.9375rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(200, 121, 65, 0.3);
+            box-shadow: 
+                0 4px 20px rgba(200, 121, 65, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            transform-style: preserve-3d;
         }
         
         .btn-primary::before {
@@ -1060,8 +1062,12 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
         }
         
         .btn-primary:hover {
@@ -1249,7 +1255,34 @@
         .section-header {
             text-align: center;
             margin-bottom: 6rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        
+        .section-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Staggered entrance for cards */
+        .feature-card {
+            opacity: 0;
+            transform: translateY(60px) rotateX(10deg);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+        
+        .feature-card.visible:nth-child(1) { transition-delay: 0.1s; }
+        .feature-card.visible:nth-child(2) { transition-delay: 0.2s; }
+        .feature-card.visible:nth-child(3) { transition-delay: 0.3s; }
+        .feature-card.visible:nth-child(4) { transition-delay: 0.4s; }
+        .feature-card.visible:nth-child(5) { transition-delay: 0.5s; }
+        .feature-card.visible:nth-child(6) { transition-delay: 0.6s; }
         
         .section-eyebrow {
             display: inline-block;
@@ -3033,28 +3066,24 @@
         
         // Loading Screen Handler
         function initLoadingScreen() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const loadingBar = document.getElementById('loadingBar');
-            
-            if (!loadingScreen) return;
-            
-            // Simulate loading progress
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
                     
-                    // Hide loading screen
-                    setTimeout(() => {
-                        loadingScreen.classList.add('hidden');
-                        // Trigger entrance animations
-                        document.body.classList.add('loaded');
-                    }, 500);
+                    observer.unobserve(heading);
                 }
-                loadingBar.style.width = progress + '%';
-            }, 150);
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe section headers
+            document.querySelectorAll('.section-header').forEach(el => observer.observe(el));
+            
+            // Observe feature cards
+            document.querySelectorAll('.feature-card').forEach(el => observer.observe(el));
         }
         
         // Initialize
@@ -3066,6 +3095,7 @@
             generateConnectionLines();
             initScrollytelling();
             initTextScramble();
+            initVisibilityObserver();
             
             // Auth check disabled - direct access mode
             // const checkAuth = setInterval(() => {
