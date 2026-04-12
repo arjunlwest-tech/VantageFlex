@@ -152,7 +152,170 @@
         }
         
         .btn-3d:active {
-            transform: translateZ(10px) translateY(0);
+            transform: translateZ(10px) translateY(-1px) scale(0.98);
+        }
+        
+        /* Brand Animation Section */
+        .brand-animation-section {
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .floating-shapes {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .shape {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+            border-radius: 20px;
+            position: relative;
+            animation: floatBrand 4s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(200, 121, 65, 0.3);
+        }
+        
+        .shape::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background: inherit;
+            filter: blur(20px);
+            opacity: 0.5;
+            z-index: -1;
+            border-radius: inherit;
+        }
+        
+        .shape-1 { animation-delay: 0s; transform: rotate(15deg); }
+        .shape-2 { animation-delay: -1s; transform: rotate(-10deg); }
+        .shape-3 { animation-delay: -2s; transform: rotate(25deg); }
+        .shape-4 { animation-delay: -3s; transform: rotate(-20deg); }
+        
+        @keyframes floatBrand {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-20px) rotateX(5deg) rotateY(5deg); }
+            50% { transform: translateY(-40px) rotateX(0) rotateY(10deg); }
+            75% { transform: translateY(-20px) rotateX(-5deg) rotateY(5deg); }
+        }
+        
+        /* Brand Divider */
+        .brand-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            padding: 4rem 2rem;
+        }
+        
+        .divider-line {
+            flex: 1;
+            max-width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--copper), transparent);
+        }
+        
+        .divider-icon {
+            font-size: 2rem;
+            animation: pulseIcon 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+        
+        /* Brand Visual Section */
+        .brand-visual-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        
+        .brand-visuals {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .visual-item {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visual-icon {
+            font-size: 3rem;
+            z-index: 2;
+            animation: bounceIcon 3s ease-in-out infinite;
+        }
+        
+        .visual-1 .visual-icon { animation-delay: 0s; }
+        .visual-2 .visual-icon { animation-delay: -1s; }
+        .visual-3 .visual-icon { animation-delay: -2s; }
+        
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .visual-ripple {
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--copper);
+            border-radius: 50%;
+            animation: rippleExpand 2s ease-out infinite;
+            opacity: 0.3;
+        }
+        
+        .visual-1 .visual-ripple { animation-delay: 0s; }
+        .visual-2 .visual-ripple { animation-delay: -0.7s; }
+        .visual-3 .visual-ripple { animation-delay: -1.4s; }
+        
+        @keyframes rippleExpand {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        /* Hero Brand Animation */
+        .hero-brand-animation {
+            display: flex;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        .brand-pulse {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--copper) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: brandPulse 3s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .brand-pulse::before,
+        .brand-pulse::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: inherit;
+            animation: brandPulse 3s ease-in-out infinite;
+        }
+        
+        .brand-pulse::before { animation-delay: -1s; }
+        .brand-pulse::after { animation-delay: -2s; }
+        
+        @keyframes brandPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 0.2; }
         }
         
         /* 3D Section */
@@ -1539,7 +1702,7 @@
     <section class="hero hero-3d">
         <div class="hero-container scene-3d">
             <div class="hero-content hero-content-3d">
-                <div class="hero-badge float-3d">Now in Open Beta</div>
+                <div class="hero-badge float-3d">VantageFlex</div>
                 <h1 class="hero-title text-3d">
                     <span class="hero-title-line1">Train With</span>
                     <span class="hero-title-line2">Precision</span>
@@ -1549,19 +1712,8 @@
                     <button class="btn-primary btn-3d" onclick="window.location.href='workouts.html'">Start Free Trial</button>
                     <button class="btn-secondary btn-3d" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
                 </div>
-                <div class="hero-stats">
-                    <div class="hero-stat stat-3d">
-                        <div class="hero-stat-value">50K+</div>
-                        <div class="hero-stat-label">Active Users</div>
-                    </div>
-                    <div class="hero-stat stat-3d">
-                        <div class="hero-stat-value">4.9★</div>
-                        <div class="hero-stat-label">App Rating</div>
-                    </div>
-                    <div class="hero-stat stat-3d">
-                        <div class="hero-stat-value">100%</div>
-                        <div class="hero-stat-label">Free Forever</div>
-                    </div>
+                <div class="hero-brand-animation">
+                    <div class="brand-pulse"></div>
                 </div>
             </div>
             <div class="hero-visual">
@@ -1642,123 +1794,41 @@
         </div>
     </section>
     
-    <!-- Trust Badges -->
-    <div class="trust-badges">
-        <div class="trust-badge">
-            <span class="trust-icon">🔒</span>
-            <span class="trust-text"><strong>Bank-Level Security</strong>Your data is encrypted</span>
-        </div>
-        <div class="trust-badge">
-            <span class="trust-icon">⚡</span>
-            <span class="trust-text"><strong>Instant Results</strong>AI generates in seconds</span>
-        </div>
-        <div class="trust-badge">
-            <span class="trust-icon">🏆</span>
-            <span class="trust-text"><strong>#1 Rated</strong>Top fitness app 2024</span>
-        </div>
-        <div class="trust-badge">
-            <span class="trust-icon">💪</span>
-            <span class="trust-text"><strong>Proven Results</strong>94% reach goals</span>
+    <!-- Brand Animation Section -->
+    <div class="brand-animation-section">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
         </div>
     </div>
     
-    <!-- Social Proof -->
-    <div class="social-proof">
-        <p class="social-proof-text">
-            <strong>2,847 people</strong> started their workout with VantageFlex in the last 24 hours
-        </p>
+    <!-- Brand Divider -->
+    <div class="brand-divider">
+        <div class="divider-line"></div>
+        <div class="divider-icon">⚡</div>
+        <div class="divider-line"></div>
     </div>
     
-    <!-- Transformation Section -->
-    <section class="transformation-section">
-        <div class="section-header">
-            <span class="section-eyebrow">Success Stories</span>
-            <h2 class="section-title">Real People, Real Results</h2>
-            <p class="section-subtitle">Join thousands who have transformed their bodies and lives with AI-powered training.</p>
-        </div>
-        <div class="transformation-grid">
-            <div class="transformation-card">
-                <div class="transformation-avatar">👨</div>
-                <h3>Mike R.</h3>
-                <p style="color: var(--text-muted); font-size: 0.875rem;">Lost 45 lbs in 4 months</p>
-                <div class="transformation-stats">
-                    <div class="transformation-stat">
-                        <div class="transformation-stat-value">-45</div>
-                        <div class="transformation-stat-label">Lbs</div>
-                    </div>
-                    <div class="transformation-stat">
-                        <div class="transformation-stat-value">+12</div>
-                        <div class="transformation-stat-label">Muscle</div>
-                    </div>
-                </div>
-                <p class="transformation-quote">"The AI knew exactly what I needed. Best shape of my life at 42."</p>
-            </div>
-            <div class="transformation-card">
-                <div class="transformation-avatar">👩</div>
-                <h3>Sarah K.</h3>
-                <p style="color: var(--text-muted); font-size: 0.875rem;">Gained strength, lost fat</p>
-                <div class="transformation-stats">
-                    <div class="transformation-stat">
-                        <div class="transformation-stat-value">+85%</div>
-                        <div class="transformation-stat-label">Strength</div>
-                    </div>
-                    <div class="transformation-stat">
-                        <div class="transformation-stat-value">-28</div>
-                        <div class="transformation-stat-label">Lbs</div>
-                    </div>
-                </div>
-                <p class="transformation-quote">"Finally broke through my plateau. The gamification keeps me hooked!"</p>
-            </div>
-            <div class="transformation-card">
-                <div class="transformation-avatar">👨‍💼</div>
-                <h3>David L.</h3>
-                <p style="color: var(--text-muted); font-size: 0.875rem;">Busy exec, still fit</p>
-                <div class="transformation-stats">
-                    <div class="transformation-stat">
-                        <div class="transformation-stat-value">20min</div>
-                        <div class="transformation-stat-label">Workouts</div>
-                    </div>
-                    <div class="transformation-stat">
-                        <div class="transformation-stat-value">-15%</div>
-                        <div class="transformation-stat-label">Body Fat</div>
-                    </div>
-                </div>
-                <p class="transformation-quote">"Works around my crazy schedule. Never thought I could stay consistent."</p>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Progress Section -->
-    <section class="progress-section">
+    <!-- Brand Visual Section -->
+    <section class="brand-visual-section">
         <div class="section-header" style="margin-bottom: 3rem;">
-            <span class="section-eyebrow">Community Stats</span>
-            <h2 class="section-title" style="font-size: 2rem;">You're Not Alone</h2>
+            <span class="section-eyebrow">The VantageFlex Experience</span>
+            <h2 class="section-title" style="font-size: 2rem;">Elevate Your Training</h2>
         </div>
-        <div class="progress-item">
-            <div class="progress-header">
-                <span>Users Hitting Their Goals</span>
-                <span style="color: var(--copper); font-weight: 700;">94%</span>
+        <div class="brand-visuals">
+            <div class="visual-item visual-1">
+                <div class="visual-icon">💪</div>
+                <div class="visual-ripple"></div>
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill" data-width="94"></div>
+            <div class="visual-item visual-2">
+                <div class="visual-icon">⚡</div>
+                <div class="visual-ripple"></div>
             </div>
-        </div>
-        <div class="progress-item">
-            <div class="progress-header">
-                <span>Workouts Completed Today</span>
-                <span style="color: var(--copper); font-weight: 700;">12,847</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" data-width="78"></div>
-            </div>
-        </div>
-        <div class="progress-item">
-            <div class="progress-header">
-                <span>Average User Consistency</span>
-                <span style="color: var(--copper); font-weight: 700;">87%</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" data-width="87"></div>
+            <div class="visual-item visual-3">
+                <div class="visual-icon">🎯</div>
+                <div class="visual-ripple"></div>
             </div>
         </div>
     </section>
@@ -1778,30 +1848,6 @@
         <div class="squat-silhouette"></div>
     </div>
     
-    <!-- Live Activity Feed -->
-    <div class="live-feed" id="liveFeed">
-        <div class="live-feed-header">
-            <div class="live-dot"></div>
-            <span>Live Activity</span>
-        </div>
-        <div class="live-items" id="liveItems">
-            <div class="live-item">
-                <div class="live-avatar">👤</div>
-                <div class="live-text"><strong>Alex</strong> just completed Leg Day</div>
-                <div class="live-time">now</div>
-            </div>
-            <div class="live-item">
-                <div class="live-avatar">👤</div>
-                <div class="live-text"><strong>Jordan</strong> hit a new PR: 225lbs</div>
-                <div class="live-time">2m</div>
-            </div>
-            <div class="live-item">
-                <div class="live-avatar">👤</div>
-                <div class="live-text"><strong>Taylor</strong> started a workout</div>
-                <div class="live-time">5m</div>
-            </div>
-        </div>
-    </div>
     
     <!-- CTA Section -->
     <section class="cta">
@@ -1809,7 +1855,7 @@
             <div class="cta-container">
                 <div class="cta-box">
                     <h2 class="cta-title">Ready to Transform?</h2>
-                    <p class="cta-subtitle">Join 50,000+ athletes who have already revolutionized their training with AI-powered workouts.</p>
+                    <p class="cta-subtitle">Experience the future of fitness with AI-powered workouts designed for you.</p>
                     <button class="btn-primary" onclick="window.location.href='workouts.html'" style="padding: 1.5rem 4rem; font-size: 1.125rem;">Get Started Free</button>
                 </div>
             </div>
@@ -2284,48 +2330,6 @@
             
             progressBars.forEach(bar => progressObserver.observe(bar));
             
-            // Live Activity Feed - Auto update
-            const liveItems = document.getElementById('liveItems');
-            if (liveItems) {
-                const activities = [
-                    { name: 'Alex', action: 'just completed Leg Day', time: 'now' },
-                    { name: 'Jordan', action: 'hit a new PR: 225lbs', time: '1m' },
-                    { name: 'Taylor', action: 'started a workout', time: '3m' },
-                    { name: 'Morgan', action: 'completed Chest Day', time: '5m' },
-                    { name: 'Casey', action: 'hit 30 day streak!', time: '8m' },
-                    { name: 'Riley', action: 'started Cardio', time: '12m' },
-                    { name: 'Quinn', action: 'burned 500 calories', time: '15m' }
-                ];
-                
-                let activityIndex = 3;
-                
-                setInterval(() => {
-                    const item = document.createElement('div');
-                    item.className = 'live-item';
-                    const activity = activities[activityIndex % activities.length];
-                    item.innerHTML = `
-                        <div class="live-avatar">👤</div>
-                        <div class="live-text"><strong>${activity.name}</strong> ${activity.action}</div>
-                        <div class="live-time">${activity.time}</div>
-                    `;
-                    
-                    liveItems.insertBefore(item, liveItems.firstChild);
-                    
-                    if (liveItems.children.length > 3) {
-                        liveItems.lastChild.remove();
-                    }
-                    
-                    activityIndex++;
-                }, 5000);
-            }
-            
-            // Update live times
-            setInterval(() => {
-                document.querySelectorAll('.live-time').forEach((el, i) => {
-                    const times = ['now', '1m', '2m', '5m', '8m'];
-                    el.textContent = times[i] || times[times.length - 1];
-                });
-            }, 60000);
         });
         
         // Escape key
