@@ -47,7 +47,9 @@ const EQUIPMENT_EXERCISES = {
             { name: "Barbell Deadlift", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 5, elite: 5 }, reps: "5-8", muscles: ["back", "hamstrings", "glutes"] },
             { name: "Barbell Row", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "8-12", muscles: ["back", "biceps"] },
             { name: "Barbell Curl", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "10-12", muscles: ["biceps"] },
-            { name: "Barbell Shrug", type: "isolation", sets: { beginner: 3, intermediate: 4, advanced: 5, elite: 5 }, reps: "10-15", muscles: ["traps"] }
+            { name: "Barbell Shrug", type: "isolation", sets: { beginner: 3, intermediate: 4, advanced: 5, elite: 5 }, reps: "10-15", muscles: ["traps"] },
+            { name: "Pendlay Row", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "6-10", muscles: ["back", "lats"] },
+            { name: "T-Bar Row", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "8-12", muscles: ["back", "lats"] }
         ],
         legs: [
             { name: "Barbell Squat", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 5, elite: 6 }, reps: "6-10", muscles: ["quads", "glutes", "hamstrings"] },
@@ -102,7 +104,39 @@ const EQUIPMENT_EXERCISES = {
             { name: "Plank", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "30-60s", muscles: ["core"] },
             { name: "Mountain Climbers", type: "compound", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "20-30", muscles: ["core", "cardio"] },
             { name: "Leg Raises", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "12-20", muscles: ["lower abs"] },
-            { name: "Russian Twists", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "20-30", muscles: ["obliques"] }
+            { name: "Russian Twists", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "20-30", muscles: ["obliques"] },
+            { name: "Bicycle Crunches", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "20-30", muscles: ["obliques", "abs"] },
+            { name: "Flutter Kicks", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "30-60s", muscles: ["lower abs"] }
+        ]
+    },
+    cable_machine: {
+        push: [
+            { name: "Cable Chest Fly", type: "isolation", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "12-15", muscles: ["chest"] },
+            { name: "Cable Shoulder Press", type: "compound", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "10-12", muscles: ["shoulders", "triceps"] },
+            { name: "Cable Lateral Raise", type: "isolation", sets: { beginner: 3, intermediate: 4, advanced: 5, elite: 5 }, reps: "12-15", muscles: ["shoulders"] },
+            { name: "Tricep Pushdown", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "12-15", muscles: ["triceps"] },
+            { name: "Cable Crossover", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "12-15", muscles: ["chest"] }
+        ],
+        pull: [
+            { name: "Lat Pulldown", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "10-12", muscles: ["back", "lats"] },
+            { name: "Cable Row", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "10-12", muscles: ["back", "biceps"] },
+            { name: "Face Pull", type: "isolation", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "15-20", muscles: ["rear delts", "back"] },
+            { name: "Cable Curl", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "12-15", muscles: ["biceps"] },
+            { name: "Straight Arm Pulldown", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "12-15", muscles: ["lats"] }
+        ],
+        legs: [
+            { name: "Cable Pull-Through", type: "compound", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "12-15", muscles: ["glutes", "hamstrings"] },
+            { name: "Cable Glute Kickback", type: "isolation", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "15-20", muscles: ["glutes"] }
+        ]
+    },
+    kettlebell: {
+        fullbody: [
+            { name: "Kettlebell Swing", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 5, elite: 5 }, reps: "15-20", muscles: ["glutes", "hamstrings", "core"] },
+            { name: "Kettlebell Goblet Squat", type: "compound", sets: { beginner: 3, intermediate: 4, advanced: 4, elite: 5 }, reps: "10-12", muscles: ["quads", "glutes"] },
+            { name: "Kettlebell Clean & Press", type: "compound", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "8-10", muscles: ["shoulders", "legs", "core"] },
+            { name: "Kettlebell Snatch", type: "compound", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 5 }, reps: "8-12", muscles: ["shoulders", "back", "legs"] },
+            { name: "Kettlebell Turkish Get-Up", type: "compound", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "3-5", muscles: ["full body"] },
+            { name: "Kettlebell Windmill", type: "isolation", sets: { beginner: 3, intermediate: 3, advanced: 4, elite: 4 }, reps: "8-10", muscles: ["shoulders", "core", "hips"] }
         ]
     }
 };
@@ -274,6 +308,78 @@ const RECIPE_DATABASE = [
         macros: { protein: 36, carbs: 15, fat: 10, calories: 310 },
         portion: "320g serving",
         instructions: ["Season cod with herbs and olive oil", "Bake at 400°F for 12-15 minutes", "Steam vegetables until tender", "Serve together"]
+    },
+    {
+        id: 13,
+        name: "Steak & Roasted Potatoes",
+        emoji: "🥩",
+        ingredients: ["sirloin steak", "baby potatoes", "asparagus", "garlic butter", "rosemary"],
+        macros: { protein: 42, carbs: 38, fat: 18, calories: 480 },
+        portion: "400g serving",
+        instructions: ["Season steak with salt and pepper", "Sear steak 3-4 minutes per side", "Roast potatoes with rosemary at 425°F for 25 min", "Steam asparagus and serve with garlic butter"]
+    },
+    {
+        id: 14,
+        name: "Mediterranean Buddha Bowl",
+        emoji: "🥙",
+        ingredients: ["quinoa", "chickpeas", "cucumber", "tomatoes", "feta", "olives", "tzatziki"],
+        macros: { protein: 18, carbs: 52, fat: 16, calories: 420 },
+        portion: "450g serving",
+        instructions: ["Cook quinoa according to package", "Drain and rinse chickpeas", "Chop cucumber and tomatoes", "Combine in bowl with feta and olives", "Top with tzatziki"]
+    },
+    {
+        id: 15,
+        name: "Egg White Veggie Scramble",
+        emoji: "🍳",
+        ingredients: ["egg whites", "spinach", "mushrooms", "peppers", "whole grain toast"],
+        macros: { protein: 26, carbs: 24, fat: 6, calories: 260 },
+        portion: "300g serving",
+        instructions: ["Sauté vegetables until soft", "Add egg whites and scramble", "Season with salt and pepper", "Serve with toast"]
+    },
+    {
+        id: 16,
+        name: "Asian Turkey Lettuce Wraps",
+        emoji: "🥬",
+        ingredients: ["ground turkey", "water chestnuts", "green onions", "hoisin sauce", "lettuce cups"],
+        macros: { protein: 34, carbs: 18, fat: 12, calories: 320 },
+        portion: "4 wraps",
+        instructions: ["Cook turkey until browned", "Add chopped water chestnuts and green onions", "Stir in hoisin sauce", "Spoon into lettuce cups"]
+    },
+    {
+        id: 17,
+        name: "Protein Pasta Primavera",
+        emoji: "🍝",
+        ingredients: ["chickpea pasta", "zucchini", "cherry tomatoes", "chicken breast", "parmesan"],
+        macros: { protein: 38, carbs: 48, fat: 10, calories: 430 },
+        portion: "400g serving",
+        instructions: ["Cook pasta according to package", "Grill chicken and slice", "Sauté vegetables until tender", "Toss everything with parmesan"]
+    },
+    {
+        id: 18,
+        name: "Salmon Power Salad",
+        emoji: "🥗",
+        ingredients: ["salmon fillet", "mixed greens", "avocado", "cucumber", "lemon dressing"],
+        macros: { protein: 34, carbs: 12, fat: 22, calories: 380 },
+        portion: "350g serving",
+        instructions: ["Season salmon with salt and pepper", "Pan-sear salmon 4-5 minutes per side", "Toss greens with cucumber and avocado", "Top with salmon and lemon dressing"]
+    },
+    {
+        id: 19,
+        name: "Beef & Broccoli Stir-Fry",
+        emoji: "🥦",
+        ingredients: ["lean beef strips", "broccoli", "soy sauce", "ginger", "garlic", "rice"],
+        macros: { protein: 36, carbs: 42, fat: 12, calories: 420 },
+        portion: "380g serving",
+        instructions: ["Marinate beef in soy sauce, ginger, and garlic", "Stir-fry beef until browned", "Add broccoli and cook until tender-crisp", "Serve over rice"]
+    },
+    {
+        id: 20,
+        name: "Overnight Protein Oats",
+        emoji: "🥣",
+        ingredients: ["oats", "protein powder", "almond milk", "peanut butter", "banana"],
+        macros: { protein: 28, carbs: 52, fat: 14, calories: 430 },
+        portion: "350g serving",
+        instructions: ["Mix oats, protein powder, and almond milk in jar", "Refrigerate overnight", "Top with peanut butter and sliced banana", "Enjoy cold or warmed"]
     }
 ];
 
@@ -289,7 +395,20 @@ const MOTIVATION_QUOTES = [
     { quote: "Strength does not come from winning. Your struggles develop your strengths.", author: "Arnold Schwarzenegger" },
     { quote: "Fitness is not about being better than someone else. It's about being better than you used to be.", author: "Khloe Kardashian" },
     { quote: "A one-hour workout is 4% of your day. No excuses.", author: "Unknown" },
-    { quote: "The only place where success comes before work is in the dictionary.", author: "Vidal Sassoon" }
+    { quote: "The only place where success comes before work is in the dictionary.", author: "Vidal Sassoon" },
+    { quote: "If you think lifting is dangerous, try being weak. Being weak is dangerous.", author: "Bret Contreras" },
+    { quote: "The only way to define your limits is by going beyond them.", author: "Arthur C. Clarke" },
+    { quote: "When you feel like quitting, think about why you started.", author: "Unknown" },
+    { quote: "Exercise is king. Nutrition is queen. Put them together and you've got a kingdom.", author: "Jack LaLanne" },
+    { quote: "The difference between try and triumph is a little umph.", author: "Unknown" },
+    { quote: "What seems impossible today will one day be your warm-up.", author: "Unknown" },
+    { quote: "Train insane or remain the same.", author: "Unknown" },
+    { quote: "Your health is an investment, not an expense.", author: "Unknown" },
+    { quote: "Champions aren't made in the gyms. Champions are made from something they have deep inside them.", author: "Muhammad Ali" },
+    { quote: "Action is the foundational key to all success.", author: "Pablo Picasso" },
+    { quote: "Fall in love with taking care of yourself.", author: "Unknown" },
+    { quote: "Make your body the sexiest outfit you own.", author: "Unknown" },
+    { quote: "Suffer the pain of discipline or suffer the pain of regret.", author: "Jim Rohn" }
 ];
 
 const MEAL_TEMPLATES = {
