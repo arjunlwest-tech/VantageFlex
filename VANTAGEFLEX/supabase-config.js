@@ -16,45 +16,38 @@ let userSubscription = null;
  * Initialize Supabase on page load
  */
 function initSupabase() {
-    // Load Supabase library dynamically
     return new Promise((resolve, reject) => {
-        console.log('Initializing Supabase with URL:', SUPABASE_URL);
-        console.log('Supabase key present:', SUPABASE_KEY ? 'Yes (length: ' + SUPABASE_KEY.length + ')' : 'No');
+        console.log('Initializing Supabase...');
         
-        if (!SUPABASE_KEY || SUPABASE_KEY.length < 20) {
-            reject(new Error('Invalid Supabase key. Please check your configuration.'));
+        if (!SUPABASE_KEY || SUPABASE_KEY.length < 50) {
+            reject(new Error('Invalid Supabase key'));
             return;
         }
         
-        if (window.supabase) {
-            try {
-                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('Supabase client created successfully');
-                resolve(supabaseClient);
-            } catch (err) {
-                console.error('Failed to create Supabase client:', err);
-                reject(err);
-            }
-        } else {
-            console.log('Loading Supabase library dynamically...');
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-            script.onload = () => {
+        // Wait for supabase to be available (it loads via CDN)
+        let attempts = 0;
+        const maxAttempts = 100;
+        
+        const checkSupabase = () => {
+            attempts++;
+            
+            if (window.supabase) {
                 try {
                     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                    console.log('Supabase client created successfully after loading library');
+                    console.log('Supabase client created');
                     resolve(supabaseClient);
                 } catch (err) {
-                    console.error('Failed to create Supabase client after loading:', err);
+                    console.error('Failed to create client:', err);
                     reject(err);
                 }
-            };
-            script.onerror = (e) => {
-                console.error('Failed to load Supabase library:', e);
-                reject(new Error('Failed to load Supabase library'));
-            };
-            document.head.appendChild(script);
-        }
+            } else if (attempts >= maxAttempts) {
+                reject(new Error('Supabase library not loaded'));
+            } else {
+                setTimeout(checkSupabase, 50);
+            }
+        };
+        
+        checkSupabase();
     });
 }
 
