@@ -769,6 +769,31 @@ body {
     margin-top: var(--space-xs);
 }
 
+/* Premium Stat Cards */
+.stat-card-premium {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-xl);
+    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+}
+
+.stat-card-icon {
+    font-size: 40px;
+    margin-bottom: var(--space-md);
+    filter: drop-shadow(0 4px 8px rgba(255,107,53,0.3));
+    animation: bounce-subtle 2s ease infinite;
+}
+
+.stat-card-label {
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 11px;
+}
+
 .metric-row {
     display: flex;
     align-items: center;
