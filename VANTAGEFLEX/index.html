@@ -518,13 +518,13 @@
         /* Staggered entrance for cards */
         .feature-card {
             opacity: 0;
-            transform: translateY(60px) rotateX(10deg);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(60px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .feature-card.visible {
             opacity: 1;
-            transform: translateY(0) rotateX(0);
+            transform: translateY(0);
         }
         
         .feature-card.visible:nth-child(1) { transition-delay: 0.1s; }
@@ -604,11 +604,11 @@
         }
         
         .feature-card:hover {
-            transform: translateY(-15px) rotateX(5deg);
             border-color: rgba(200, 121, 65, 0.3);
             box-shadow: 
                 0 40px 80px rgba(0,0,0,0.4),
-                0 0 60px rgba(200, 121, 65, 0.15);
+                0 0 0 1px rgba(200, 121, 65, 0.1);
+            /* Transform is handled by JavaScript for 3D tilt effect */
         }
         
         .feature-card:hover::before {
@@ -2557,34 +2557,24 @@
                 const controlX = spreadX * 0.7 + (Math.random() - 0.5) * 150;
                 const controlY = -floatUp * 0.4;
                 
-                // Animate along curved path
+                // Animate with simple x/y (no plugin needed)
                 gsap.to(ball, {
-                    motionPath: {
-                        path: [
-                            { x: 0, y: 0 },
-                            { x: controlX, y: controlY },
-                            { x: spreadX, y: -floatUp }
-                        ],
-                        curviness: 1.5
-                    },
+                    x: spreadX,
+                    y: -floatUp,
                     opacity: 0,
                     scale: 0.3,
                     rotation: Math.random() * 720 - 360,
                     duration: duration,
                     delay: delay,
-                    ease: 'power1.out',
+                    ease: 'power2.out',
                     onComplete: () => ball.remove()
                 });
                 
-                // Add size pulse
-                gsap.to(ball, {
-                    scale: 1.3,
-                    duration: 0.3,
-                    delay: delay,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: 'power2.inOut'
-                });
+                // Add size pulse at start
+                gsap.fromTo(ball, 
+                    { scale: 0.5 },
+                    { scale: 1.2, duration: 0.2, ease: 'power2.out' }
+                );
             }
         });
         
@@ -2635,42 +2625,10 @@
             });
         }
         
-        // Hover Trail Effect on Hero Visual
-        const heroVisual = document.querySelector('.hero-visual');
-        if (heroVisual) {
-            let trailTimeout;
-            
-            heroVisual.addEventListener('mousemove', (e) => {
-                clearTimeout(trailTimeout);
-                
-                const rect = heroVisual.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const trail = document.createElement('div');
-                trail.style.cssText = `
-                    position: absolute;
-                    width: 8px;
-                    height: 8px;
-                    background: var(--copper);
-                    border-radius: 50%;
-                    pointer-events: none;
-                    left: ${x}px;
-                    top: ${y}px;
-                    opacity: 0.6;
-                    filter: blur(2px);
-                `;
-                heroVisual.appendChild(trail);
-                
-                gsap.to(trail, {
-                    opacity: 0,
-                    scale: 2,
-                    duration: 0.5,
-                    ease: 'power2.out',
-                    onComplete: () => trail.remove()
-                });
-            });
-        }
+        // Removed hover trail effect
+        
+        // Removed hover trail effect code
+        
     </script>
 </body>
 </html>
