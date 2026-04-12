@@ -2287,55 +2287,74 @@
             });
         });
         
-        // Click Floating Balls Effect - Float up and out
+        // Click Floating Balls Effect - Float up and off screen
         document.addEventListener('click', (e) => {
             if (e.target.closest('button') || e.target.closest('a')) return;
             
-            const colors = ['#c87941', '#d48a52', '#e8a87c', '#ffffff'];
-            const ballCount = 8;
+            const colors = ['#c87941', '#d48a52', '#e8a87c', '#f4a261', '#e76f51', '#ffffff'];
+            const ballCount = 12;
             
             for (let i = 0; i < ballCount; i++) {
                 const ball = document.createElement('div');
-                const size = 12 + Math.random() * 16;
+                const size = 10 + Math.random() * 20;
                 const color = colors[Math.floor(Math.random() * colors.length)];
+                const delay = i * 0.05;
                 
                 ball.style.cssText = `
                     position: fixed;
                     width: ${size}px;
                     height: ${size}px;
-                    background: ${color};
+                    background: radial-gradient(circle at 30% 30%, ${color}, ${color}dd);
                     border-radius: 50%;
                     pointer-events: none;
                     z-index: 9999;
                     left: ${e.clientX - size/2}px;
                     top: ${e.clientY - size/2}px;
-                    box-shadow: 0 0 20px ${color}, 0 0 40px ${color}80;
+                    box-shadow: 
+                        0 0 20px ${color},
+                        0 0 40px ${color}80,
+                        0 0 60px ${color}40;
                 `;
                 document.body.appendChild(ball);
                 
-                // Random spread and float up
-                const spreadX = (Math.random() - 0.5) * 200;
-                const floatUp = 300 + Math.random() * 400;
-                const duration = 1.5 + Math.random() * 1;
+                // Calculate trajectory - spread out and float way up off screen
+                const angle = (i / ballCount) * Math.PI * 2 + Math.random() * 0.5;
+                const distance = 100 + Math.random() * 150;
+                const spreadX = Math.cos(angle) * distance;
+                const floatUp = window.innerHeight + 200 + Math.random() * 300; // Float way off top of screen
+                const duration = 2 + Math.random() * 1.5;
                 
+                // Create a curved path using bezier
+                const controlX = spreadX * 0.5 + (Math.random() - 0.5) * 100;
+                const controlY = -floatUp * 0.3;
+                
+                // Animate along curved path
                 gsap.to(ball, {
-                    x: spreadX,
-                    y: -floatUp,
+                    motionPath: {
+                        path: [
+                            { x: 0, y: 0 },
+                            { x: controlX, y: controlY },
+                            { x: spreadX, y: -floatUp }
+                        ],
+                        curviness: 1.5
+                    },
                     opacity: 0,
-                    scale: 0.5,
-                    rotation: Math.random() * 360,
+                    scale: 0.3,
+                    rotation: Math.random() * 720 - 360,
                     duration: duration,
-                    ease: 'power2.out',
+                    delay: delay,
+                    ease: 'power1.out',
                     onComplete: () => ball.remove()
                 });
                 
-                // Add wobble animation
+                // Add size pulse
                 gsap.to(ball, {
-                    x: `+=${Math.sin(i) * 30}`,
-                    duration: duration * 0.3,
-                    repeat: 2,
+                    scale: 1.3,
+                    duration: 0.3,
+                    delay: delay,
                     yoyo: true,
-                    ease: 'sine.inOut'
+                    repeat: 1,
+                    ease: 'power2.inOut'
                 });
             }
         });
