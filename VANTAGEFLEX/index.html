@@ -35,28 +35,47 @@
     </nav>
 
     <main class="page-content">
-        <section class="section">
+        <section class="section hero-section">
             <div class="container">
-                <div class="text-center mb-16 animate-fade-in">
-                    <span class="badge badge-primary mb-6">
-                        <span>⚡</span> AI-Powered Workout Generator
-                    </span>
-                    <h1 class="heading-hero mb-6">
-                        Forge Your<br><span class="text-gradient">Legacy</span>
+                <div class="hero-content text-center mb-12">
+                    <div class="hero-badge-wrapper">
+                        <span class="badge badge-primary badge-pulse mb-6">
+                            <span class="badge-icon">⚡</span>
+                            <span class="badge-text">AI-Powered Workout Generator</span>
+                        </span>
+                    </div>
+                    <h1 class="heading-hero hero-title mb-6">
+                        <span class="title-line">Forge Your</span>
+                        <span class="title-line text-gradient-shine">Legacy</span>
                     </h1>
-                    <p class="text-body max-w-2xl mx-auto">
-                        Generate scientifically-backed workouts tailored to your level, goals, and available time. 
-                        Every rep optimized. Every set calculated. Results guaranteed.
+                    <p class="hero-description text-body max-w-2xl mx-auto">
+                        Elite workouts engineered for serious athletes. Tell us your goals and equipment—
+                        we'll build the perfect routine to break through plateaus.
                     </p>
+                    <div class="hero-stats mt-8">
+                        <div class="stat-item">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">Workouts Generated</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.9★</span>
+                            <span class="stat-label">User Rating</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">Free Forever</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="grid-2" style="align-items: start;">
                     <div class="space-y-6">
                         <div class="card card-glow animate-fade-in stagger-1">
                             <div class="card-header">
-                                <h2 class="card-title">
-                                    <span>�</span> Your Profile
-                                </h2>
+                                <div class="card-header-icon">👤</div>
+                                <h2 class="card-title">Your Profile</h2>
                             </div>
                             
                             <div class="form-group">
@@ -92,10 +111,9 @@
 
                         <div class="card animate-fade-in stagger-2">
                             <div class="card-header">
-                                <h2 class="card-title">
-                                    <span>🏋️</span> Your Equipment
-                                </h2>
-                                <span class="badge badge-secondary" id="equipment-count">Bodyweight</span>
+                                <div class="card-header-icon">🏋️</div>
+                                <h2 class="card-title">Your Equipment</h2>
+                                <span class="badge badge-subtle" id="equipment-count">Bodyweight</span>
                             </div>
                             <div class="equipment-section">
                                 <div class="equipment-input-group">
@@ -118,10 +136,9 @@
 
                         <div class="card animate-fade-in stagger-2">
                             <div class="card-header">
-                                <h2 class="card-title">
-                                    <span>⏱️</span> Duration
-                                </h2>
-                                <span class="badge badge-primary" id="duration-display">45 min</span>
+                                <div class="card-header-icon">⏱️</div>
+                                <h2 class="card-title">Duration</h2>
+                                <span class="badge badge-accent" id="duration-display">45 min</span>
                             </div>
                             <div class="range-container">
                                 <input type="range" class="range-slider" id="duration-slider" min="15" max="120" value="45" step="5">
@@ -133,8 +150,10 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-lg w-full animate-fade-in stagger-3" id="generate-btn">
-                            <span>⚡</span> Generate Workout
+                        <button class="btn btn-premium btn-lg w-full animate-fade-in stagger-3" id="generate-btn">
+                            <span class="btn-icon">⚡</span>
+                            <span class="btn-text">Generate My Workout</span>
+                            <span class="btn-shine"></span>
                         </button>
                     </div>
 
