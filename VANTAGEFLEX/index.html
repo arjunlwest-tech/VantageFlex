@@ -2516,15 +2516,16 @@
                 document.body.appendChild(ball);
                 
                 // Calculate trajectory - spread out and float way up off screen
-                const angle = (i / ballCount) * Math.PI * 2 + Math.random() * 0.5;
-                const distance = 100 + Math.random() * 150;
+                const angle = (i / ballCount) * Math.PI * 2 + Math.random() * 0.8;
+                const distance = 150 + Math.random() * 200;
                 const spreadX = Math.cos(angle) * distance;
-                const floatUp = window.innerHeight + 200 + Math.random() * 300; // Float way off top of screen
-                const duration = 2 + Math.random() * 1.5;
+                // Float WAY off screen (past viewport + extra)
+                const floatUp = window.innerHeight * 1.5 + Math.random() * 500; 
+                const duration = 2.5 + Math.random() * 2;
                 
-                // Create a curved path using bezier
-                const controlX = spreadX * 0.5 + (Math.random() - 0.5) * 100;
-                const controlY = -floatUp * 0.3;
+                // Create a curved path using bezier with more dramatic arc
+                const controlX = spreadX * 0.7 + (Math.random() - 0.5) * 150;
+                const controlY = -floatUp * 0.4;
                 
                 // Animate along curved path
                 gsap.to(ball, {
@@ -2555,32 +2556,6 @@
                     ease: 'power2.inOut'
                 });
             }
-        });
-        
-        // Cursor Spotlight Effect
-        const spotlight = document.createElement('div');
-        spotlight.style.cssText = `
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(200, 121, 65, 0.15) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 5;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        `;
-        document.body.appendChild(spotlight);
-        
-        document.addEventListener('mousemove', (e) => {
-            spotlight.style.left = e.clientX + 'px';
-            spotlight.style.top = e.clientY + 'px';
-            spotlight.style.opacity = '1';
-        });
-        
-        document.addEventListener('mouseleave', () => {
-            spotlight.style.opacity = '0';
         });
         
         // Scroll Velocity Skew Effect
