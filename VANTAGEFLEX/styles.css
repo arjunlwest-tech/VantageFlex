@@ -1053,6 +1053,8 @@ body {
 
 .range-slider {
     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     width: 100%;
     height: 6px;
     background: rgba(255, 255, 255, 0.1);
@@ -3064,6 +3066,9 @@ body {
     border: 2px solid transparent;
     background: linear-gradient(135deg, var(--primary-orange), var(--primary-gold)) border-box;
     -webkit-mask: 
+        linear-gradient(#fff 0 0) padding-box, 
+        linear-gradient(#fff 0 0);
+    mask: 
         linear-gradient(#fff 0 0) padding-box, 
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
