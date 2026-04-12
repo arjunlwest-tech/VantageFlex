@@ -2453,12 +2453,54 @@
         let targetRotateX = 0, targetRotateY = 0;
         let currentRotateX = 0, currentRotateY = 0;
         
+        // Cursor Glow Effect - Follows mouse with copper glow
+        const cursorGlow = document.createElement('div');
+        cursorGlow.style.cssText = `
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(200,121,65,0.8) 0%, rgba(200,121,65,0.4) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+            filter: blur(8px);
+            transition: transform 0.1s ease-out;
+        `;
+        document.body.appendChild(cursorGlow);
+        
+        const cursorRing = document.createElement('div');
+        cursorRing.style.cssText = `
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(200,121,65,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9997;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease-out;
+        `;
+        document.body.appendChild(cursorRing);
+        
         document.addEventListener('mousemove', (e) => {
-            const mx = (e.clientX / window.innerWidth - 0.5) * 2;
-            const my = (e.clientY / window.innerHeight - 0.5) * 2;
-            
-            targetRotateY = mx * 5; // -5 to 5 degrees
-            targetRotateX = -my * 5; // -5 to 5 degrees
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+            cursorRing.style.left = e.clientX + 'px';
+            cursorRing.style.top = e.clientY + 'px';
+        });
+        
+        document.addEventListener('mousedown', () => {
+            cursorGlow.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            cursorRing.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            cursorRing.style.borderColor = 'rgba(200,121,65,0.6)';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursorGlow.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursorRing.style.borderColor = 'rgba(200,121,65,0.3)';
         });
         
         // Feature card hover effects only - no global background rotation
@@ -2821,34 +2863,6 @@
             }
         });
         
-        // Scroll Velocity Skew Effect
-        let lastScrollTop = 0;
-        let scrollVelocity = 0;
-        let ticking = false;
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const st = window.pageYOffset || document.documentElement.scrollTop;
-                    scrollVelocity = st - lastScrollTop;
-                    lastScrollTop = st;
-                    
-                    const skewAmount = Math.min(Math.max(scrollVelocity * 0.05, -5), 5);
-                    document.querySelectorAll('.feature-card, .hero-content').forEach(el => {
-                        el.style.transform = `skewY(${skewAmount}deg)`;
-                    });
-                    
-                    setTimeout(() => {
-                        document.querySelectorAll('.feature-card, .hero-content').forEach(el => {
-                            el.style.transform = '';
-                        });
-                    }, 100);
-                    
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
         
         // Typewriter Effect for Hero Badge
         const badge = document.querySelector('.hero-badge');
@@ -2881,22 +2895,8 @@
             });
         }
         
-        // Reveal on Scroll for Stats
+        // Section reveals
         if (window.gsap) {
-            gsap.from('.hero-stat', {
-                scrollTrigger: {
-                    trigger: '.hero-stats',
-                    start: 'top 90%',
-                    toggleActions: 'play none none reverse'
-                },
-                y: 30,
-                opacity: 0,
-                duration: 0.6,
-                stagger: 0.15,
-                ease: 'power2.out'
-            });
-            
-            // Section reveals
             gsap.from('.section-header', {
                 scrollTrigger: {
                     trigger: '.section-header',
