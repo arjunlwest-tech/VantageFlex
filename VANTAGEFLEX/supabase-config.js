@@ -334,21 +334,21 @@ const AuthGate = {
         
         // Listen for auth state changes
         window.addEventListener('auth:ready', (e) => {
-            if (e.detail?.user) {
+            if (e.detail?.id) {
                 this.hide();
             } else {
                 this.redirectToLanding();
             }
         });
         
-        // Check auth state after a short delay
+        // Check auth state after a short delay to let AuthManager init
         setTimeout(() => {
-            if (!currentUser) {
+            if (!currentUser && !window.AuthManager?.getCurrentUser()) {
                 this.redirectToLanding();
             } else {
                 this.hide();
             }
-        }, 1000);
+        }, 1500);
     },
     
     redirectToLanding() {
