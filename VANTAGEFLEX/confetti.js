@@ -163,7 +163,7 @@ const ConfettiSystem = {
                     this.ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
                 } else {
                     // Draw confetti shape (rounded rectangle)
-                    this.beginPath();
+                    this.ctx.beginPath();
                     this.ctx.roundRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size * 0.6, 2);
                     this.ctx.fill();
                 }

@@ -17,9 +17,21 @@ const SoundSystem = {
 
     // Load all sound effects
     loadSounds() {
-        // Using Web Audio API to generate sounds dynamically
-        // This avoids external file dependencies
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // Audio context will be created lazily on first play
+        // (browsers require user interaction before creating AudioContext)
+        this.audioContext = null;
+    },
+    
+    // Get or create audio context
+    getAudioContext() {
+        if (!this.audioContext) {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        // Resume if suspended (browser policy)
+        if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+        }
+        return this.audioContext;
     },
 
     // Generate button click sound
@@ -94,11 +106,12 @@ const SoundSystem = {
     // Play a single tone
     playTone(frequency, duration, type = 'sine', vol = 0.1) {
         try {
-            const oscillator = this.audioContext.createOscillator();
-            const gainNode = this.audioContext.createGain();
+            const ctx = this.getAudioContext();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
 
             oscillator.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
+            gainNode.connect(ctx.destination);
 
             oscillator.frequency.value = frequency;
             oscillator.type = type;
@@ -107,9 +120,9 @@ const SoundSystem = {
             oscillator.start();
             
             // Fade out
-            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + duration);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
             
-            oscillator.stop(this.audioContext.currentTime + duration);
+            oscillator.stop(ctx.currentTime + duration);
         } catch (e) {
             console.log('Audio play failed:', e);
         }
