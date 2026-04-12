@@ -4234,9 +4234,45 @@ body.authenticated .auth-gate {
     color: var(--primary-orange);
 }
 
+.text-gradient-fire {
+    background: linear-gradient(135deg, #ff6b35 0%, #ffd700 50%, #ff006e 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 3s ease infinite;
+}
+
+.text-gradient-cool {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-ocean {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glow text effects */
+.text-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+}
+
+.text-glow-orange {
+    text-shadow: 0 0 10px rgba(255, 107, 53, 0.5), 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
 /* Background utility */
 .bg-orange-500\/5 {
     background: rgba(255, 107, 53, 0.05);
+}
+
+.bg-gradient-fire {
+    background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(255,215,0,0.1) 100%);
 }
 
 .border-orange-500\/20 {
