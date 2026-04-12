@@ -274,6 +274,7 @@ function initSaveButton() {
         VantageFlex.UserState.recordWorkout();
         
         if (window.SoundSystem) SoundSystem.playSuccess();
+        if (window.ConfettiSystem) ConfettiSystem.celebrate('workout');
         
         VantageFlex.showToast('Workout saved to dashboard!', 'success');
     });
