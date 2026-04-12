@@ -413,16 +413,19 @@ const SubscriptionManager = {
  */
 const AuthGate = {
     init() {
-        // Skip auth gate on landing page
+        // AUTH GATE DISABLED - Direct access mode
+        // All pages are now accessible without login
+        console.log('AuthGate: Direct access mode enabled');
+        return;
+        
+        /* Original auth code - disabled for now
         const currentPage = window.location.pathname.split('/').pop();
         if (currentPage === 'landing.html' || currentPage === '') {
             return;
         }
         
-        // Add auth-required class immediately to prevent flash of content
         document.body.classList.add('auth-required');
         
-        // Listen for auth state changes
         window.addEventListener('auth:ready', (e) => {
             if (e.detail?.id) {
                 this.hide();
@@ -431,7 +434,6 @@ const AuthGate = {
             }
         });
         
-        // Check auth state after a short delay to let AuthManager init
         setTimeout(() => {
             if (!currentUser && !window.AuthManager?.getCurrentUser()) {
                 this.redirectToLanding();
@@ -439,6 +441,7 @@ const AuthGate = {
                 this.hide();
             }
         }, 1500);
+        */
     },
     
     redirectToLanding() {

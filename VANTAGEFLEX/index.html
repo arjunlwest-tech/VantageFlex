@@ -1365,7 +1365,7 @@
             <a href="#features">Features</a>
             <a href="#showcase">Showcase</a>
             <a href="#pricing">Pricing</a>
-            <button class="nav-cta" onclick="showAuthModal()">Get Started</button>
+            <button class="nav-cta" onclick="window.location.href='workouts.html'">Get Started</button>
         </div>
     </nav>
     
@@ -1380,7 +1380,7 @@
                 </h1>
                 <p class="hero-subtitle">AI-powered workout generation tailored to your goals, equipment, and experience level. Join the fitness revolution.</p>
                 <div class="hero-actions">
-                    <button class="btn-primary" onclick="showAuthModal('signup')">Start Free Trial</button>
+                    <button class="btn-primary" onclick="window.location.href='workouts.html'">Start Free Trial</button>
                     <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">Explore Features</button>
                 </div>
                 <div class="hero-stats">
@@ -1644,7 +1644,7 @@
                 <div class="cta-box">
                     <h2 class="cta-title">Ready to Transform?</h2>
                     <p class="cta-subtitle">Join 50,000+ athletes who have already revolutionized their training with AI-powered workouts.</p>
-                    <button class="btn-primary" onclick="showAuthModal('signup')" style="padding: 1.5rem 4rem; font-size: 1.125rem;">Get Started Free</button>
+                    <button class="btn-primary" onclick="window.location.href='workouts.html'" style="padding: 1.5rem 4rem; font-size: 1.125rem;">Get Started Free</button>
                 </div>
             </div>
         </div>
@@ -2037,13 +2037,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
             
-            // Check auth state
-            const checkAuth = setInterval(() => {
-                if (window.AuthManager?.getCurrentUser?.()) {
-                    window.location.href = 'workouts.html';
-                    clearInterval(checkAuth);
-                }
-            }, 500);
+            // Auth check disabled - direct access mode
+            // const checkAuth = setInterval(() => {
+            //     if (window.AuthManager?.getCurrentUser?.()) {
+            //         window.location.href = 'workouts.html';
+            //         clearInterval(checkAuth);
+            //     }
+            // }, 500);
             
             // Scroll-responsive Squat Character
             const squatCharacter = document.getElementById('squatCharacter');
