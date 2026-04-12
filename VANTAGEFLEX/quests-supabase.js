@@ -620,19 +620,19 @@ const QuestSystem = {
                     <h3>${quest.title}</h3>
                     <button class="close-btn" onclick="QuestSystem.stopQuest()">×</button>
                 </div>
-                <div class="camera-viewport">
+                <div class="camera-viewport" style="position: relative; width: 100%; height: 300px; background: #000; overflow: hidden;">
                     <video 
                         id="quest-camera" 
                         autoplay 
                         playsinline 
                         muted
-                        style="width: 100%; height: 100%; object-fit: cover;"
+                        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;"
                     ></video>
-                    <canvas id="pose-canvas"></canvas>
-                    <div class="camera-loading" id="camera-loading">
-                        <div class="camera-spinner"></div>
-                        <p>Starting camera...</p>
-                        <p style="font-size: 12px; color: #888; margin-top: 8px;">Click "Allow" when browser asks for camera permission</p>
+                    <canvas id="pose-canvas" style="position: absolute; inset: 0; z-index: 2; pointer-events: none;"></canvas>
+                    <div class="camera-loading" id="camera-loading" style="position: absolute; inset: 0; background: rgba(0,0,0,0.9); z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div class="camera-spinner" style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary-orange); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <p style="margin-top: 16px; color: #fff;">Starting camera...</p>
+                        <p style="font-size: 12px; color: #888; margin-top: 8px; text-align: center; padding: 0 20px;">Allow camera access when prompted by your browser</p>
                     </div>
                 </div>
                 <div class="quest-stats">

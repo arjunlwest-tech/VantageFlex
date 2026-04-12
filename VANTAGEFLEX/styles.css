@@ -45,11 +45,12 @@
     --glow-purple: 0 0 40px rgba(191, 90, 242, 0.3);
     --glow-blue: 0 0 40px rgba(10, 132, 255, 0.3);
     
-    /* Border Radius */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-xl: 28px;
+    /* Border Radius - Less circular */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-full: 9999px;
     
     /* Spacing */
     --space-xs: 4px;

@@ -122,6 +122,20 @@ const AuthManager = {
         if (error) this.showAuthError(error.message);
     },
     
+    async signIn(provider) {
+        const redirectPage = sessionStorage.getItem('redirectAfterLogin') || 'index.html';
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+            provider: provider,
+            options: {
+                redirectTo: window.location.origin + '/' + redirectPage
+            }
+        });
+        if (error) {
+            console.error('Auth error:', error);
+            alert('Sign in failed: ' + error.message);
+        }
+    },
+    
     async signOut() {
         await supabaseClient.auth.signOut();
         window.location.href = 'index.html';
@@ -309,21 +323,42 @@ const SubscriptionManager = {
  */
 const AuthGate = {
     init() {
+        // Skip auth gate on landing page
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage === 'landing.html' || currentPage === '') {
+            return;
+        }
+        
         // Add auth-required class immediately to prevent flash of content
         document.body.classList.add('auth-required');
         
-        // Create and inject auth gate HTML
-        this.createAuthGate();
-        
         // Listen for auth state changes
         window.addEventListener('auth:ready', (e) => {
-            this.hide();
+            if (e.detail?.user) {
+                this.hide();
+            } else {
+                this.redirectToLanding();
+            }
         });
         
-        // Check if already logged in
-        if (currentUser) {
-            this.hide();
+        // Check auth state after a short delay
+        setTimeout(() => {
+            if (!currentUser) {
+                this.redirectToLanding();
+            } else {
+                this.hide();
+            }
+        }, 1000);
+    },
+    
+    redirectToLanding() {
+        // Save intended page for after login
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage && currentPage !== 'index.html') {
+            sessionStorage.setItem('redirectAfterLogin', currentPage);
         }
+        // Redirect to landing page
+        window.location.href = 'landing.html';
     },
     
     createAuthGate() {
