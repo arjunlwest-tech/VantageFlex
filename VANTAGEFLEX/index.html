@@ -1795,14 +1795,26 @@
             const password = document.getElementById('signinPassword').value;
             const submitBtn = document.getElementById('signinSubmit');
             
+            if (!email || !password) {
+                document.getElementById('signinPasswordError').textContent = 'Please enter both email and password';
+                document.getElementById('signinPasswordError').classList.add('visible');
+                return;
+            }
+            
             submitBtn.disabled = true;
             submitBtn.textContent = 'Signing in...';
             
             try {
                 await waitForAuth();
+                
+                if (!window.AuthManager?.signInWithEmail) {
+                    throw new Error('Auth system not ready. Please refresh and try again.');
+                }
+                
                 await window.AuthManager.signInWithEmail(email, password);
                 window.location.href = 'workouts.html';
             } catch (error) {
+                console.error('Sign in error:', error);
                 document.getElementById('signinPasswordError').textContent = error.message || 'Invalid credentials';
                 document.getElementById('signinPasswordError').classList.add('visible');
                 submitBtn.disabled = false;
@@ -1814,11 +1826,25 @@
             event.preventDefault();
             document.querySelectorAll('.form-error').forEach(el => el.classList.remove('visible'));
             
-            const email = document.getElementById('signupEmail').value;
+            const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
             const submitBtn = document.getElementById('signupSubmit');
             
+            // Validation
+            if (!email || !password) {
+                document.getElementById('signupEmailError').textContent = 'Please enter both email and password';
+                document.getElementById('signupEmailError').classList.add('visible');
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                document.getElementById('signupEmailError').textContent = 'Please enter a valid email address';
+                document.getElementById('signupEmailError').classList.add('visible');
+                return;
+            }
+            
             if (password.length < 6) {
+                document.getElementById('signupPasswordError').textContent = 'Password must be at least 6 characters';
                 document.getElementById('signupPasswordError').classList.add('visible');
                 return;
             }
@@ -1828,10 +1854,16 @@
             
             try {
                 await waitForAuth();
+                
+                if (!window.AuthManager?.signUpWithEmail) {
+                    throw new Error('Auth system not ready. Please refresh and try again.');
+                }
+                
                 await window.AuthManager.signUpWithEmail(email, password);
                 await window.AuthManager.signInWithEmail(email, password);
                 window.location.href = 'workouts.html';
             } catch (error) {
+                console.error('Sign up error:', error);
                 document.getElementById('signupEmailError').textContent = error.message || 'Failed to create account';
                 document.getElementById('signupEmailError').classList.add('visible');
                 submitBtn.disabled = false;
@@ -1843,9 +1875,15 @@
         async function signInWithOAuth(provider) {
             try {
                 await waitForAuth();
-                window.AuthManager.signIn(provider);
+                
+                if (!window.AuthManager?.signIn) {
+                    throw new Error('Auth system not ready');
+                }
+                
+                await window.AuthManager.signIn(provider);
             } catch (error) {
-                alert('Authentication system is loading. Please try again.');
+                console.error('OAuth error:', error);
+                alert('Authentication system is loading. Please wait a moment and try again.');
             }
         }
         
@@ -2153,19 +2191,25 @@
             });
         }
         
-        // Magnetic Buttons Effect
-        const magneticBtns = document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta');
+        // Magnetic Buttons Effect - Only apply to non-feature cards
+        const magneticBtns = document.querySelectorAll('.btn-primary:not(.feature-card *), .btn-secondary:not(.feature-card *), .nav-cta');
         magneticBtns.forEach(btn => {
+            btn.classList.add('magnetic-btn');
+            
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
                 
-                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                btn.style.setProperty('--tx', `${x * 0.3}px`);
+                btn.style.setProperty('--ty', `${y * 0.3}px`);
+                btn.style.transform = 'translate(var(--tx), var(--ty))';
             });
             
             btn.addEventListener('mouseleave', () => {
                 btn.style.transform = '';
+                btn.style.removeProperty('--tx');
+                btn.style.removeProperty('--ty');
             });
         });
         

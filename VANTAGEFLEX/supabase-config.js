@@ -4,8 +4,9 @@
  */
 
 // Supabase credentials
+// NOTE: Project changed to bwbjbevqqeqeqilhgatw - needs new anon key from dashboard
 const SUPABASE_URL = 'https://bwbjbevqqeqeqilhgatw.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4ZWFtc3Jmcm9ndHpxdW1jdndjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NTU0NjIsImV4cCI6MjA5MTUzMTQ2Mn0.bRvren2lNEXMeUxLle3ys_vSPfqMUwYZuR_fUfe-dcg';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4ZWFtc3Jmcm9ndHpxdW1jdndjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NTU0NjIsImV4cCI6MjA5MTUzMTQ2Mn0.bRvren2lNEXMeUxLle3ys_vSPfqMUwYZuR_fUfe-dcg'; // OLD KEY - NEEDS UPDATE
 
 // Initialize Supabase client
 let supabaseClient = null;
@@ -40,10 +41,13 @@ function initSupabase() {
                     console.error('Failed to create client:', err);
                     reject(err);
                 }
-            } else if (attempts >= maxAttempts) {
-                reject(new Error('Supabase library not loaded'));
             } else {
-                setTimeout(checkSupabase, 50);
+                if (attempts >= maxAttempts) {
+                    console.error('Supabase library failed to load after', maxAttempts, 'attempts');
+                    reject(new Error('Supabase library not loaded - check console'));
+                } else {
+                    setTimeout(checkSupabase, 100);
+                }
             }
         };
         
