@@ -197,10 +197,24 @@ const QuestSystem = {
     async startQuest(questId) {
         const quest = this.quests.find(q => q.id === questId);
         if (!quest) return;
-
+        
+        // Check auth
+        const user = window.AuthManager?.getCurrentUser();
+        if (!user) {
+            this.showToast('Please sign in to complete quests', 'error');
+            window.AuthManager?.showLoginModal?.();
+            return;
+        }
+        
+        this.repCount = 0;
         this.questInProgress = quest;
 
         if (quest.verificationType === 'camera') {
+            // Check camera permission first
+            const hasPermission = await window.CameraPermission?.verifyBeforeQuest();
+            if (!hasPermission) {
+                return; // Permission denied or cancelled
+            }
             await this.initCameraVerification(quest);
         } else {
             // Manual verification
