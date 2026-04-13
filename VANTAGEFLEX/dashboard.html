@@ -235,6 +235,304 @@
         </section>
     </main>
 
+    <!-- Dashboard Stats Section -->
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="section-header text-center mb-12">
+                <span class="section-subtitle">Your Progress</span>
+                <h2 class="section-title">Fitness Dashboard</h2>
+                <p class="section-description">Track your workouts, nutrition, and achievements</p>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid mb-16">
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value">12,450</div>
+                    <div class="stat-label">Calories Burned</div>
+                    <div class="stat-change positive">+8% this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value">8.5 hrs</div>
+                    <div class="stat-label">Workout Time</div>
+                    <div class="stat-change positive">+2.5 hrs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💪</div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Workouts Completed</div>
+                    <div class="stat-change positive">+4 this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Day Streak</div>
+                    <div class="stat-change positive">Keep it up!</div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="recent-activity mb-16">
+                <h3 class="section-subtitle">Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">🏋️</div>
+                        <div class="activity-content">
+                            <div class="activity-title">HIIT Cardio Blast</div>
+                            <div class="activity-meta">Today • 30 min • 450 cal</div>
+                        </div>
+                        <div class="activity-status completed">✓</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🥗</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Logged Lunch</div>
+                            <div class="activity-meta">Grilled Chicken Salad • 380 cal</div>
+                        </div>
+                        <div class="activity-status completed">✓</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🧘</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Morning Yoga Flow</div>
+                            <div class="activity-meta">Yesterday • 40 min • 180 cal</div>
+                        </div>
+                        <div class="activity-status completed">✓</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">💪</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Strength Builder Pro</div>
+                            <div class="activity-meta">2 days ago • 45 min • 320 cal</div>
+                        </div>
+                        <div class="activity-status completed">✓</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Goals Section -->
+            <div class="goals-section">
+                <h3 class="section-subtitle">Weekly Goals</h3>
+                <div class="goals-grid">
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <span class="goal-name">Workouts</span>
+                            <span class="goal-progress">4/5</span>
+                        </div>
+                        <div class="goal-bar">
+                            <div class="goal-fill" style="width: 80%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <span class="goal-name">Calories Burned</span>
+                            <span class="goal-progress">12,450/15,000</span>
+                        </div>
+                        <div class="goal-bar">
+                            <div class="goal-fill" style="width: 83%"></div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <span class="goal-name">Active Minutes</span>
+                            <span class="goal-progress">510/600</span>
+                        </div>
+                        <div class="goal-bar">
+                            <div class="goal-fill" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .dashboard-section {
+            padding: 4rem 0;
+            background: linear-gradient(180deg, rgba(13,13,15,0.8) 0%, rgba(20,20,23,0.95) 100%);
+        }
+        
+        .section-subtitle {
+            color: var(--copper);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0 1rem;
+            background: linear-gradient(135deg, #fff 0%, #c87941 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-description {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .stat-change.positive {
+            color: #8b9d77;
+        }
+        
+        .recent-activity {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .activity-list {
+            margin-top: 1.5rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(200,121,65,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-meta {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+        
+        .activity-status {
+            width: 28px;
+            height: 28px;
+            background: rgba(139,157,119,0.2);
+            color: #8b9d77;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .goals-section {
+            margin-top: 2rem;
+        }
+        
+        .goals-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .goal-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .goal-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .goal-progress {
+            color: var(--copper);
+            font-weight: 700;
+        }
+        
+        .goal-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .goal-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c87941 0%, #d4a574 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+    </style>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
