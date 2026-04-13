@@ -372,7 +372,7 @@
             justify-content: center;
             position: relative;
             z-index: 10;
-            padding: 6rem 2rem 4rem;
+            padding: 3rem 2rem 4rem;
             perspective: 2000px;
             transform-style: preserve-3d;
         }
@@ -832,17 +832,85 @@
             margin: 0 auto;
         }
         
+        /* Floating Gradient Orbs */
+        .gradient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(200, 121, 65, 0.6) 0%, transparent 70%);
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.5) 0%, transparent 70%);
+            top: 60%;
+            right: -5%;
+            animation-delay: -5s;
+        }
+        
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(166, 124, 82, 0.5) 0%, transparent 70%);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+        
+        .orb-4 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(200, 121, 65, 0.4) 0%, transparent 70%);
+            top: 30%;
+            right: 20%;
+            animation-delay: -15s;
+        }
+        
+        .orb-5 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(245, 230, 211, 0.3) 0%, transparent 70%);
+            bottom: 40%;
+            right: 30%;
+            animation-delay: -8s;
+        }
+        
+        @keyframes orbFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, -30px) scale(1.1);
+            }
+            50% {
+                transform: translate(-30px, 50px) scale(0.95);
+            }
+            75% {
+                transform: translate(-50px, -20px) scale(1.05);
+            }
+        }
+        
         /* Ambient Glow Effects - Premium Atmosphere */
         .ambient-glow {
             position: fixed;
-            width: 600px;
-            height: 600px;
             border-radius: 50%;
             filter: blur(100px);
-            opacity: 0.15;
+            opacity: 0.3;
             pointer-events: none;
-            z-index: -1;
-            animation: ambientFloat 20s ease-in-out infinite;
+            z-index: 0;
         }
         
         .ambient-glow-1 {
