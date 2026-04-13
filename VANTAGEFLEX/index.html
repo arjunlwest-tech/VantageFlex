@@ -2754,6 +2754,49 @@
             });
         }
         
+        // Premium Card Spotlight Effect
+        function initCardSpotlights() {
+            const cards = document.querySelectorAll('.feature-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+        }
+        
+        // Smooth Scroll Reveal Animation
+        function initScrollReveal() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.feature-card, .section-header').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                observer.observe(el);
+            });
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Force scroll to top
@@ -2761,6 +2804,8 @@
             
             initThreeJS();
             setupFeatureCards();
+            initCardSpotlights();
+            initScrollReveal();
             generateParticles();
             generateConnectionLines();
             initFloatingBalls();
