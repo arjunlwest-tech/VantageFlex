@@ -6,6 +6,244 @@
     <title>Vantage Flex | Premium AI Workout Generator</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="loading-skeletons.css">
+    <style>
+        /* Featured Workouts Section */
+        .featured-workouts {
+            padding: 4rem 0;
+        }
+        
+        .section-subtitle {
+            color: var(--copper);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #c87941 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-description {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .workouts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .workout-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .workout-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,121,65,0.2);
+        }
+        
+        .workout-card.featured::before {
+            content: '★ Featured';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #c87941 0%, #d4a574 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+        
+        .workout-image {
+            height: 180px;
+            background: linear-gradient(135deg, rgba(200,121,65,0.2) 0%, rgba(20,20,23,0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .workout-emoji {
+            font-size: 4rem;
+            filter: drop-shadow(0 4px 20px rgba(200,121,65,0.4));
+        }
+        
+        .difficulty-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-badge.beginner {
+            background: rgba(139,157,119,0.3);
+            color: #8b9d77;
+        }
+        
+        .difficulty-badge.intermediate {
+            background: rgba(200,121,65,0.3);
+            color: #c87941;
+        }
+        
+        .difficulty-badge.advanced {
+            background: rgba(212,88,88,0.3);
+            color: #d45858;
+        }
+        
+        .workout-content {
+            padding: 1.5rem;
+        }
+        
+        .workout-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+        
+        .workout-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .workout-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .meta-item {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .workout-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        .tag {
+            background: rgba(200,121,65,0.1);
+            color: var(--copper);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .start-workout {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .start-workout:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(200,121,65,0.4);
+        }
+        
+        /* Quick Workouts */
+        .quick-workouts {
+            padding: 4rem 0;
+        }
+        
+        .quick-workouts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .quick-workout-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-workout-card:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-4px);
+        }
+        
+        .quick-duration {
+            display: inline-block;
+            background: var(--copper);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        .quick-workout-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .quick-workout-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--copper);
+            color: var(--copper);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-small:hover {
+            background: var(--copper);
+            color: white;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="app.js" defer></script>
     <script src="supabase-config.js" defer></script>
@@ -297,5 +535,51 @@
     </footer>
 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7206950229249249" crossorigin="anonymous"></script>
+    
+    <script>
+        // Featured Workouts Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Start workout button handlers
+            document.querySelectorAll('.start-workout').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const workoutId = e.target.dataset.workout;
+                    console.log('Starting workout:', workoutId);
+                    // TODO: Integrate with workout.js to start specific workout
+                    showNotification('Starting workout...', 'success');
+                });
+            });
+            
+            // Quick workout starter function
+            window.startQuickWorkout = function(workoutId) {
+                console.log('Starting quick workout:', workoutId);
+                showNotification('Starting quick workout...', 'success');
+            };
+            
+            // Notification helper
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    padding: 1rem 1.5rem;
+                    background: ${type === 'success' ? 'rgba(139, 157, 119, 0.9)' : 'rgba(200, 121, 65, 0.9)'};
+                    color: white;
+                    border-radius: 12px;
+                    z-index: 100000;
+                    font-weight: 600;
+                    animation: slideIn 0.3s ease;
+                    backdrop-filter: blur(10px);
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>
