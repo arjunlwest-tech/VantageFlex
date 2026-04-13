@@ -169,7 +169,6 @@
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
         
         .start-workout:hover {
@@ -195,7 +194,6 @@
             border-radius: 12px;
             padding: 1.5rem;
             text-align: center;
-            transition: all 0.3s ease;
         }
         
         .quick-workout-card:hover {
@@ -236,7 +234,6 @@
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
         
         .btn-small:hover {
@@ -330,7 +327,7 @@
 
                 <div class="grid-2" style="align-items: start;">
                     <div class="space-y-6">
-                        <div class="card card-glow animate-fade-in stagger-1">
+                        <div class="card card-glow">
                             <div class="card-header">
                                 <div class="card-header-icon">👤</div>
                                 <h2 class="card-title">Your Profile</h2>
@@ -367,7 +364,7 @@
                             </div>
                         </div>
 
-                        <div class="card animate-fade-in stagger-2">
+                        <div class="card">
                             <div class="card-header">
                                 <div class="card-header-icon">🏋️</div>
                                 <h2 class="card-title">Your Equipment</h2>
@@ -392,7 +389,7 @@
                             </div>
                         </div>
 
-                        <div class="card animate-fade-in stagger-2">
+                        <div class="card">
                             <div class="card-header">
                                 <div class="card-header-icon">⏱️</div>
                                 <h2 class="card-title">Duration</h2>
@@ -408,14 +405,13 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-premium btn-lg w-full animate-fade-in stagger-3" id="generate-btn">
+                        <button class="btn btn-premium btn-lg w-full" id="generate-btn">
                             <span class="btn-icon">⚡</span>
                             <span class="btn-text">Generate My Workout</span>
-                            <span class="btn-shine"></span>
                         </button>
                     </div>
 
-                    <div class="card animate-fade-in stagger-2">
+                    <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">
                                 <span>🎯</span> Configuration Summary
@@ -568,14 +564,13 @@
                     border-radius: 12px;
                     z-index: 100000;
                     font-weight: 600;
-                    animation: slideIn 0.3s ease;
                     backdrop-filter: blur(10px);
                 `;
                 notification.textContent = message;
                 document.body.appendChild(notification);
                 
                 setTimeout(() => {
-                    notification.style.animation = 'slideOut 0.3s ease';
+                    notification.remove();
                     setTimeout(() => notification.remove(), 300);
                 }, 3000);
             }
