@@ -505,6 +505,57 @@
             text-transform: uppercase;
         }
         
+        /* Premium Navigation */
+        .nav-premium {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 253, 248, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-premium.scrolled {
+            padding: 0.75rem 0;
+            background: rgba(5, 5, 5, 0.95);
+        }
+        
+        /* Premium Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-eyebrow {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--copper);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
         /* Ambient Glow Effects - Premium Atmosphere */
         .ambient-glow {
             position: fixed;
@@ -2883,6 +2934,7 @@
             initScrollytelling();
             initTextScramble();
             initVisibilityObserver();
+            initMagneticButtons();
             initMagneticButtons();
             
             // Auth check disabled - direct access mode
