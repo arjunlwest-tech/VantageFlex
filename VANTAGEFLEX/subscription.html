@@ -216,6 +216,296 @@
         </section>
     </main>
 
+    <!-- Pricing Plans Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header text-center mb-12">
+                <span class="section-subtitle">Choose Your Plan</span>
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-description">Start free and upgrade when you're ready to unlock your full potential</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">0</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-description">Perfect for getting started</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><span class="check">✓</span> 5 workouts per week</li>
+                            <li><span class="check">✓</span> Basic workout library</li>
+                            <li><span class="check">✓</span> Progress tracking</li>
+                            <li><span class="check">✓</span> Community access</li>
+                            <li class="disabled"><span class="x">✗</span> Custom meal plans</li>
+                            <li class="disabled"><span class="x">✗</span> Advanced analytics</li>
+                            <li class="disabled"><span class="x">✗</span> Priority support</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-outline">Get Started Free</a>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Pro</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">12</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-description">Best for serious athletes</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><span class="check">✓</span> Unlimited workouts</li>
+                            <li><span class="check">✓</span> Full workout library</li>
+                            <li><span class="check">✓</span> Custom meal plans</li>
+                            <li><span class="check">✓</span> Advanced analytics</li>
+                            <li><span class="check">✓</span> Progress photos</li>
+                            <li><span class="check">✓</span> Recipe database</li>
+                            <li class="disabled"><span class="x">✗</span> 1-on-1 coaching</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-primary">Start Pro Trial</a>
+                </div>
+                
+                <!-- Elite Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Elite</h3>
+                        <div class="pricing-price">
+                            <span class="currency">$</span>
+                            <span class="amount">29</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="pricing-description">For maximum results</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><span class="check">✓</span> Everything in Pro</li>
+                            <li><span class="check">✓</span> 1-on-1 coaching</li>
+                            <li><span class="check">✓</span> Personalized programs</li>
+                            <li><span class="check">✓</span> Video form checks</li>
+                            <li><span class="check">✓</span> Nutrition consultation</li>
+                            <li><span class="check">✓</span> Priority support</li>
+                            <li><span class="check">✓</span> Exclusive content</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-outline">Go Elite</a>
+                </div>
+            </div>
+            
+            <!-- Money Back Guarantee -->
+            <div class="guarantee text-center mt-12">
+                <p><span class="guarantee-icon">🛡️</span> 30-Day Money-Back Guarantee - No questions asked</p>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .pricing-section {
+            padding: 4rem 0;
+        }
+        
+        .section-subtitle {
+            color: var(--copper);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0 1rem;
+            background: linear-gradient(135deg, #fff 0%, #c87941 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-description {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            align-items: start;
+        }
+        
+        .pricing-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .pricing-card.popular {
+            border-color: var(--copper);
+            background: linear-gradient(145deg, rgba(200,121,65,0.1) 0%, rgba(255,255,255,0.02) 100%);
+            transform: scale(1.05);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #c87941 0%, #d4a574 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .pricing-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .currency {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--copper);
+        }
+        
+        .amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+        
+        .period {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+        }
+        
+        .pricing-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .pricing-features {
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .pricing-features li.disabled {
+            color: var(--text-muted);
+        }
+        
+        .check {
+            color: #8b9d77;
+            font-weight: 700;
+        }
+        
+        .x {
+            color: #d45858;
+            font-weight: 700;
+        }
+        
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--copper) 0%, var(--copper-dark) 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(200,121,65,0.4);
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--copper);
+            color: var(--copper);
+        }
+        
+        .btn-outline:hover {
+            background: var(--copper);
+            color: white;
+        }
+        
+        .guarantee {
+            padding: 1.5rem;
+            background: rgba(139,157,119,0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(139,157,119,0.2);
+        }
+        
+        .guarantee p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .guarantee-icon {
+            font-size: 1.25rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
