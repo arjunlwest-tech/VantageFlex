@@ -114,6 +114,87 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
         
+        /* Premium Cursor Spotlight */
+        .cursor-spotlight {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 121, 65, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            mix-blend-mode: screen;
+        }
+        
+        /* Animated Gradient Border */
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(145deg, rgba(255,253,248,0.06) 0%, rgba(255,253,248,0.02) 100%);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: conic-gradient(from 0deg, transparent, rgba(200,121,65,0.3), rgba(212,165,116,0.3), transparent, transparent);
+            border-radius: inherit;
+            z-index: -1;
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Gold Shimmer Text */
+        .shimmer-gold {
+            background: linear-gradient(90deg, #faf8f5 0%, #d4a574 25%, #c87941 50%, #d4a574 75%, #faf8f5 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        /* Floating Depth Elements */
+        .depth-float {
+            animation: depthFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes depthFloat {
+            0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+            25% { transform: translateY(-10px) rotateX(2deg) rotateY(-2deg); }
+            50% { transform: translateY(-5px) rotateX(0) rotateY(0); }
+            75% { transform: translateY(-15px) rotateX(-2deg) rotateY(2deg); }
+        }
+        
+        /* Premium Hover Lift Effect */
+        .hover-lift {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,121,65,0.1);
+        }
+        
+        /* Cinematic Reveal Animation */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         /* Lock first section to viewport top */
         .hero {
             min-height: 100vh;
@@ -503,6 +584,201 @@
             font-size: 0.875rem;
             color: var(--text-muted);
             text-transform: uppercase;
+        }
+        
+        /* Premium Recipe Cards */
+        .recipe-card {
+            background: linear-gradient(145deg, rgba(255,253,248,0.06) 0%, rgba(255,253,248,0.02) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,253,248,0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        
+        .recipe-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(200,121,65,0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .recipe-card:hover::before {
+            opacity: 1;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(200,121,65,0.2);
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,121,65,0.1);
+        }
+        
+        .recipe-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--copper) 0%, var(--gold) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+        }
+        
+        .recipe-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .recipe-content {
+            padding: 1.5rem;
+        }
+        
+        .recipe-content h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .recipe-description {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .recipe-macros {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .macro {
+            background: rgba(255,253,248,0.05);
+            padding: 0.375rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+        
+        .recipe-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .tag {
+            background: rgba(200,121,65,0.15);
+            color: var(--copper);
+            padding: 0.25rem 0.625rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .recipe-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,253,248,0.05);
+            border: 1px solid rgba(255,253,248,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-icon:hover {
+            background: rgba(200,121,65,0.2);
+            border-color: rgba(200,121,65,0.3);
+        }
+        
+        /* Premium Meal Prep Cards */
+        .meal-prep-card {
+            background: linear-gradient(145deg, rgba(255,253,248,0.05) 0%, rgba(255,253,248,0.02) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,253,248,0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .meal-prep-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(200,121,65,0.2);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4);
+        }
+        
+        .meal-prep-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .meal-prep-card h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .meal-prep-card p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+        
+        .meal-preview {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,253,248,0.1);
+        }
+        
+        .meal-day {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,253,248,0.05);
+        }
+        
+        .day-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--copper);
+            min-width: 40px;
+        }
+        
+        .meal-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .meal-item {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
         }
         
         /* Premium Navigation */
@@ -1906,6 +2182,9 @@
     <!-- Aurora Background -->
     <div class="aurora-bg"></div>
     
+    <!-- Premium Cursor Spotlight -->
+    <div class="cursor-spotlight"></div>
+    
     <!-- Floating Gradient Orbs -->
     <div class="gradient-orb orb-1"></div>
     <div class="gradient-orb orb-2"></div>
@@ -3124,6 +3403,70 @@
             });
         }
         
+        // Cursor Spotlight Effect
+        function initCursorSpotlight() {
+            const spotlight = document.querySelector('.cursor-spotlight');
+            let mouseX = 0, mouseY = 0;
+            let spotlightX = 0, spotlightY = 0;
+            
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            }, { passive: true });
+            
+            function updateSpotlight() {
+                spotlightX += (mouseX - spotlightX) * 0.1;
+                spotlightY += (mouseY - spotlightY) * 0.1;
+                spotlight.style.left = spotlightX + 'px';
+                spotlight.style.top = spotlightY + 'px';
+                requestAnimationFrame(updateSpotlight);
+            }
+            updateSpotlight();
+        }
+        
+        // Magnetic Button Effect
+        function initMagneticButtons() {
+            const magneticBtns = document.querySelectorAll('.btn-primary, .btn-secondary, .feature-card');
+            
+            magneticBtns.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+                });
+                
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+        
+        // Cinematic Scroll Reveal
+        function initCinematicReveal() {
+            const revealElements = document.querySelectorAll('.section-header, .feature-card, .recipe-card, .meal-prep-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
+            
+            revealElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(40px)';
+                el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                observer.observe(el);
+            });
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Force scroll to top
@@ -3131,19 +3474,14 @@
             
             initThreeJS();
             setupFeatureCards();
-            initCardSpotlights();
-            initScrollReveal();
             generateParticles();
             generateConnectionLines();
             initFloatingBalls();
             initScrollytelling();
             initTextScramble();
-            initVisibilityObserver();
+            initCursorSpotlight();
             initMagneticButtons();
-            initMagneticButtons();
-            
-            // Auth check disabled - direct access mode
-            // const checkAuth = setInterval(() => {
+            initCinematicReveal();
             //     if (window.AuthManager?.getCurrentUser?.()) {
             //         window.location.href = 'workouts.html';
             //         clearInterval(checkAuth);
